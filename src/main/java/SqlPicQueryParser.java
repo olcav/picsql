@@ -17,11 +17,12 @@ public class SqlPicQueryParser {
         return this.picsqlParser.getNumberOfSyntaxErrors() > 0;
     }
 
-    public void parse(String sql){
+    public picsqlParser parse(String sql){
         CharStream input = CharStreams.fromString(sql);
         picsqlLexer picsqlLexer = new picsqlLexer(input);
         CommonTokenStream tokenstream = new CommonTokenStream(picsqlLexer);
         picsqlParser = new picsqlParser(tokenstream);
+        return picsqlParser;
     }
 
     public SqlPicQuery getQuery() {

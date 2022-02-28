@@ -1,4 +1,4 @@
-// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
+// Generated from C:/Users/ocavadenti/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
 package grammar;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -25,6 +25,13 @@ public class picsqlBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitSelectstmt(picsqlParser.SelectstmtContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitFrom_pic_source(picsqlParser.From_pic_sourceContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -67,6 +74,13 @@ public class picsqlBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitUnary_function(picsqlParser.Unary_functionContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitBinary_function(picsqlParser.Binary_functionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

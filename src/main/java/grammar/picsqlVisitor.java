@@ -1,4 +1,4 @@
-// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
+// Generated from C:/Users/ocavadenti/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
 package grammar;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -22,6 +22,12 @@ public interface picsqlVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSelectstmt(picsqlParser.SelectstmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link picsqlParser#from_pic_source}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFrom_pic_source(picsqlParser.From_pic_sourceContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link picsqlParser#from_source_list}.
 	 * @param ctx the parse tree
@@ -58,6 +64,12 @@ public interface picsqlVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitUnary_function(picsqlParser.Unary_functionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link picsqlParser#binary_function}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinary_function(picsqlParser.Binary_functionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link picsqlParser#expression}.
 	 * @param ctx the parse tree

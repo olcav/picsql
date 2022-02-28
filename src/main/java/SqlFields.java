@@ -31,6 +31,19 @@ public class SqlFields {
         }
     }
 
+    public Double getFieldValueFromName(String singleFieldValue){
+        if(Objects.equals(singleFieldValue, "rand()")){
+            return Math.random();
+        }
+        if(Objects.equals(singleFieldValue, "*")){
+            return -1d;
+        }
+        try {
+            return Double.parseDouble(singleFieldValue);
+        } catch (Exception e) {
+            return getField(singleFieldValue);
+        }
+    }
     public Double getField(String name){
         return fieldsByName.get(name);
     }

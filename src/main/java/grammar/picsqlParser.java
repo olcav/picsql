@@ -1,4 +1,4 @@
-// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
+// Generated from C:/Users/ocavadenti/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
 package grammar;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -17,20 +17,23 @@ public class picsqlParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, SELECT=9, 
-		FROM=10, WHERE=11, OPERATOR_LOGIC=12, STAR=13, DIVIDE=14, MODULO=15, PLUS=16, 
-		MINUS=17, DIGITS=18, STR=19, DOTS=20, LEFT_PARENTHESIS=21, RIGHT_PARENTHESIS=22, 
-		OPERATOR_CONDITION=23, DOT=24, WS=25;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
+		T__9=10, T__10=11, T__11=12, SELECT=13, FROM=14, WHERE=15, OPERATOR_LOGIC=16, 
+		STAR=17, DIVIDE=18, MODULO=19, PLUS=20, MINUS=21, DIGITS=22, DECIMAL=23, 
+		STR=24, DOTS=25, LEFT_PARENTHESIS=26, RIGHT_PARENTHESIS=27, OPERATOR_CONDITION=28, 
+		DOT=29, WS=30;
 	public static final int
-		RULE_query = 0, RULE_selectstmt = 1, RULE_from_source_list = 2, RULE_selectionlist = 3, 
-		RULE_selection = 4, RULE_single_field = 5, RULE_alias_value = 6, RULE_unary_function = 7, 
-		RULE_expression = 8, RULE_begin_path = 9, RULE_alias = 10, RULE_path_part = 11, 
-		RULE_path = 12, RULE_pic_path = 13, RULE_subquery = 14, RULE_where_clause = 15;
+		RULE_query = 0, RULE_selectstmt = 1, RULE_from_pic_source = 2, RULE_from_source_list = 3, 
+		RULE_selectionlist = 4, RULE_selection = 5, RULE_single_field = 6, RULE_alias_value = 7, 
+		RULE_unary_function = 8, RULE_binary_function = 9, RULE_expression = 10, 
+		RULE_begin_path = 11, RULE_alias = 12, RULE_path_part = 13, RULE_path = 14, 
+		RULE_pic_path = 15, RULE_subquery = 16, RULE_where_clause = 17;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"query", "selectstmt", "from_source_list", "selectionlist", "selection", 
-			"single_field", "alias_value", "unary_function", "expression", "begin_path", 
-			"alias", "path_part", "path", "pic_path", "subquery", "where_clause"
+			"query", "selectstmt", "from_pic_source", "from_source_list", "selectionlist", 
+			"selection", "single_field", "alias_value", "unary_function", "binary_function", 
+			"expression", "begin_path", "alias", "path_part", "path", "pic_path", 
+			"subquery", "where_clause"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -38,17 +41,18 @@ public class picsqlParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "','", "'x'", "'y'", "'r'", "'g'", "'b'", "'rand()'", "'rank()'", 
-			"'select'", "'from'", "'where'", null, "'*'", "'/'", "'%'", "'+'", "'-'", 
-			null, null, "':'", "'('", "')'", null, "'.'"
+			"'pi()'", "'sin'", "'cos'", "'tan'", "'select'", "'from'", "'where'", 
+			null, "'*'", "'/'", "'%'", "'+'", "'-'", null, null, null, "':'", "'('", 
+			"')'", null, "'.'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, "SELECT", "FROM", 
-			"WHERE", "OPERATOR_LOGIC", "STAR", "DIVIDE", "MODULO", "PLUS", "MINUS", 
-			"DIGITS", "STR", "DOTS", "LEFT_PARENTHESIS", "RIGHT_PARENTHESIS", "OPERATOR_CONDITION", 
-			"DOT", "WS"
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, "SELECT", "FROM", "WHERE", "OPERATOR_LOGIC", "STAR", "DIVIDE", 
+			"MODULO", "PLUS", "MINUS", "DIGITS", "DECIMAL", "STR", "DOTS", "LEFT_PARENTHESIS", 
+			"RIGHT_PARENTHESIS", "OPERATOR_CONDITION", "DOT", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -131,7 +135,7 @@ public class picsqlParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(32);
+			setState(36);
 			selectstmt();
 			}
 		}
@@ -188,39 +192,120 @@ public class picsqlParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(34);
+			setState(38);
 			match(SELECT);
-			setState(35);
+			setState(39);
 			selectionlist();
-			setState(36);
+			setState(40);
 			match(FROM);
-			setState(37);
+			setState(41);
 			from_source_list();
-			setState(42);
+			setState(46);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__0) {
 				{
 				{
-				setState(38);
+				setState(42);
 				match(T__0);
-				setState(39);
+				setState(43);
 				from_source_list();
 				}
 				}
-				setState(44);
+				setState(48);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(47);
+			setState(51);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WHERE) {
 				{
-				setState(45);
+				setState(49);
 				match(WHERE);
-				setState(46);
+				setState(50);
 				where_clause(0);
+				}
+			}
+
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class From_pic_sourceContext extends ParserRuleContext {
+		public TerminalNode LEFT_PARENTHESIS() { return getToken(picsqlParser.LEFT_PARENTHESIS, 0); }
+		public List<TerminalNode> DIGITS() { return getTokens(picsqlParser.DIGITS); }
+		public TerminalNode DIGITS(int i) {
+			return getToken(picsqlParser.DIGITS, i);
+		}
+		public TerminalNode RIGHT_PARENTHESIS() { return getToken(picsqlParser.RIGHT_PARENTHESIS, 0); }
+		public AliasContext alias() {
+			return getRuleContext(AliasContext.class,0);
+		}
+		public From_pic_sourceContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_from_pic_source; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof picsqlListener ) ((picsqlListener)listener).enterFrom_pic_source(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof picsqlListener ) ((picsqlListener)listener).exitFrom_pic_source(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof picsqlVisitor ) return ((picsqlVisitor<? extends T>)visitor).visitFrom_pic_source(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final From_pic_sourceContext from_pic_source() throws RecognitionException {
+		From_pic_sourceContext _localctx = new From_pic_sourceContext(_ctx, getState());
+		enterRule(_localctx, 4, RULE_from_pic_source);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(53);
+			match(LEFT_PARENTHESIS);
+			setState(54);
+			match(DIGITS);
+			setState(55);
+			match(T__0);
+			setState(56);
+			match(DIGITS);
+			setState(57);
+			match(T__0);
+			setState(58);
+			match(DIGITS);
+			setState(59);
+			match(T__0);
+			setState(60);
+			match(DIGITS);
+			setState(61);
+			match(T__0);
+			setState(62);
+			match(DIGITS);
+			setState(63);
+			match(RIGHT_PARENTHESIS);
+			setState(65);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==STR) {
+				{
+				setState(64);
+				alias();
 				}
 			}
 
@@ -240,6 +325,9 @@ public class picsqlParser extends Parser {
 	public static class From_source_listContext extends ParserRuleContext {
 		public Pic_pathContext pic_path() {
 			return getRuleContext(Pic_pathContext.class,0);
+		}
+		public From_pic_sourceContext from_pic_source() {
+			return getRuleContext(From_pic_sourceContext.class,0);
 		}
 		public SubqueryContext subquery() {
 			return getRuleContext(SubqueryContext.class,0);
@@ -265,28 +353,31 @@ public class picsqlParser extends Parser {
 
 	public final From_source_listContext from_source_list() throws RecognitionException {
 		From_source_listContext _localctx = new From_source_listContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_from_source_list);
+		enterRule(_localctx, 6, RULE_from_source_list);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(51);
+			setState(70);
 			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case STR:
-			case DOT:
+			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
+			case 1:
 				{
-				setState(49);
+				setState(67);
 				pic_path();
 				}
 				break;
-			case LEFT_PARENTHESIS:
+			case 2:
 				{
-				setState(50);
+				setState(68);
+				from_pic_source();
+				}
+				break;
+			case 3:
+				{
+				setState(69);
 				subquery();
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
 			}
 			}
 		}
@@ -329,26 +420,26 @@ public class picsqlParser extends Parser {
 
 	public final SelectionlistContext selectionlist() throws RecognitionException {
 		SelectionlistContext _localctx = new SelectionlistContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_selectionlist);
+		enterRule(_localctx, 8, RULE_selectionlist);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(53);
+			setState(72);
 			selection(0);
-			setState(58);
+			setState(77);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__0) {
 				{
 				{
-				setState(54);
+				setState(73);
 				match(T__0);
-				setState(55);
+				setState(74);
 				selection(0);
 				}
 				}
-				setState(60);
+				setState(79);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -410,14 +501,14 @@ public class picsqlParser extends Parser {
 		int _parentState = getState();
 		SelectionContext _localctx = new SelectionContext(_ctx, _parentState);
 		SelectionContext _prevctx = _localctx;
-		int _startState = 8;
-		enterRecursionRule(_localctx, 8, RULE_selection, _p);
+		int _startState = 10;
+		enterRecursionRule(_localctx, 10, RULE_selection, _p);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(67);
+			setState(86);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__1:
@@ -427,21 +518,25 @@ public class picsqlParser extends Parser {
 			case T__5:
 			case T__6:
 			case T__7:
+			case T__8:
+			case T__9:
+			case T__10:
+			case T__11:
 			case STAR:
 			case DIGITS:
 			case STR:
 				{
-				setState(62);
+				setState(81);
 				single_field();
 				}
 				break;
 			case LEFT_PARENTHESIS:
 				{
-				setState(63);
+				setState(82);
 				match(LEFT_PARENTHESIS);
-				setState(64);
+				setState(83);
 				selection(0);
-				setState(65);
+				setState(84);
 				match(RIGHT_PARENTHESIS);
 				}
 				break;
@@ -449,24 +544,24 @@ public class picsqlParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(77);
+			setState(96);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(75);
+					setState(94);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 					case 1:
 						{
 						_localctx = new SelectionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_selection);
-						setState(69);
+						setState(88);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(70);
+						setState(89);
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << STAR) | (1L << DIVIDE) | (1L << MODULO))) != 0)) ) {
 						_errHandler.recoverInline(this);
@@ -476,7 +571,7 @@ public class picsqlParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(71);
+						setState(90);
 						selection(3);
 						}
 						break;
@@ -484,9 +579,9 @@ public class picsqlParser extends Parser {
 						{
 						_localctx = new SelectionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_selection);
-						setState(72);
+						setState(91);
 						if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-						setState(73);
+						setState(92);
 						_la = _input.LA(1);
 						if ( !(_la==PLUS || _la==MINUS) ) {
 						_errHandler.recoverInline(this);
@@ -496,16 +591,16 @@ public class picsqlParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(74);
+						setState(93);
 						selection(2);
 						}
 						break;
 					}
 					} 
 				}
-				setState(79);
+				setState(98);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
 			}
 			}
 		}
@@ -531,6 +626,9 @@ public class picsqlParser extends Parser {
 		public Unary_functionContext unary_function() {
 			return getRuleContext(Unary_functionContext.class,0);
 		}
+		public Binary_functionContext binary_function() {
+			return getRuleContext(Binary_functionContext.class,0);
+		}
 		public Single_fieldContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -552,15 +650,15 @@ public class picsqlParser extends Parser {
 
 	public final Single_fieldContext single_field() throws RecognitionException {
 		Single_fieldContext _localctx = new Single_fieldContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_single_field);
+		enterRule(_localctx, 12, RULE_single_field);
 		try {
-			setState(89);
+			setState(109);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case DIGITS:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(80);
+				setState(99);
 				match(DIGITS);
 				}
 				break;
@@ -569,48 +667,58 @@ public class picsqlParser extends Parser {
 			case T__5:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(81);
+				setState(100);
 				alias_value();
 				}
 				break;
 			case STR:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(82);
+				setState(101);
 				match(STR);
-				setState(83);
+				setState(102);
 				match(DOT);
-				setState(84);
+				setState(103);
 				alias_value();
 				}
 				break;
 			case STAR:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(85);
+				setState(104);
 				match(STAR);
 				}
 				break;
 			case T__1:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(86);
+				setState(105);
 				match(T__1);
 				}
 				break;
 			case T__2:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(87);
+				setState(106);
 				match(T__2);
 				}
 				break;
 			case T__6:
 			case T__7:
+			case T__8:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(88);
+				setState(107);
 				unary_function();
+				}
+				break;
+			case T__9:
+			case T__10:
+			case T__11:
+				enterOuterAlt(_localctx, 8);
+				{
+				setState(108);
+				binary_function();
 				}
 				break;
 			default:
@@ -650,12 +758,12 @@ public class picsqlParser extends Parser {
 
 	public final Alias_valueContext alias_value() throws RecognitionException {
 		Alias_valueContext _localctx = new Alias_valueContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_alias_value);
+		enterRule(_localctx, 14, RULE_alias_value);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(91);
+			setState(111);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__3) | (1L << T__4) | (1L << T__5))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -700,14 +808,14 @@ public class picsqlParser extends Parser {
 
 	public final Unary_functionContext unary_function() throws RecognitionException {
 		Unary_functionContext _localctx = new Unary_functionContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_unary_function);
+		enterRule(_localctx, 16, RULE_unary_function);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(93);
+			setState(113);
 			_la = _input.LA(1);
-			if ( !(_la==T__6 || _la==T__7) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__6) | (1L << T__7) | (1L << T__8))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -728,12 +836,82 @@ public class picsqlParser extends Parser {
 		return _localctx;
 	}
 
+	public static class Binary_functionContext extends ParserRuleContext {
+		public TerminalNode LEFT_PARENTHESIS() { return getToken(picsqlParser.LEFT_PARENTHESIS, 0); }
+		public TerminalNode RIGHT_PARENTHESIS() { return getToken(picsqlParser.RIGHT_PARENTHESIS, 0); }
+		public TerminalNode DIGITS() { return getToken(picsqlParser.DIGITS, 0); }
+		public TerminalNode DECIMAL() { return getToken(picsqlParser.DECIMAL, 0); }
+		public Binary_functionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_binary_function; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof picsqlListener ) ((picsqlListener)listener).enterBinary_function(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof picsqlListener ) ((picsqlListener)listener).exitBinary_function(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof picsqlVisitor ) return ((picsqlVisitor<? extends T>)visitor).visitBinary_function(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final Binary_functionContext binary_function() throws RecognitionException {
+		Binary_functionContext _localctx = new Binary_functionContext(_ctx, getState());
+		enterRule(_localctx, 18, RULE_binary_function);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(115);
+			_la = _input.LA(1);
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__9) | (1L << T__10) | (1L << T__11))) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(116);
+			match(LEFT_PARENTHESIS);
+			setState(117);
+			_la = _input.LA(1);
+			if ( !(_la==DIGITS || _la==DECIMAL) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(118);
+			match(RIGHT_PARENTHESIS);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
 	public static class ExpressionContext extends ParserRuleContext {
 		public SelectionContext selection() {
 			return getRuleContext(SelectionContext.class,0);
 		}
 		public TerminalNode OPERATOR_CONDITION() { return getToken(picsqlParser.OPERATOR_CONDITION, 0); }
-		public TerminalNode DIGITS() { return getToken(picsqlParser.DIGITS, 0); }
+		public Single_fieldContext single_field() {
+			return getRuleContext(Single_fieldContext.class,0);
+		}
 		public ExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -755,16 +933,16 @@ public class picsqlParser extends Parser {
 
 	public final ExpressionContext expression() throws RecognitionException {
 		ExpressionContext _localctx = new ExpressionContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_expression);
+		enterRule(_localctx, 20, RULE_expression);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(95);
+			setState(120);
 			selection(0);
-			setState(96);
+			setState(121);
 			match(OPERATOR_CONDITION);
-			setState(97);
-			match(DIGITS);
+			setState(122);
+			single_field();
 			}
 		}
 		catch (RecognitionException re) {
@@ -804,28 +982,28 @@ public class picsqlParser extends Parser {
 
 	public final Begin_pathContext begin_path() throws RecognitionException {
 		Begin_pathContext _localctx = new Begin_pathContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_begin_path);
+		enterRule(_localctx, 22, RULE_begin_path);
 		try {
-			setState(104);
+			setState(129);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case STR:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(99);
+				setState(124);
 				match(STR);
-				setState(100);
+				setState(125);
 				match(DOTS);
-				setState(101);
+				setState(126);
 				match(DIVIDE);
 				}
 				break;
 			case DOT:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(102);
+				setState(127);
 				match(DOT);
-				setState(103);
+				setState(128);
 				match(DIVIDE);
 				}
 				break;
@@ -867,11 +1045,11 @@ public class picsqlParser extends Parser {
 
 	public final AliasContext alias() throws RecognitionException {
 		AliasContext _localctx = new AliasContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_alias);
+		enterRule(_localctx, 24, RULE_alias);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(106);
+			setState(131);
 			match(STR);
 			}
 		}
@@ -909,11 +1087,11 @@ public class picsqlParser extends Parser {
 
 	public final Path_partContext path_part() throws RecognitionException {
 		Path_partContext _localctx = new Path_partContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_path_part);
+		enterRule(_localctx, 26, RULE_path_part);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(108);
+			setState(133);
 			match(STR);
 			}
 		}
@@ -963,36 +1141,36 @@ public class picsqlParser extends Parser {
 
 	public final PathContext path() throws RecognitionException {
 		PathContext _localctx = new PathContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_path);
+		enterRule(_localctx, 28, RULE_path);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(111);
+			setState(136);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
 			case 1:
 				{
-				setState(110);
+				setState(135);
 				begin_path();
 				}
 				break;
 			}
-			setState(113);
+			setState(138);
 			path_part();
-			setState(118);
+			setState(143);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==DOT) {
 				{
 				{
-				setState(114);
+				setState(139);
 				match(DOT);
-				setState(115);
+				setState(140);
 				path_part();
 				}
 				}
-				setState(120);
+				setState(145);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -1037,19 +1215,19 @@ public class picsqlParser extends Parser {
 
 	public final Pic_pathContext pic_path() throws RecognitionException {
 		Pic_pathContext _localctx = new Pic_pathContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_pic_path);
+		enterRule(_localctx, 30, RULE_pic_path);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(121);
+			setState(146);
 			path();
-			setState(123);
+			setState(148);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==STR) {
 				{
-				setState(122);
+				setState(147);
 				alias();
 				}
 			}
@@ -1073,6 +1251,9 @@ public class picsqlParser extends Parser {
 			return getRuleContext(SelectstmtContext.class,0);
 		}
 		public TerminalNode RIGHT_PARENTHESIS() { return getToken(picsqlParser.RIGHT_PARENTHESIS, 0); }
+		public AliasContext alias() {
+			return getRuleContext(AliasContext.class,0);
+		}
 		public SubqueryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1094,16 +1275,27 @@ public class picsqlParser extends Parser {
 
 	public final SubqueryContext subquery() throws RecognitionException {
 		SubqueryContext _localctx = new SubqueryContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_subquery);
+		enterRule(_localctx, 32, RULE_subquery);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(125);
+			setState(150);
 			match(LEFT_PARENTHESIS);
-			setState(126);
+			setState(151);
 			selectstmt();
-			setState(127);
+			setState(152);
 			match(RIGHT_PARENTHESIS);
+			setState(154);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==STR) {
+				{
+				setState(153);
+				alias();
+				}
+			}
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -1158,36 +1350,36 @@ public class picsqlParser extends Parser {
 		int _parentState = getState();
 		Where_clauseContext _localctx = new Where_clauseContext(_ctx, _parentState);
 		Where_clauseContext _prevctx = _localctx;
-		int _startState = 30;
-		enterRecursionRule(_localctx, 30, RULE_where_clause, _p);
+		int _startState = 34;
+		enterRecursionRule(_localctx, 34, RULE_where_clause, _p);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(135);
+			setState(162);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
 			case 1:
 				{
-				setState(130);
+				setState(157);
 				expression();
 				}
 				break;
 			case 2:
 				{
-				setState(131);
+				setState(158);
 				match(LEFT_PARENTHESIS);
-				setState(132);
+				setState(159);
 				where_clause(0);
-				setState(133);
+				setState(160);
 				match(RIGHT_PARENTHESIS);
 				}
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(142);
+			setState(169);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,13,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,15,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
@@ -1196,18 +1388,18 @@ public class picsqlParser extends Parser {
 					{
 					_localctx = new Where_clauseContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_where_clause);
-					setState(137);
+					setState(164);
 					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-					setState(138);
+					setState(165);
 					match(OPERATOR_LOGIC);
-					setState(139);
+					setState(166);
 					where_clause(3);
 					}
 					} 
 				}
-				setState(144);
+				setState(171);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,13,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,15,_ctx);
 			}
 			}
 		}
@@ -1224,9 +1416,9 @@ public class picsqlParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 4:
+		case 5:
 			return selection_sempred((SelectionContext)_localctx, predIndex);
-		case 15:
+		case 17:
 			return where_clause_sempred((Where_clauseContext)_localctx, predIndex);
 		}
 		return true;
@@ -1249,45 +1441,57 @@ public class picsqlParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\33\u0094\4\2\t\2"+
-		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
-		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\3\2\3\2"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\7\3+\n\3\f\3\16\3.\13\3\3\3\3\3\5\3\62\n\3\3"+
-		"\4\3\4\5\4\66\n\4\3\5\3\5\3\5\7\5;\n\5\f\5\16\5>\13\5\3\6\3\6\3\6\3\6"+
-		"\3\6\3\6\5\6F\n\6\3\6\3\6\3\6\3\6\3\6\3\6\7\6N\n\6\f\6\16\6Q\13\6\3\7"+
-		"\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\5\7\\\n\7\3\b\3\b\3\t\3\t\3\n\3\n\3\n"+
-		"\3\n\3\13\3\13\3\13\3\13\3\13\5\13k\n\13\3\f\3\f\3\r\3\r\3\16\5\16r\n"+
-		"\16\3\16\3\16\3\16\7\16w\n\16\f\16\16\16z\13\16\3\17\3\17\5\17~\n\17\3"+
-		"\20\3\20\3\20\3\20\3\21\3\21\3\21\3\21\3\21\3\21\5\21\u008a\n\21\3\21"+
-		"\3\21\3\21\7\21\u008f\n\21\f\21\16\21\u0092\13\21\3\21\2\4\n \22\2\4\6"+
-		"\b\n\f\16\20\22\24\26\30\32\34\36 \2\6\3\2\17\21\3\2\22\23\3\2\6\b\3\2"+
-		"\t\n\2\u0096\2\"\3\2\2\2\4$\3\2\2\2\6\65\3\2\2\2\b\67\3\2\2\2\nE\3\2\2"+
-		"\2\f[\3\2\2\2\16]\3\2\2\2\20_\3\2\2\2\22a\3\2\2\2\24j\3\2\2\2\26l\3\2"+
-		"\2\2\30n\3\2\2\2\32q\3\2\2\2\34{\3\2\2\2\36\177\3\2\2\2 \u0089\3\2\2\2"+
-		"\"#\5\4\3\2#\3\3\2\2\2$%\7\13\2\2%&\5\b\5\2&\'\7\f\2\2\',\5\6\4\2()\7"+
-		"\3\2\2)+\5\6\4\2*(\3\2\2\2+.\3\2\2\2,*\3\2\2\2,-\3\2\2\2-\61\3\2\2\2."+
-		",\3\2\2\2/\60\7\r\2\2\60\62\5 \21\2\61/\3\2\2\2\61\62\3\2\2\2\62\5\3\2"+
-		"\2\2\63\66\5\34\17\2\64\66\5\36\20\2\65\63\3\2\2\2\65\64\3\2\2\2\66\7"+
-		"\3\2\2\2\67<\5\n\6\289\7\3\2\29;\5\n\6\2:8\3\2\2\2;>\3\2\2\2<:\3\2\2\2"+
-		"<=\3\2\2\2=\t\3\2\2\2><\3\2\2\2?@\b\6\1\2@F\5\f\7\2AB\7\27\2\2BC\5\n\6"+
-		"\2CD\7\30\2\2DF\3\2\2\2E?\3\2\2\2EA\3\2\2\2FO\3\2\2\2GH\f\4\2\2HI\t\2"+
-		"\2\2IN\5\n\6\5JK\f\3\2\2KL\t\3\2\2LN\5\n\6\4MG\3\2\2\2MJ\3\2\2\2NQ\3\2"+
-		"\2\2OM\3\2\2\2OP\3\2\2\2P\13\3\2\2\2QO\3\2\2\2R\\\7\24\2\2S\\\5\16\b\2"+
-		"TU\7\25\2\2UV\7\32\2\2V\\\5\16\b\2W\\\7\17\2\2X\\\7\4\2\2Y\\\7\5\2\2Z"+
-		"\\\5\20\t\2[R\3\2\2\2[S\3\2\2\2[T\3\2\2\2[W\3\2\2\2[X\3\2\2\2[Y\3\2\2"+
-		"\2[Z\3\2\2\2\\\r\3\2\2\2]^\t\4\2\2^\17\3\2\2\2_`\t\5\2\2`\21\3\2\2\2a"+
-		"b\5\n\6\2bc\7\31\2\2cd\7\24\2\2d\23\3\2\2\2ef\7\25\2\2fg\7\26\2\2gk\7"+
-		"\20\2\2hi\7\32\2\2ik\7\20\2\2je\3\2\2\2jh\3\2\2\2k\25\3\2\2\2lm\7\25\2"+
-		"\2m\27\3\2\2\2no\7\25\2\2o\31\3\2\2\2pr\5\24\13\2qp\3\2\2\2qr\3\2\2\2"+
-		"rs\3\2\2\2sx\5\30\r\2tu\7\32\2\2uw\5\30\r\2vt\3\2\2\2wz\3\2\2\2xv\3\2"+
-		"\2\2xy\3\2\2\2y\33\3\2\2\2zx\3\2\2\2{}\5\32\16\2|~\5\26\f\2}|\3\2\2\2"+
-		"}~\3\2\2\2~\35\3\2\2\2\177\u0080\7\27\2\2\u0080\u0081\5\4\3\2\u0081\u0082"+
-		"\7\30\2\2\u0082\37\3\2\2\2\u0083\u0084\b\21\1\2\u0084\u008a\5\22\n\2\u0085"+
-		"\u0086\7\27\2\2\u0086\u0087\5 \21\2\u0087\u0088\7\30\2\2\u0088\u008a\3"+
-		"\2\2\2\u0089\u0083\3\2\2\2\u0089\u0085\3\2\2\2\u008a\u0090\3\2\2\2\u008b"+
-		"\u008c\f\4\2\2\u008c\u008d\7\16\2\2\u008d\u008f\5 \21\5\u008e\u008b\3"+
-		"\2\2\2\u008f\u0092\3\2\2\2\u0090\u008e\3\2\2\2\u0090\u0091\3\2\2\2\u0091"+
-		"!\3\2\2\2\u0092\u0090\3\2\2\2\20,\61\65<EMO[jqx}\u0089\u0090";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3 \u00af\4\2\t\2\4"+
+		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
+		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
+		"\4\23\t\23\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\7\3/\n\3\f\3\16\3\62\13\3\3"+
+		"\3\3\3\5\3\66\n\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4"+
+		"D\n\4\3\5\3\5\3\5\5\5I\n\5\3\6\3\6\3\6\7\6N\n\6\f\6\16\6Q\13\6\3\7\3\7"+
+		"\3\7\3\7\3\7\3\7\5\7Y\n\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7a\n\7\f\7\16\7d\13"+
+		"\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\5\bp\n\b\3\t\3\t\3\n\3\n\3"+
+		"\13\3\13\3\13\3\13\3\13\3\f\3\f\3\f\3\f\3\r\3\r\3\r\3\r\3\r\5\r\u0084"+
+		"\n\r\3\16\3\16\3\17\3\17\3\20\5\20\u008b\n\20\3\20\3\20\3\20\7\20\u0090"+
+		"\n\20\f\20\16\20\u0093\13\20\3\21\3\21\5\21\u0097\n\21\3\22\3\22\3\22"+
+		"\3\22\5\22\u009d\n\22\3\23\3\23\3\23\3\23\3\23\3\23\5\23\u00a5\n\23\3"+
+		"\23\3\23\3\23\7\23\u00aa\n\23\f\23\16\23\u00ad\13\23\3\23\2\4\f$\24\2"+
+		"\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$\2\b\3\2\23\25\3\2\26\27\3\2"+
+		"\6\b\3\2\t\13\3\2\f\16\3\2\30\31\2\u00b3\2&\3\2\2\2\4(\3\2\2\2\6\67\3"+
+		"\2\2\2\bH\3\2\2\2\nJ\3\2\2\2\fX\3\2\2\2\16o\3\2\2\2\20q\3\2\2\2\22s\3"+
+		"\2\2\2\24u\3\2\2\2\26z\3\2\2\2\30\u0083\3\2\2\2\32\u0085\3\2\2\2\34\u0087"+
+		"\3\2\2\2\36\u008a\3\2\2\2 \u0094\3\2\2\2\"\u0098\3\2\2\2$\u00a4\3\2\2"+
+		"\2&\'\5\4\3\2\'\3\3\2\2\2()\7\17\2\2)*\5\n\6\2*+\7\20\2\2+\60\5\b\5\2"+
+		",-\7\3\2\2-/\5\b\5\2.,\3\2\2\2/\62\3\2\2\2\60.\3\2\2\2\60\61\3\2\2\2\61"+
+		"\65\3\2\2\2\62\60\3\2\2\2\63\64\7\21\2\2\64\66\5$\23\2\65\63\3\2\2\2\65"+
+		"\66\3\2\2\2\66\5\3\2\2\2\678\7\34\2\289\7\30\2\29:\7\3\2\2:;\7\30\2\2"+
+		";<\7\3\2\2<=\7\30\2\2=>\7\3\2\2>?\7\30\2\2?@\7\3\2\2@A\7\30\2\2AC\7\35"+
+		"\2\2BD\5\32\16\2CB\3\2\2\2CD\3\2\2\2D\7\3\2\2\2EI\5 \21\2FI\5\6\4\2GI"+
+		"\5\"\22\2HE\3\2\2\2HF\3\2\2\2HG\3\2\2\2I\t\3\2\2\2JO\5\f\7\2KL\7\3\2\2"+
+		"LN\5\f\7\2MK\3\2\2\2NQ\3\2\2\2OM\3\2\2\2OP\3\2\2\2P\13\3\2\2\2QO\3\2\2"+
+		"\2RS\b\7\1\2SY\5\16\b\2TU\7\34\2\2UV\5\f\7\2VW\7\35\2\2WY\3\2\2\2XR\3"+
+		"\2\2\2XT\3\2\2\2Yb\3\2\2\2Z[\f\4\2\2[\\\t\2\2\2\\a\5\f\7\5]^\f\3\2\2^"+
+		"_\t\3\2\2_a\5\f\7\4`Z\3\2\2\2`]\3\2\2\2ad\3\2\2\2b`\3\2\2\2bc\3\2\2\2"+
+		"c\r\3\2\2\2db\3\2\2\2ep\7\30\2\2fp\5\20\t\2gh\7\32\2\2hi\7\37\2\2ip\5"+
+		"\20\t\2jp\7\23\2\2kp\7\4\2\2lp\7\5\2\2mp\5\22\n\2np\5\24\13\2oe\3\2\2"+
+		"\2of\3\2\2\2og\3\2\2\2oj\3\2\2\2ok\3\2\2\2ol\3\2\2\2om\3\2\2\2on\3\2\2"+
+		"\2p\17\3\2\2\2qr\t\4\2\2r\21\3\2\2\2st\t\5\2\2t\23\3\2\2\2uv\t\6\2\2v"+
+		"w\7\34\2\2wx\t\7\2\2xy\7\35\2\2y\25\3\2\2\2z{\5\f\7\2{|\7\36\2\2|}\5\16"+
+		"\b\2}\27\3\2\2\2~\177\7\32\2\2\177\u0080\7\33\2\2\u0080\u0084\7\24\2\2"+
+		"\u0081\u0082\7\37\2\2\u0082\u0084\7\24\2\2\u0083~\3\2\2\2\u0083\u0081"+
+		"\3\2\2\2\u0084\31\3\2\2\2\u0085\u0086\7\32\2\2\u0086\33\3\2\2\2\u0087"+
+		"\u0088\7\32\2\2\u0088\35\3\2\2\2\u0089\u008b\5\30\r\2\u008a\u0089\3\2"+
+		"\2\2\u008a\u008b\3\2\2\2\u008b\u008c\3\2\2\2\u008c\u0091\5\34\17\2\u008d"+
+		"\u008e\7\37\2\2\u008e\u0090\5\34\17\2\u008f\u008d\3\2\2\2\u0090\u0093"+
+		"\3\2\2\2\u0091\u008f\3\2\2\2\u0091\u0092\3\2\2\2\u0092\37\3\2\2\2\u0093"+
+		"\u0091\3\2\2\2\u0094\u0096\5\36\20\2\u0095\u0097\5\32\16\2\u0096\u0095"+
+		"\3\2\2\2\u0096\u0097\3\2\2\2\u0097!\3\2\2\2\u0098\u0099\7\34\2\2\u0099"+
+		"\u009a\5\4\3\2\u009a\u009c\7\35\2\2\u009b\u009d\5\32\16\2\u009c\u009b"+
+		"\3\2\2\2\u009c\u009d\3\2\2\2\u009d#\3\2\2\2\u009e\u009f\b\23\1\2\u009f"+
+		"\u00a5\5\26\f\2\u00a0\u00a1\7\34\2\2\u00a1\u00a2\5$\23\2\u00a2\u00a3\7"+
+		"\35\2\2\u00a3\u00a5\3\2\2\2\u00a4\u009e\3\2\2\2\u00a4\u00a0\3\2\2\2\u00a5"+
+		"\u00ab\3\2\2\2\u00a6\u00a7\f\4\2\2\u00a7\u00a8\7\22\2\2\u00a8\u00aa\5"+
+		"$\23\5\u00a9\u00a6\3\2\2\2\u00aa\u00ad\3\2\2\2\u00ab\u00a9\3\2\2\2\u00ab"+
+		"\u00ac\3\2\2\2\u00ac%\3\2\2\2\u00ad\u00ab\3\2\2\2\22\60\65CHOX`bo\u0083"+
+		"\u008a\u0091\u0096\u009c\u00a4\u00ab";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

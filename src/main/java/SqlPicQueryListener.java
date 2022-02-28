@@ -43,6 +43,11 @@ public class SqlPicQueryListener extends picsqlBaseListener {
         ctx.selection().forEach(s -> currentQuery.addSelection(s));
     }
 
+    @Override
+    public void enterFrom_pic_source(picsqlParser.From_pic_sourceContext ctx) {
+        super.enterFrom_pic_source(ctx);
+    }
+
     public SqlPicQuery getSqlPicQuery() {
         return mainQuery != null ? mainQuery : currentQuery;
     }

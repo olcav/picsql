@@ -14,8 +14,7 @@ public class SqlPicQueryWhereVisitor extends picsqlBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitExpression(picsqlParser.ExpressionContext ctx) {
-        int value = Integer.parseInt(ctx.DIGITS().getText());
-
+        double value = sqlFields.getFieldValueFromName(ctx.single_field().getText());
         SqlPicQuerySelectionVisitor sqlPicQuerySelectionVisitor = new SqlPicQuerySelectionVisitor(sqlFields);
         double field = sqlPicQuerySelectionVisitor.visitSelection(ctx.selection());
 

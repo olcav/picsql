@@ -1,4 +1,4 @@
-// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
+// Generated from C:/Users/ocavadenti/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
 package grammar;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -27,6 +27,16 @@ public interface picsqlListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSelectstmt(picsqlParser.SelectstmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link picsqlParser#from_pic_source}.
+	 * @param ctx the parse tree
+	 */
+	void enterFrom_pic_source(picsqlParser.From_pic_sourceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link picsqlParser#from_pic_source}.
+	 * @param ctx the parse tree
+	 */
+	void exitFrom_pic_source(picsqlParser.From_pic_sourceContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link picsqlParser#from_source_list}.
 	 * @param ctx the parse tree
@@ -87,6 +97,16 @@ public interface picsqlListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitUnary_function(picsqlParser.Unary_functionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link picsqlParser#binary_function}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinary_function(picsqlParser.Binary_functionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link picsqlParser#binary_function}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinary_function(picsqlParser.Binary_functionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link picsqlParser#expression}.
 	 * @param ctx the parse tree
