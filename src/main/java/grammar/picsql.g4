@@ -4,10 +4,11 @@ query: selectstmt;
 
 selectstmt :
     SELECT selectionlist
-    FROM from_source_list (',' from_source_list)*
+     FROM from_source_list (',' from_source_list)*
     (WHERE where_clause)?;
 
-from_pic_source: LEFT_PARENTHESIS DIGITS ',' DIGITS ',' DIGITS ',' DIGITS ',' DIGITS RIGHT_PARENTHESIS  alias?;
+ // TODO : implements
+from_pic_source: LEFT_PARENTHESIS DIGITS ',' DIGITS ',' DIGITS ',' DIGITS ',' DIGITS RIGHT_PARENTHESIS  alias? tablesample?;
 
 from_source_list: (pic_path | from_pic_source | subquery);
 
@@ -21,18 +22,23 @@ selection :
 
 single_field :
      DIGITS |
+     DECIMAL |
      alias_value |
      STR DOT alias_value |
      STAR |
      'x' |
      'y'  |
-     unary_function |
-     binary_function;
+     zero_param_function |
+     one_params_function |
+     two_params_function |
+     multiple_params_function;
 
 alias_value: 'r' | 'g' | 'b';
 
-unary_function : 'rand()' | 'rank()' | 'pi()';
-binary_function: ('sin' | 'cos' | 'tan') LEFT_PARENTHESIS (DIGITS | DECIMAL) RIGHT_PARENTHESIS;
+zero_param_function : 'rand()' | 'rank()' | 'pi()'; // TODO : implements
+one_params_function: ('sin' | 'cos' | 'tan') LEFT_PARENTHESIS single_field RIGHT_PARENTHESIS; // TODO : implements
+two_params_function: ('lag' | 'lead') LEFT_PARENTHESIS single_field ',' single_field RIGHT_PARENTHESIS; // TODO : implements
+multiple_params_function: ('min' | 'max') LEFT_PARENTHESIS single_field (',' single_field)* RIGHT_PARENTHESIS; // TODO : implements
 
 expression: selection OPERATOR_CONDITION single_field;
 
@@ -45,9 +51,12 @@ path_part: STR;
 
 path: begin_path? path_part (DOT path_part)*;
 
-pic_path: path  alias?;
+// TODO : implements
+tablesample : 'tablesample' LEFT_PARENTHESIS DIGITS ('percent' | 'pixels') RIGHT_PARENTHESIS;
 
-subquery: LEFT_PARENTHESIS selectstmt RIGHT_PARENTHESIS  alias?;
+pic_path: path  alias? tablesample?;
+
+subquery: LEFT_PARENTHESIS selectstmt RIGHT_PARENTHESIS  alias? tablesample?;  // TODO : implements
 
 where_clause:
     expression |
@@ -62,7 +71,7 @@ STAR : '*';
 DIVIDE : '/';
 MODULO : '%';
 PLUS : '+';
-MINUS : '-';
+MINUS :  '-';
 DIGITS: '0'..'9'+;
 DECIMAL: '0'..'9'+ DOT '0'..'9'+;
 STR: [a-zA-Z0-9]+;
