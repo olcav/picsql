@@ -1,3 +1,5 @@
+import model.SqlPicQuery;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -5,7 +7,9 @@ public class Main {
         sqlPicQueryParser.parse(
                 """
                         select
-                            r,g,b
+                            sin(r)*255,
+                            cos(g)*255,
+                            cos(b)*255
                         from ./test.bmp
                         """
         );

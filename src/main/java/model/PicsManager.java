@@ -1,3 +1,5 @@
+package model;
+
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;

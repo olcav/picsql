@@ -1,4 +1,7 @@
+package model;
+
 import grammar.picsqlParser;
+import visitor.SqlPicQueryWhereVisitor;
 
 import java.util.ArrayList;
 
@@ -54,7 +57,7 @@ public class SqlPicQuery {
 
     @Override
     public String toString() {
-        return "SqlPicQuery{" + "pics=" + pics + ", fields=" + selections + ", subQueries=" + subQueries + ", where=" + where + '}';
+        return "model.SqlPicQuery{" + "pics=" + pics + ", fields=" + selections + ", subQueries=" + subQueries + ", where=" + where + '}';
     }
 
 }

@@ -1,5 +1,7 @@
 import grammar.picsqlBaseListener;
 import grammar.picsqlParser;
+import model.PicPath;
+import model.SqlPicQuery;
 
 public class SqlPicQueryListener extends picsqlBaseListener {
 

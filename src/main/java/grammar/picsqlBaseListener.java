@@ -1,4 +1,4 @@
-// Generated from C:/Users/ocavadenti/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
+// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
 package grammar;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -112,25 +112,49 @@ public class picsqlBaseListener implements picsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterUnary_function(picsqlParser.Unary_functionContext ctx) { }
+	@Override public void enterZero_param_function(picsqlParser.Zero_param_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitUnary_function(picsqlParser.Unary_functionContext ctx) { }
+	@Override public void exitZero_param_function(picsqlParser.Zero_param_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBinary_function(picsqlParser.Binary_functionContext ctx) { }
+	@Override public void enterOne_params_function(picsqlParser.One_params_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBinary_function(picsqlParser.Binary_functionContext ctx) { }
+	@Override public void exitOne_params_function(picsqlParser.One_params_functionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTwo_params_function(picsqlParser.Two_params_functionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTwo_params_function(picsqlParser.Two_params_functionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMultiple_params_function(picsqlParser.Multiple_params_functionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMultiple_params_function(picsqlParser.Multiple_params_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -191,6 +215,18 @@ public class picsqlBaseListener implements picsqlListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPath(picsqlParser.PathContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTablesample(picsqlParser.TablesampleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTablesample(picsqlParser.TablesampleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

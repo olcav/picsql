@@ -1,5 +1,6 @@
 import grammar.picsqlLexer;
 import grammar.picsqlParser;
+import model.SqlPicQuery;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;

@@ -1,4 +1,9 @@
 import grammar.picsqlParser;
+import model.PicPath;
+import model.PicsManager;
+import model.SqlFields;
+import model.SqlPicQuery;
+import visitor.SqlPicQuerySelectionVisitor;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -6,9 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SqlPicQueryExecutor {
 
@@ -58,6 +61,7 @@ public class SqlPicQueryExecutor {
                     boolean star = selectionValues.size() == 1 && selectionValues.get(0) == -1;
 
                     if (star) {
+                        // TODO : rework star operator
                         //newR = sqlFields.;
                         //newG = green;
                        // newB = blue;

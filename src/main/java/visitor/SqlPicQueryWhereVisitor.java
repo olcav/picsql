@@ -1,8 +1,8 @@
+package visitor;
+
 import grammar.picsqlBaseVisitor;
 import grammar.picsqlParser;
-import org.antlr.v4.runtime.tree.ParseTree;
-
-import java.util.stream.Collectors;
+import model.SqlFields;
 
 public class SqlPicQueryWhereVisitor extends picsqlBaseVisitor<Boolean> {
 
@@ -14,7 +14,7 @@ public class SqlPicQueryWhereVisitor extends picsqlBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitExpression(picsqlParser.ExpressionContext ctx) {
-        double value = sqlFields.getFieldValueFromName(ctx.single_field().getText());
+        double value = sqlFields.getFieldValueFromName(ctx.single_field());
         SqlPicQuerySelectionVisitor sqlPicQuerySelectionVisitor = new SqlPicQuerySelectionVisitor(sqlFields);
         double field = sqlPicQuerySelectionVisitor.visitSelection(ctx.selection());
 

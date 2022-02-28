@@ -1,4 +1,4 @@
-// Generated from C:/Users/ocavadenti/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
+// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
 package grammar;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -59,17 +59,29 @@ public interface picsqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAlias_value(picsqlParser.Alias_valueContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link picsqlParser#unary_function}.
+	 * Visit a parse tree produced by {@link picsqlParser#zero_param_function}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitUnary_function(picsqlParser.Unary_functionContext ctx);
+	T visitZero_param_function(picsqlParser.Zero_param_functionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link picsqlParser#binary_function}.
+	 * Visit a parse tree produced by {@link picsqlParser#one_params_function}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBinary_function(picsqlParser.Binary_functionContext ctx);
+	T visitOne_params_function(picsqlParser.One_params_functionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link picsqlParser#two_params_function}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTwo_params_function(picsqlParser.Two_params_functionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link picsqlParser#multiple_params_function}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiple_params_function(picsqlParser.Multiple_params_functionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link picsqlParser#expression}.
 	 * @param ctx the parse tree
@@ -100,6 +112,12 @@ public interface picsqlVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPath(picsqlParser.PathContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link picsqlParser#tablesample}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTablesample(picsqlParser.TablesampleContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link picsqlParser#pic_path}.
 	 * @param ctx the parse tree

@@ -35,8 +35,8 @@ single_field :
 
 alias_value: 'r' | 'g' | 'b';
 
-zero_param_function : 'rand()' | 'rank()' | 'pi()'; // TODO : implements
-one_params_function: ('sin' | 'cos' | 'tan') LEFT_PARENTHESIS single_field RIGHT_PARENTHESIS; // TODO : implements
+zero_param_function : 'rand()' | 'rank()' | 'pi()';
+one_params_function: ('sin' | 'cos' | 'tan') LEFT_PARENTHESIS single_field RIGHT_PARENTHESIS;
 two_params_function: ('lag' | 'lead') LEFT_PARENTHESIS single_field ',' single_field RIGHT_PARENTHESIS; // TODO : implements
 multiple_params_function: ('min' | 'max') LEFT_PARENTHESIS single_field (',' single_field)* RIGHT_PARENTHESIS; // TODO : implements
 

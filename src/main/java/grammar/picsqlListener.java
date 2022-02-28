@@ -1,4 +1,4 @@
-// Generated from C:/Users/ocavadenti/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
+// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
 package grammar;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -88,25 +88,45 @@ public interface picsqlListener extends ParseTreeListener {
 	 */
 	void exitAlias_value(picsqlParser.Alias_valueContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link picsqlParser#unary_function}.
+	 * Enter a parse tree produced by {@link picsqlParser#zero_param_function}.
 	 * @param ctx the parse tree
 	 */
-	void enterUnary_function(picsqlParser.Unary_functionContext ctx);
+	void enterZero_param_function(picsqlParser.Zero_param_functionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link picsqlParser#unary_function}.
+	 * Exit a parse tree produced by {@link picsqlParser#zero_param_function}.
 	 * @param ctx the parse tree
 	 */
-	void exitUnary_function(picsqlParser.Unary_functionContext ctx);
+	void exitZero_param_function(picsqlParser.Zero_param_functionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link picsqlParser#binary_function}.
+	 * Enter a parse tree produced by {@link picsqlParser#one_params_function}.
 	 * @param ctx the parse tree
 	 */
-	void enterBinary_function(picsqlParser.Binary_functionContext ctx);
+	void enterOne_params_function(picsqlParser.One_params_functionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link picsqlParser#binary_function}.
+	 * Exit a parse tree produced by {@link picsqlParser#one_params_function}.
 	 * @param ctx the parse tree
 	 */
-	void exitBinary_function(picsqlParser.Binary_functionContext ctx);
+	void exitOne_params_function(picsqlParser.One_params_functionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link picsqlParser#two_params_function}.
+	 * @param ctx the parse tree
+	 */
+	void enterTwo_params_function(picsqlParser.Two_params_functionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link picsqlParser#two_params_function}.
+	 * @param ctx the parse tree
+	 */
+	void exitTwo_params_function(picsqlParser.Two_params_functionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link picsqlParser#multiple_params_function}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiple_params_function(picsqlParser.Multiple_params_functionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link picsqlParser#multiple_params_function}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiple_params_function(picsqlParser.Multiple_params_functionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link picsqlParser#expression}.
 	 * @param ctx the parse tree
@@ -157,6 +177,16 @@ public interface picsqlListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPath(picsqlParser.PathContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link picsqlParser#tablesample}.
+	 * @param ctx the parse tree
+	 */
+	void enterTablesample(picsqlParser.TablesampleContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link picsqlParser#tablesample}.
+	 * @param ctx the parse tree
+	 */
+	void exitTablesample(picsqlParser.TablesampleContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link picsqlParser#pic_path}.
 	 * @param ctx the parse tree
