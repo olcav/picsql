@@ -13,6 +13,10 @@ public class SqlPicQueryParser {
         super();
     }
 
+    public boolean haveSyntaxErrors(){
+        return this.picsqlParser.getNumberOfSyntaxErrors() > 0;
+    }
+
     public void parse(String sql){
         CharStream input = CharStreams.fromString(sql);
         picsqlLexer picsqlLexer = new picsqlLexer(input);

@@ -5,10 +5,8 @@ public class Main {
         sqlPicQueryParser.parse(
                 """
                         select
-                            t1.r,
-                            (t1.g + t2.b)%255,
-                            t2.b
-                        from ./test.bmp t1, ./test2.bmp t2
+                            r,g,b
+                        from ./test.bmp
                         """
         );
         SqlPicQuery query = sqlPicQueryParser.getQuery();

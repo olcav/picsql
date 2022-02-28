@@ -22,8 +22,8 @@ public class SqlPicQueryExecutor {
         int height = 0;
         for (PicPath img : sqlPicQuery.getPics()) {
             try {
-                BufferedImage read = ImageIO.read(new File(img.getPicPath()));
-                String alias = img.getAlias();
+                BufferedImage read = ImageIO.read(new File(img.picPath()));
+                String alias = img.alias();
                 if(alias == null){
                     alias = "<no_alias>";
                 }

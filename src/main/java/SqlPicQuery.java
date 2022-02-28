@@ -1,13 +1,12 @@
 import grammar.picsqlParser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SqlPicQuery {
 
-    private ArrayList<PicPath> pics = new ArrayList<>();
-    private ArrayList<picsqlParser.SelectionContext> selections = new ArrayList<>();
-    private ArrayList<SqlPicQuery> subQueries = new ArrayList<>();
+    private final ArrayList<PicPath> pics = new ArrayList<>();
+    private final ArrayList<picsqlParser.SelectionContext> selections = new ArrayList<>();
+    private final ArrayList<SqlPicQuery> subQueries = new ArrayList<>();
     private picsqlParser.Where_clauseContext where;
 
     public SqlPicQuery() {
@@ -16,10 +15,6 @@ public class SqlPicQuery {
 
     public ArrayList<PicPath> getPics() {
         return pics;
-    }
-
-    public List<String> getPicPaths() {
-        return  pics.stream().map(PicPath::getPicPath).toList();
     }
 
     public ArrayList<picsqlParser.SelectionContext> getSelections() {
