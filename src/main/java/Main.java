@@ -7,7 +7,9 @@ public class Main {
         sqlPicQueryParser.parse(
                 """
                         select
-                            t.r,lead(t.g,x%10,rank()%10)
+                            lag(t.r,10,10),
+                            lead(t.g,x%10,y%10),
+                            lag(t.b,8,8)
                         from ./test.bmp t, ./test2.bmp t2
                         """
         );

@@ -103,6 +103,22 @@ public class SqlPicQuerySingleFieldVisitor extends picsqlBaseVisitor<Double> {
 
     @Override
     public Double visitMultiple_params_function(picsqlParser.Multiple_params_functionContext ctx) {
-        return super.visitMultiple_params_function(ctx);
+        SqlPicQuerySelectionVisitor sqlPicQuerySelectionVisitor = new SqlPicQuerySelectionVisitor(sqlFields);
+
+        Double result = null;
+        String functionName = ctx.getChild(0).getText();
+
+        for(picsqlParser.SelectionContext s : ctx.selection()){
+            Double val = sqlPicQuerySelectionVisitor.visitSelection(s);
+            if(result == null){
+                result = val;
+            } else {
+                switch (functionName) {
+                    case "min" -> result = Math.min(val, result);
+                    case "max" -> result = Math.max(val, result);
+                }
+            }
+        }
+        return result;
     }
 }
