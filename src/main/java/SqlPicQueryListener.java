@@ -1,7 +1,10 @@
 import grammar.picsqlBaseListener;
 import grammar.picsqlParser;
 import model.PicPath;
+import model.PicSource;
 import model.SqlPicQuery;
+
+import java.awt.*;
 
 public class SqlPicQueryListener extends picsqlBaseListener {
 
@@ -39,6 +42,24 @@ public class SqlPicQueryListener extends picsqlBaseListener {
                 )
         );
     }
+
+    @Override
+    public void exitFrom_pic_source(picsqlParser.From_pic_sourceContext ctx) {
+        super.exitFrom_pic_source(ctx);
+        currentQuery.addPicSource(
+            new PicSource(
+                    Integer.parseInt(ctx.DIGITS(0).getText()),
+                    Integer.parseInt(ctx.DIGITS(1).getText()),
+                    new Color(
+                            Integer.parseInt(ctx.DIGITS(2).getText()),
+                            Integer.parseInt(ctx.DIGITS(3).getText()),
+                            Integer.parseInt(ctx.DIGITS(4).getText())
+                    ),
+                    ctx.alias() == null ? null : ctx.alias().getText()
+            )
+        );
+    }
+
     @Override
     public void enterSelectionlist(picsqlParser.SelectionlistContext ctx) {
         super.enterSelectionlist(ctx);

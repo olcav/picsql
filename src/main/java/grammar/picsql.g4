@@ -37,7 +37,7 @@ alias_value: 'r' | 'g' | 'b';
 zero_param_function : 'rand()' | 'rank()' | 'pi()';
 one_params_function: ('sin' | 'cos' | 'tan') LEFT_PARENTHESIS selection RIGHT_PARENTHESIS;
 three_params_function: ('lag' | 'lead') LEFT_PARENTHESIS alias_dot? alias_value ',' selection ',' selection RIGHT_PARENTHESIS;
-multiple_params_function: ('min' | 'max') LEFT_PARENTHESIS selection (',' selection)* RIGHT_PARENTHESIS; // TODO : implements
+multiple_params_function: ('min' | 'max') LEFT_PARENTHESIS selection (',' selection)* RIGHT_PARENTHESIS;
 
 expression: selection OPERATOR_CONDITION single_field;
 

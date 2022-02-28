@@ -1,8 +1,5 @@
 import grammar.picsqlParser;
-import model.PicPath;
-import model.PicsManager;
-import model.SqlFields;
-import model.SqlPicQuery;
+import model.*;
 import visitor.SqlPicQuerySelectionVisitor;
 
 import javax.imageio.ImageIO;
@@ -12,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static model.SqlFields.NO_ALIAS;
 
 public class SqlPicQueryExecutor {
 
@@ -40,6 +39,23 @@ public class SqlPicQueryExecutor {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        for (PicSource img : sqlPicQuery.getPicSources()) {
+            BufferedImage image = new BufferedImage(img.width(), img.height(),BufferedImage.TYPE_INT_RGB);
+            Graphics2D  graphics = image.createGraphics();
+            graphics.setPaint ( img.c() );
+            graphics.fillRect ( 0, 0, img.width(),img.height() );
+            String alias = img.alias();
+            if(alias == null){
+                alias = NO_ALIAS;
+            }
+            if (image.getWidth() > width) {
+                width = image.getWidth();
+            }
+            if (image.getHeight() > height) {
+                height = image.getHeight();
+            }
+            picsManager.putPic(alias, image);
         }
         BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         ArrayList<picsqlParser.SelectionContext> selections = sqlPicQuery.getSelections();

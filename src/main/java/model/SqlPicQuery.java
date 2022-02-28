@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class SqlPicQuery {
 
     private final ArrayList<PicPath> pics = new ArrayList<>();
+    private final ArrayList<PicSource> picSources = new ArrayList<>();
     private final ArrayList<picsqlParser.SelectionContext> selections = new ArrayList<>();
     private final ArrayList<SqlPicQuery> subQueries = new ArrayList<>();
     private picsqlParser.Where_clauseContext where;
@@ -18,6 +19,10 @@ public class SqlPicQuery {
 
     public ArrayList<PicPath> getPics() {
         return pics;
+    }
+
+    public ArrayList<PicSource> getPicSources() {
+        return picSources;
     }
 
     public ArrayList<picsqlParser.SelectionContext> getSelections() {
@@ -45,6 +50,10 @@ public class SqlPicQuery {
 
     public void addPicPath(PicPath picPath) {
         this.pics.add(picPath);
+    }
+
+    public void addPicSource(PicSource picSource) {
+        this.picSources.add(picSource);
     }
 
     public void addSubQuery(SqlPicQuery subquery) {
