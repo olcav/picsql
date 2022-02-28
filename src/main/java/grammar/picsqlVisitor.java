@@ -71,11 +71,11 @@ public interface picsqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOne_params_function(picsqlParser.One_params_functionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link picsqlParser#two_params_function}.
+	 * Visit a parse tree produced by {@link picsqlParser#three_params_function}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTwo_params_function(picsqlParser.Two_params_functionContext ctx);
+	T visitThree_params_function(picsqlParser.Three_params_functionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link picsqlParser#multiple_params_function}.
 	 * @param ctx the parse tree
@@ -100,6 +100,12 @@ public interface picsqlVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAlias(picsqlParser.AliasContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link picsqlParser#alias_dot}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAlias_dot(picsqlParser.Alias_dotContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link picsqlParser#path_part}.
 	 * @param ctx the parse tree

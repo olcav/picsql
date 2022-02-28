@@ -5,6 +5,8 @@ import grammar.picsqlParser;
 import model.SqlFields;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import static model.SqlFields.NO_ALIAS;
+
 public class SqlPicQuerySingleFieldVisitor extends picsqlBaseVisitor<Double> {
 
     private final SqlFields sqlFields;
@@ -15,8 +17,13 @@ public class SqlPicQuerySingleFieldVisitor extends picsqlBaseVisitor<Double> {
 
     @Override
     public Double visitSingle_field(picsqlParser.Single_fieldContext ctx) {
+        Double childValue;
         ParseTree child = ctx.getChild(0);
-        Double childValue = child.accept(this);
+        if(ctx.alias_value() == null){
+            childValue = child.accept(this);
+        }else{
+            return sqlFields.getField(ctx.getText());
+        }
         if(childValue == null){
             try {
                 return Double.parseDouble(child.getText());
@@ -48,7 +55,9 @@ public class SqlPicQuerySingleFieldVisitor extends picsqlBaseVisitor<Double> {
 
     @Override
     public Double visitOne_params_function(picsqlParser.One_params_functionContext ctx) {
-        Double singleField = visitSingle_field(ctx.single_field());
+        SqlPicQuerySelectionVisitor sqlPicQuerySelectionVisitor = new SqlPicQuerySelectionVisitor(sqlFields);
+        Double singleField = sqlPicQuerySelectionVisitor.visitSelection(ctx.selection());
+
         return switch (ctx.getChild(0).getText()) {
             case "sin" -> Math.sin(singleField);
             case "cos" -> Math.cos(singleField);
@@ -58,8 +67,38 @@ public class SqlPicQuerySingleFieldVisitor extends picsqlBaseVisitor<Double> {
     }
 
     @Override
-    public Double visitTwo_params_function(picsqlParser.Two_params_functionContext ctx) {
-        return super.visitTwo_params_function(ctx);
+    public Double visitThree_params_function(picsqlParser.Three_params_functionContext ctx) {
+        SqlPicQuerySelectionVisitor sqlPicQuerySelectionVisitor = new SqlPicQuerySelectionVisitor(sqlFields);
+        Double singleField1 = sqlPicQuerySelectionVisitor.visitSelection(ctx.selection(0));
+        Double singleField2 = sqlPicQuerySelectionVisitor.visitSelection(ctx.selection(1));
+        picsqlParser.Alias_dotContext alias_dotContext = ctx.alias_dot();
+        String tableName;
+        if(alias_dotContext == null) {
+            tableName = NO_ALIAS;
+        }else{
+            tableName = alias_dotContext.STR().getText();
+
+        }
+        String field = ctx.alias_value().getText();
+
+        final int x = sqlFields.getField("x").intValue();
+        final int y = sqlFields.getField("y").intValue();
+
+        return switch (ctx.getChild(0).getText()) {
+            case "lag" -> sqlFields.getXYAtPosition(
+                    tableName,
+                    field,
+                    x - singleField1.intValue(),
+                    y - singleField2.intValue()
+            );
+            case "lead" ->sqlFields.getXYAtPosition(
+                    tableName,
+                    field,
+                    x + singleField1.intValue(),
+                    y + singleField2.intValue()
+            );
+            default -> null;
+        };
     }
 
     @Override

@@ -17,4 +17,8 @@ public class PicsManager {
     public Map<String, BufferedImage> getPics() {
         return pics;
     }
+
+    public BufferedImage getPic(String name){
+        return pics.get(name);
+    }
 }

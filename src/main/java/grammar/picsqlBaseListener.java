@@ -136,13 +136,13 @@ public class picsqlBaseListener implements picsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTwo_params_function(picsqlParser.Two_params_functionContext ctx) { }
+	@Override public void enterThree_params_function(picsqlParser.Three_params_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTwo_params_function(picsqlParser.Two_params_functionContext ctx) { }
+	@Override public void exitThree_params_function(picsqlParser.Three_params_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -191,6 +191,18 @@ public class picsqlBaseListener implements picsqlListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAlias(picsqlParser.AliasContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAlias_dot(picsqlParser.Alias_dotContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAlias_dot(picsqlParser.Alias_dotContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

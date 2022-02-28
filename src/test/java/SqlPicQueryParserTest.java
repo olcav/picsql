@@ -33,7 +33,12 @@ public class SqlPicQueryParserTest {
             "select t1.r, t2.b, t2.b from (select r, g from test.bmp) t1, (select b from test2.bmp where r > 50) t2",
 
             // Math functions
-            "select sin(1), tan(5.2) from test"
+            "select sin(1), tan(5.2),cos(r*g) from test",
+            "select pi() from test",
+
+            // Lead / Lag
+            "select lead(r,5,5),lag(g,10,10) from ./test.bmp",
+            "select r,(lead(r,5,5)*lag(g,5,5))%255,lag(r,10,10) from ./test.bmp"
     })
     public void testSqlParsingValidation(String sql){
         SqlPicQueryParser sqlPicQueryParser = new SqlPicQueryParser();
@@ -45,7 +50,6 @@ public class SqlPicQueryParserTest {
         Interval interval = new Interval(a,b);
         String viewSql = query.start.getInputStream().getText(interval);
         assertEquals(sql, viewSql);
-
         assertFalse(sqlPicQueryParser.haveSyntaxErrors());
     }
 

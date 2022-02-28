@@ -7,10 +7,8 @@ public class Main {
         sqlPicQueryParser.parse(
                 """
                         select
-                            sin(r)*255,
-                            cos(g)*255,
-                            cos(b)*255
-                        from ./test.bmp
+                            t.r,lead(t.g,x%10,rank()%10)
+                        from ./test.bmp t, ./test2.bmp t2
                         """
         );
         SqlPicQuery query = sqlPicQueryParser.getQuery();

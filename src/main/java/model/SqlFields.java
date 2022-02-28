@@ -11,36 +11,55 @@ import java.util.Objects;
 
 public class SqlFields {
 
+    public static final String NO_ALIAS = "<no_alias>";
     private Map<String, Double> fieldsByName = new HashMap<>();
+    private final PicsManager picsManager;
 
     public SqlFields(int x, int y, int rank, PicsManager picsManager) {
+        this.picsManager = picsManager;
         fieldsByName.put("x", (double) x);
         fieldsByName.put("y", (double) y);
         fieldsByName.put("rank()", (double) rank);
 
         for (Map.Entry<String, BufferedImage> entry : picsManager.getPics().entrySet()) {
             String alias = entry.getKey();
-            if (Objects.equals(alias, "<no_alias>")) {
+            if (Objects.equals(alias, NO_ALIAS)) {
                 alias = "";
             } else {
                 alias += ".";
             }
-            BufferedImage value = entry.getValue();
-            Color c = Color.BLACK;
-            if (x < value.getWidth() && y < value.getHeight()) {
-                c = new Color(value.getRGB(x, y));
-            }
+            Color c = getColor(entry.getValue(), x, y);
             fieldsByName.put(alias + "r", (double) c.getRed());
             fieldsByName.put(alias + "g", (double) c.getGreen());
             fieldsByName.put(alias + "b", (double) c.getBlue());
         }
     }
 
+    public Double getXYAtPosition(String tableName, String field, int x, int y) {
+        BufferedImage image = picsManager.getPic(Objects.requireNonNullElse(tableName, NO_ALIAS));
+        Color color = getColor(image, x, y);
+        return switch (field) {
+            case "r" -> (double) color.getRed();
+            case "g" -> (double) color.getGreen();
+            case "b" -> (double) color.getBlue();
+            default -> null;
+        };
+    }
+
+    public Color getColor(BufferedImage image, int x, int y){
+        Color c = Color.BLACK;
+        if (x >= 0 && y >= 0 && x < image.getWidth() && y < image.getHeight()) {
+            c = new Color(image.getRGB(x, y));
+        }
+        return c;
+    }
+
     public Double getFieldValueFromName(picsqlParser.Single_fieldContext singleFieldContext) {
         SqlPicQuerySingleFieldVisitor sqlPicQuerySingleFieldVisitor = new SqlPicQuerySingleFieldVisitor(this);
         return sqlPicQuerySingleFieldVisitor.visitSingle_field(singleFieldContext);
     }
-    public Double getField(String name){
+
+    public Double getField(String name) {
         return fieldsByName.get(name);
     }
 }

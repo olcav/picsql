@@ -23,22 +23,21 @@ selection :
 single_field :
      DIGITS |
      DECIMAL |
-     alias_value |
-     STR DOT alias_value |
+     alias_dot? alias_value |
      STAR |
      'x' |
      'y'  |
      zero_param_function |
      one_params_function |
-     two_params_function |
+     three_params_function |
      multiple_params_function;
 
 alias_value: 'r' | 'g' | 'b';
 
 zero_param_function : 'rand()' | 'rank()' | 'pi()';
-one_params_function: ('sin' | 'cos' | 'tan') LEFT_PARENTHESIS single_field RIGHT_PARENTHESIS;
-two_params_function: ('lag' | 'lead') LEFT_PARENTHESIS single_field ',' single_field RIGHT_PARENTHESIS; // TODO : implements
-multiple_params_function: ('min' | 'max') LEFT_PARENTHESIS single_field (',' single_field)* RIGHT_PARENTHESIS; // TODO : implements
+one_params_function: ('sin' | 'cos' | 'tan') LEFT_PARENTHESIS selection RIGHT_PARENTHESIS;
+three_params_function: ('lag' | 'lead') LEFT_PARENTHESIS alias_dot? alias_value ',' selection ',' selection RIGHT_PARENTHESIS;
+multiple_params_function: ('min' | 'max') LEFT_PARENTHESIS selection (',' selection)* RIGHT_PARENTHESIS; // TODO : implements
 
 expression: selection OPERATOR_CONDITION single_field;
 
@@ -46,6 +45,7 @@ begin_path: STR DOTS DIVIDE |
             DOT DIVIDE;
 
 alias : STR;
+alias_dot : STR DOT;
 
 path_part: STR;
 

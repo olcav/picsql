@@ -108,15 +108,15 @@ public interface picsqlListener extends ParseTreeListener {
 	 */
 	void exitOne_params_function(picsqlParser.One_params_functionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link picsqlParser#two_params_function}.
+	 * Enter a parse tree produced by {@link picsqlParser#three_params_function}.
 	 * @param ctx the parse tree
 	 */
-	void enterTwo_params_function(picsqlParser.Two_params_functionContext ctx);
+	void enterThree_params_function(picsqlParser.Three_params_functionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link picsqlParser#two_params_function}.
+	 * Exit a parse tree produced by {@link picsqlParser#three_params_function}.
 	 * @param ctx the parse tree
 	 */
-	void exitTwo_params_function(picsqlParser.Two_params_functionContext ctx);
+	void exitThree_params_function(picsqlParser.Three_params_functionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link picsqlParser#multiple_params_function}.
 	 * @param ctx the parse tree
@@ -157,6 +157,16 @@ public interface picsqlListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAlias(picsqlParser.AliasContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link picsqlParser#alias_dot}.
+	 * @param ctx the parse tree
+	 */
+	void enterAlias_dot(picsqlParser.Alias_dotContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link picsqlParser#alias_dot}.
+	 * @param ctx the parse tree
+	 */
+	void exitAlias_dot(picsqlParser.Alias_dotContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link picsqlParser#path_part}.
 	 * @param ctx the parse tree
