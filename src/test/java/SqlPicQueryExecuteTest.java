@@ -3,7 +3,6 @@ import org.antlr.v4.runtime.misc.Interval;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -11,7 +10,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class SqlPicQueryParserTest {
+public class SqlPicQueryExecuteTest {
 
     private static Stream<Arguments> queriesProvider() {
         return Arrays.stream(QueryBank.QUERIES).map(Arguments::of);
@@ -19,17 +18,11 @@ public class SqlPicQueryParserTest {
 
     @ParameterizedTest
     @MethodSource("queriesProvider")
-    public void testSqlParsingValidation(String sql){
+    public void testSqlExecutionOnPictures(String sql){
         SqlPicQueryParser sqlPicQueryParser = new SqlPicQueryParser();
-        picsqlParser parser = sqlPicQueryParser.parse(sql);
-
-        picsqlParser.QueryContext query  = parser.query();
-        int a = query.start.getStartIndex();
-        int b = query.stop.getStopIndex();
-        Interval interval = new Interval(a,b);
-        String viewSql = query.start.getInputStream().getText(interval);
-        assertEquals(sql, viewSql);
-        assertFalse(sqlPicQueryParser.haveSyntaxErrors());
+        sqlPicQueryParser.parse(sql);
+        SqlPicQueryExecutor executor = new SqlPicQueryExecutor();
+        executor.execute(sqlPicQueryParser.getQuery(), "./src/test/java/testimgs/test"+sql.hashCode()+".bmp", "bmp");
     }
 
 }

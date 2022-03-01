@@ -1,13 +1,14 @@
 grammar picsql;
 
-query: selectstmt;
+query: selectstmt |
+        selectstmt (('union' | 'union all') selectstmt)*; // TODO implements
 
 selectstmt :
     SELECT selectionlist
      FROM from_source_list (',' from_source_list)*
-    (WHERE where_clause)?;
+    (WHERE where_clause)?
+    (ORDER_BY col_value (',' col_value)*)?;
 
- // TODO : implements
 from_pic_source: LEFT_PARENTHESIS DIGITS ',' DIGITS ',' DIGITS ',' DIGITS ',' DIGITS RIGHT_PARENTHESIS  alias? tablesample?;
 
 from_source_list: (pic_path | from_pic_source | subquery);
@@ -20,13 +21,13 @@ selection :
     selection ( STAR | DIVIDE | MODULO) selection |
     selection ( PLUS | MINUS) selection;
 
+col_value : alias_dot? alias_value |  'x' | 'y';
+
 single_field :
      DIGITS |
      DECIMAL |
-     alias_dot? alias_value |
      STAR |
-     'x' |
-     'y'  |
+     col_value |
      zero_param_function |
      one_params_function |
      three_params_function |
@@ -39,7 +40,11 @@ one_params_function: ('sin' | 'cos' | 'tan') LEFT_PARENTHESIS selection RIGHT_PA
 three_params_function: ('lag' | 'lead') LEFT_PARENTHESIS alias_dot? alias_value ',' selection ',' selection RIGHT_PARENTHESIS;
 multiple_params_function: ('min' | 'max') LEFT_PARENTHESIS selection (',' selection)* RIGHT_PARENTHESIS;
 
-expression: selection OPERATOR_CONDITION single_field;
+bool_expression:
+    selection OPERATOR_CONDITION selection |
+    selection IN (in_clause | subquery); // TODO implements
+
+in_clause: LEFT_PARENTHESIS selection (',' selection)* RIGHT_PARENTHESIS;
 
 begin_path: STR DOTS DIVIDE |
             DOT DIVIDE;
@@ -59,13 +64,16 @@ pic_path: path  alias? tablesample?;
 subquery: LEFT_PARENTHESIS selectstmt RIGHT_PARENTHESIS  alias? tablesample?;  // TODO : implements
 
 where_clause:
-    expression |
+    bool_expression |
     where_clause OPERATOR_LOGIC where_clause |
-    LEFT_PARENTHESIS where_clause RIGHT_PARENTHESIS;
+    LEFT_PARENTHESIS where_clause RIGHT_PARENTHESIS |
+    EXISTS subquery; // TODO : implements
 
 SELECT : 'select';
 FROM : 'from';
 WHERE : 'where';
+ORDER_BY: 'order by';
+EXISTS: 'exists';
 OPERATOR_LOGIC : 'and' | 'or';
 STAR : '*';
 DIVIDE : '/';
@@ -80,4 +88,5 @@ LEFT_PARENTHESIS : '(';
 RIGHT_PARENTHESIS : ')';
 OPERATOR_CONDITION : '=' | '!=' | '<' | '>' | '<=' | '>=';
 DOT : '.';
+IN : 'in';
 WS : [ \t\r\n]+ -> skip ;

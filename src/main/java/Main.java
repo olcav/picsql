@@ -6,9 +6,11 @@ public class Main {
         SqlPicQueryParser sqlPicQueryParser = new SqlPicQueryParser();
         sqlPicQueryParser.parse(
                 """
-                        select
-                            t2.g,t2.b, t.r
-                        from (255,255,100,54,0) t,./test.bmp t2
+                select
+                lag(r,x%20,y%20),
+                g*lead(g,x%10,15)%255,
+                r
+                from ./test.bmp
                         """
         );
         SqlPicQuery query = sqlPicQueryParser.getQuery();
