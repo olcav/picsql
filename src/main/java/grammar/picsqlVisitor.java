@@ -47,6 +47,12 @@ public interface picsqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSelection(picsqlParser.SelectionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link picsqlParser#col_value}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCol_value(picsqlParser.Col_valueContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link picsqlParser#single_field}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -83,11 +89,17 @@ public interface picsqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMultiple_params_function(picsqlParser.Multiple_params_functionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link picsqlParser#expression}.
+	 * Visit a parse tree produced by {@link picsqlParser#bool_expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpression(picsqlParser.ExpressionContext ctx);
+	T visitBool_expression(picsqlParser.Bool_expressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link picsqlParser#in_clause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIn_clause(picsqlParser.In_clauseContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link picsqlParser#begin_path}.
 	 * @param ctx the parse tree

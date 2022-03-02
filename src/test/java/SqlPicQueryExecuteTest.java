@@ -1,5 +1,3 @@
-import grammar.picsqlParser;
-import org.antlr.v4.runtime.misc.Interval;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,7 +18,7 @@ public class SqlPicQueryExecuteTest {
     @MethodSource("queriesProvider")
     public void testSqlExecutionOnPictures(String sql){
         SqlPicQueryParser sqlPicQueryParser = new SqlPicQueryParser();
-        sqlPicQueryParser.parse(sql);
+        sqlPicQueryParser.parseToImage(sql);
         SqlPicQueryExecutor executor = new SqlPicQueryExecutor();
         executor.execute(sqlPicQueryParser.getQuery(), "./src/test/java/testimgs/test"+sql.hashCode()+".bmp", "bmp");
     }

@@ -3,7 +3,6 @@ import org.antlr.v4.runtime.misc.Interval;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -21,7 +20,7 @@ public class SqlPicQueryParserTest {
     @MethodSource("queriesProvider")
     public void testSqlParsingValidation(String sql){
         SqlPicQueryParser sqlPicQueryParser = new SqlPicQueryParser();
-        picsqlParser parser = sqlPicQueryParser.parse(sql);
+        picsqlParser parser = sqlPicQueryParser.parseToImage(sql);
 
         picsqlParser.QueryContext query  = parser.query();
         int a = query.start.getStartIndex();

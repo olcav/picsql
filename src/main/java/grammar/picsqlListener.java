@@ -68,6 +68,16 @@ public interface picsqlListener extends ParseTreeListener {
 	 */
 	void exitSelection(picsqlParser.SelectionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link picsqlParser#col_value}.
+	 * @param ctx the parse tree
+	 */
+	void enterCol_value(picsqlParser.Col_valueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link picsqlParser#col_value}.
+	 * @param ctx the parse tree
+	 */
+	void exitCol_value(picsqlParser.Col_valueContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link picsqlParser#single_field}.
 	 * @param ctx the parse tree
 	 */
@@ -128,15 +138,25 @@ public interface picsqlListener extends ParseTreeListener {
 	 */
 	void exitMultiple_params_function(picsqlParser.Multiple_params_functionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link picsqlParser#expression}.
+	 * Enter a parse tree produced by {@link picsqlParser#bool_expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpression(picsqlParser.ExpressionContext ctx);
+	void enterBool_expression(picsqlParser.Bool_expressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link picsqlParser#expression}.
+	 * Exit a parse tree produced by {@link picsqlParser#bool_expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpression(picsqlParser.ExpressionContext ctx);
+	void exitBool_expression(picsqlParser.Bool_expressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link picsqlParser#in_clause}.
+	 * @param ctx the parse tree
+	 */
+	void enterIn_clause(picsqlParser.In_clauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link picsqlParser#in_clause}.
+	 * @param ctx the parse tree
+	 */
+	void exitIn_clause(picsqlParser.In_clauseContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link picsqlParser#begin_path}.
 	 * @param ctx the parse tree

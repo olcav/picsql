@@ -1,8 +1,5 @@
 package model;
 
-import grammar.picsqlParser;
-import visitor.SqlPicQuerySingleFieldVisitor;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -23,7 +20,7 @@ public class SqlFields {
 
         for (Map.Entry<String, BufferedImage> entry : picsManager.getPics().entrySet()) {
             String alias = entry.getKey();
-            if (Objects.equals(alias, NO_ALIAS)) {
+            if (alias.startsWith(NO_ALIAS)) {
                 alias = "";
             } else {
                 alias += ".";
@@ -52,11 +49,6 @@ public class SqlFields {
             c = new Color(image.getRGB(x, y));
         }
         return c;
-    }
-
-    public Double getFieldValueFromName(picsqlParser.Single_fieldContext singleFieldContext) {
-        SqlPicQuerySingleFieldVisitor sqlPicQuerySingleFieldVisitor = new SqlPicQuerySingleFieldVisitor(this);
-        return sqlPicQuerySingleFieldVisitor.visitSingle_field(singleFieldContext);
     }
 
     public Double getField(String name) {

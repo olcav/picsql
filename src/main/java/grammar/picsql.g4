@@ -1,7 +1,6 @@
 grammar picsql;
 
-query: selectstmt |
-        selectstmt (('union' | 'union all') selectstmt)*; // TODO implements
+query: selectstmt;
 
 selectstmt :
     SELECT selectionlist
@@ -44,7 +43,7 @@ bool_expression:
     selection OPERATOR_CONDITION selection |
     selection IN (in_clause | subquery); // TODO implements
 
-in_clause: LEFT_PARENTHESIS selection (',' selection)* RIGHT_PARENTHESIS;
+in_clause: LEFT_PARENTHESIS selection (',' selection)* RIGHT_PARENTHESIS;  // TODO implements
 
 begin_path: STR DOTS DIVIDE |
             DOT DIVIDE;

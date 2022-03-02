@@ -1,10 +1,15 @@
 import grammar.picsqlLexer;
 import grammar.picsqlParser;
-import model.SqlPicQuery;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import visitor.SqlPicQuerySelectQueryVisitor;
+import visitor.value.PictureValue;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class SqlPicQueryParser {
 
@@ -14,23 +19,26 @@ public class SqlPicQueryParser {
         super();
     }
 
-    public boolean haveSyntaxErrors(){
+    public boolean haveSyntaxErrors() {
         return this.picsqlParser.getNumberOfSyntaxErrors() > 0;
     }
 
-    public picsqlParser parse(String sql){
+    public BufferedImage parseToImage(String sql) {
         CharStream input = CharStreams.fromString(sql);
         picsqlLexer picsqlLexer = new picsqlLexer(input);
         CommonTokenStream tokenstream = new CommonTokenStream(picsqlLexer);
         picsqlParser = new picsqlParser(tokenstream);
-        return picsqlParser;
+
+        SqlPicQuerySelectQueryVisitor sqlPicQuerySelectQueryVisitor = new SqlPicQuerySelectQueryVisitor();
+        return ((PictureValue) sqlPicQuerySelectQueryVisitor.visitQuery(picsqlParser.query())).getValue();
     }
 
-    public SqlPicQuery getQuery() {
-        SqlPicQueryListener l = new SqlPicQueryListener();
-        ParseTreeWalker walker = new ParseTreeWalker();
-        grammar.picsqlParser.QueryContext query = picsqlParser.query();
-        walker.walk(l, query);
-        return l.getSqlPicQuery();
+    public void parseToWriteImage(String sql, String newFile, String newFileFormat){
+        BufferedImage bufferedImage = parseToImage(sql);
+        try {
+            ImageIO.write(bufferedImage, newFileFormat, new File(newFile));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

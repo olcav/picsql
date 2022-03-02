@@ -88,6 +88,18 @@ public class picsqlBaseListener implements picsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCol_value(picsqlParser.Col_valueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCol_value(picsqlParser.Col_valueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSingle_field(picsqlParser.Single_fieldContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -160,13 +172,25 @@ public class picsqlBaseListener implements picsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpression(picsqlParser.ExpressionContext ctx) { }
+	@Override public void enterBool_expression(picsqlParser.Bool_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpression(picsqlParser.ExpressionContext ctx) { }
+	@Override public void exitBool_expression(picsqlParser.Bool_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIn_clause(picsqlParser.In_clauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIn_clause(picsqlParser.In_clauseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

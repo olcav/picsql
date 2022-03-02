@@ -1,21 +1,17 @@
-import model.SqlPicQuery;
-
 public class Main {
 
     public static void main(String[] args) {
         SqlPicQueryParser sqlPicQueryParser = new SqlPicQueryParser();
-        sqlPicQueryParser.parse(
-                """
-                select
-                lag(r,x%20,y%20),
-                g*lead(g,x%10,15)%255,
-                r
-                from ./test.bmp
-                        """
-        );
-        SqlPicQuery query = sqlPicQueryParser.getQuery();
-        SqlPicQueryExecutor executor = new SqlPicQueryExecutor();
-        executor.execute(query, "result.bmp", "bmp");
+        sqlPicQueryParser.parseToWriteImage("""
+                select t.r,lag(t2.b, 10,10), t.g
+                from 
+                    (select subT.r,subT.b,subT.r from 
+                        (select lag(r,5,5),b,r from ./test.bmp where r > 120) subT
+                    where subT.g > 120) t,
+                    (select b,g,r from ./test2.bmp where g > 120) t2
+                """,
+                "result.bmp",
+                "bmp");
     }
 
 }
