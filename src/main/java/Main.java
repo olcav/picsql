@@ -1,3 +1,5 @@
+import visitor.SqlPicQueryExportJsonVisitor;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -12,6 +14,9 @@ public class Main {
                 """,
                 "result.bmp",
                 "bmp");
+
+        System.out.println(
+                sqlPicQueryParser.toJson("select * from ./test.bmp"));
     }
 
 }

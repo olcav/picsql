@@ -3,6 +3,7 @@ import grammar.picsqlParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import visitor.SqlPicQueryExportJsonVisitor;
 import visitor.SqlPicQuerySelectQueryVisitor;
 import visitor.value.PictureValue;
 
@@ -31,6 +32,16 @@ public class SqlPicQueryParser {
 
         SqlPicQuerySelectQueryVisitor sqlPicQuerySelectQueryVisitor = new SqlPicQuerySelectQueryVisitor();
         return ((PictureValue) sqlPicQuerySelectQueryVisitor.visitQuery(picsqlParser.query())).getValue();
+    }
+
+    public String toJson(String sql) {
+        CharStream input = CharStreams.fromString(sql);
+        picsqlLexer picsqlLexer = new picsqlLexer(input);
+        CommonTokenStream tokenstream = new CommonTokenStream(picsqlLexer);
+        picsqlParser = new picsqlParser(tokenstream);
+
+        SqlPicQueryExportJsonVisitor sqlPicQueryExportJsonVisitor = new SqlPicQueryExportJsonVisitor(picsqlLexer);
+        return sqlPicQueryExportJsonVisitor.visit(picsqlParser.query()).toPrettyString();
     }
 
     public void parseToWriteImage(String sql, String newFile, String newFileFormat){
