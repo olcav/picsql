@@ -20,7 +20,7 @@ public class SqlPicQueryParserTest {
     @MethodSource("queriesProvider")
     public void testSqlParsingValidation(String sql){
         SqlPicQueryParser sqlPicQueryParser = new SqlPicQueryParser();
-        picsqlParser parser = sqlPicQueryParser.parseToImage(sql);
+        picsqlParser parser = sqlPicQueryParser.buildParser(sql);
 
         picsqlParser.QueryContext query  = parser.query();
         int a = query.start.getStartIndex();

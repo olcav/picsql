@@ -8,11 +8,16 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import visitor.value.*;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
 
@@ -259,7 +264,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
         } else if (value instanceof BoolValue) {
             // TODO
         }
-        return super.visitSubquery(ctx);
+        return new NullValue();
     }
 
     @Override
@@ -282,14 +287,38 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
     @Override
     public Value visitPic_path(picsqlParser.Pic_pathContext ctx) {
         try {
-            BufferedImage picRead = ImageIO.read(new File(ctx.path().getText()));
-            String alias = "";
+            BufferedImage image = null;
+            File input = new File(ctx.path().getText());
+
+            if(ctx.DIGITS().size() > 0){
+                Rectangle sourceRegion = new Rectangle(
+                        Integer.parseInt(ctx.DIGITS(0).getText()),
+                        Integer.parseInt(ctx.DIGITS(1).getText()),
+                        Integer.parseInt(ctx.DIGITS(2).getText()),
+                        Integer.parseInt(ctx.DIGITS(3).getText())
+                );
+
+                ImageInputStream stream = ImageIO.createImageInputStream(input);
+                Iterator<ImageReader> readers = ImageIO.getImageReaders(stream);
+                if (readers.hasNext()) {
+                    ImageReader reader = readers.next();
+                    reader.setInput(stream);
+
+                    ImageReadParam param = reader.getDefaultReadParam();
+                    param.setSourceRegion(sourceRegion);
+
+                    image = reader.read(0, param);
+                }
+            }else{
+                image = ImageIO.read(input);
+            }
+            String alias;
             if (ctx.alias() == null) {
                 alias = NO_ALIAS;
             } else {
                 alias = ctx.alias().getText();
             }
-            return new PictureValue(picRead, alias);
+            return new PictureValue(image, alias);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -303,8 +332,8 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
             Double field2 = ((DoubleValue) visitSelection(ctx.selection(1))).getValue();
 
             return new BoolValue(switch (ctx.OPERATOR_CONDITION().getText()) {
-                case "=" -> field1 == field2;
-                case "!=" -> field1 != field2;
+                case "=" -> Objects.equals(field1, field2);
+                case "!=" -> !Objects.equals(field1, field2);
                 case "<" -> field1 < field2;
                 case ">" -> field1 > field2;
                 case "<=" -> field1 <= field2;

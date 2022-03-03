@@ -5,10 +5,9 @@ query: selectstmt;
 selectstmt :
     SELECT selectionlist
      FROM from_source_list (',' from_source_list)*
-    (WHERE where_clause)?
-    (ORDER_BY col_value (',' col_value)*)?;
+    (WHERE where_clause)?;
 
-from_pic_source: LEFT_PARENTHESIS DIGITS ',' DIGITS ',' DIGITS ',' DIGITS ',' DIGITS RIGHT_PARENTHESIS  alias? tablesample?;
+from_pic_source: LEFT_PARENTHESIS DIGITS ',' DIGITS ',' DIGITS ',' DIGITS ',' DIGITS RIGHT_PARENTHESIS  alias?;
 
 from_source_list: (pic_path | from_pic_source | subquery);
 
@@ -40,39 +39,33 @@ three_params_function: ('lag' | 'lead') LEFT_PARENTHESIS alias_dot? alias_value 
 multiple_params_function: ('min' | 'max') LEFT_PARENTHESIS selection (',' selection)* RIGHT_PARENTHESIS;
 
 bool_expression:
-    selection OPERATOR_CONDITION selection |
-    selection IN (in_clause | subquery); // TODO implements
-
-in_clause: LEFT_PARENTHESIS selection (',' selection)* RIGHT_PARENTHESIS;  // TODO implements
+    selection OPERATOR_CONDITION selection;
 
 begin_path: STR DOTS DIVIDE |
             DOT DIVIDE;
 
 alias : STR;
 alias_dot : STR DOT;
-
 path_part: STR;
 
-path: begin_path? path_part (DOT path_part)*;
+path: begin_path? path_part (('/' | '\\') path_part)* DOT path_part;
 
-// TODO : implements
-tablesample : 'tablesample' LEFT_PARENTHESIS DIGITS ('percent' | 'pixels') RIGHT_PARENTHESIS;
+pic_path:
+    ( LEFT_PARENTHESIS path COMMA DIGITS COMMA DIGITS COMMA DIGITS COMMA DIGITS RIGHT_PARENTHESIS
+    | path) alias?;
 
-pic_path: path  alias? tablesample?;
-
-subquery: LEFT_PARENTHESIS selectstmt RIGHT_PARENTHESIS  alias? tablesample?;  // TODO : implements
+subquery: LEFT_PARENTHESIS selectstmt RIGHT_PARENTHESIS  alias?;
 
 where_clause:
     bool_expression |
     where_clause OPERATOR_LOGIC where_clause |
-    LEFT_PARENTHESIS where_clause RIGHT_PARENTHESIS |
-    EXISTS subquery; // TODO : implements
+    LEFT_PARENTHESIS where_clause RIGHT_PARENTHESIS;
 
 SELECT : 'select';
 FROM : 'from';
 WHERE : 'where';
 ORDER_BY: 'order by';
-EXISTS: 'exists';
+COMMA: ',';
 OPERATOR_LOGIC : 'and' | 'or';
 STAR : '*';
 DIVIDE : '/';

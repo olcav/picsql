@@ -148,16 +148,6 @@ public interface picsqlListener extends ParseTreeListener {
 	 */
 	void exitBool_expression(picsqlParser.Bool_expressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link picsqlParser#in_clause}.
-	 * @param ctx the parse tree
-	 */
-	void enterIn_clause(picsqlParser.In_clauseContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link picsqlParser#in_clause}.
-	 * @param ctx the parse tree
-	 */
-	void exitIn_clause(picsqlParser.In_clauseContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link picsqlParser#begin_path}.
 	 * @param ctx the parse tree
 	 */
@@ -207,16 +197,6 @@ public interface picsqlListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPath(picsqlParser.PathContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link picsqlParser#tablesample}.
-	 * @param ctx the parse tree
-	 */
-	void enterTablesample(picsqlParser.TablesampleContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link picsqlParser#tablesample}.
-	 * @param ctx the parse tree
-	 */
-	void exitTablesample(picsqlParser.TablesampleContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link picsqlParser#pic_path}.
 	 * @param ctx the parse tree

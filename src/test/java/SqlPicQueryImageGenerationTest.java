@@ -8,19 +8,24 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class SqlPicQueryExecuteTest {
+public class SqlPicQueryImageGenerationTest {
 
     private static Stream<Arguments> queriesProvider() {
         return Arrays.stream(QueryBank.QUERIES).map(Arguments::of);
     }
 
+    private static int numTest = 0;
+
     @ParameterizedTest
     @MethodSource("queriesProvider")
     public void testSqlExecutionOnPictures(String sql){
         SqlPicQueryParser sqlPicQueryParser = new SqlPicQueryParser();
-        sqlPicQueryParser.parseToImage(sql);
-        SqlPicQueryExecutor executor = new SqlPicQueryExecutor();
-        executor.execute(sqlPicQueryParser.getQuery(), "./src/test/java/testimgs/test"+sql.hashCode()+".bmp", "bmp");
+        sqlPicQueryParser.parseToWriteImage(
+                sql,
+                "./examples/face_" + numTest + ".bmp",
+                "bmp"
+        );
+        numTest++;
     }
 
 }

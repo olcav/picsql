@@ -184,18 +184,6 @@ public class picsqlBaseListener implements picsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIn_clause(picsqlParser.In_clauseContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIn_clause(picsqlParser.In_clauseContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterBegin_path(picsqlParser.Begin_pathContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -251,18 +239,6 @@ public class picsqlBaseListener implements picsqlListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPath(picsqlParser.PathContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterTablesample(picsqlParser.TablesampleContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitTablesample(picsqlParser.TablesampleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
