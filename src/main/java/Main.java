@@ -3,9 +3,8 @@ public class Main {
     public static void main(String[] args) {
         SqlPicQueryParser sqlPicQueryParser = new SqlPicQueryParser();
         sqlPicQueryParser.parseToWriteImage("""
-                select
-                    rand()*255,g,rand()*255
-                from ./test.bmp
+                select r,g,b
+                from ./examples/face.bmp
                 """,
                 "result.bmp",
                 "bmp");

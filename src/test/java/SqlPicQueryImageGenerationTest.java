@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class SqlPicQueryImageGenerationTest {
 
     private static Stream<Arguments> queriesProvider() {
-        return Arrays.stream(QueryBank.QUERIES).map(Arguments::of);
+        return Arrays.stream(QueryBank.QUERIES_GENERATION_TESTS).map(Arguments::of);
     }
 
     private static int numTest = 0;

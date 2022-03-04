@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class SqlPicQueryParserTest {
 
     private static Stream<Arguments> queriesProvider() {
-        return Arrays.stream(QueryBank.QUERIES).map(Arguments::of);
+        return Arrays.stream(QueryBank.QUERIES_PARSING_TESTS).map(Arguments::of);
     }
 
     @ParameterizedTest
