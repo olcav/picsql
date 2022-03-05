@@ -15,7 +15,7 @@ public class Main {
       sqlPicQueryParser.parseToWriteImage(sql, output, filename);
       System.out.println("Query executed ! Output picture : " + output);
     } else {
-      System.out.println("Use like this : picsql.kar \"sql_query\" \"output_file_path\"");
+      System.out.println("Use like this : picsql.jar \"sql_query\" \"output_file_path\"");
     }
   }
 }
