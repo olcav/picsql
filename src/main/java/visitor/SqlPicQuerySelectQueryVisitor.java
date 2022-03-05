@@ -16,6 +16,7 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -82,27 +83,9 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
                     if (selections.size() >= 3) {
                         newB = selections.get(2);
                     }
-                    if (newR < 0) {
-                        newR = 0.0;
-                    }
-                    if (newG < 0) {
-                        newG = 0.0;
-                    }
-                    if (newB < 0) {
-                        newB = 0.0;
-                    }
-                    if (newR > 255) {
-                        newR = 255.0;
-                    }
-                    if (newG > 255) {
-                        newG = 255.0;
-                    }
-                    if (newB > 255) {
-                        newB = 255.0;
-                    }
-                    int finalR = (int) Math.round(newR);
-                    int finalG = (int) Math.round(newG);
-                    int finalB = (int) Math.round(newB);
+                    int finalR = toFinalValue(newR);
+                    int finalG = toFinalValue(newG);
+                    int finalB = toFinalValue(newB);
                     newImage.setRGB(x, y, new Color(finalR, finalG, finalB).getRGB());
                 }
                 rank++;
@@ -110,6 +93,16 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
         }
 
         return new PictureValue(newImage, null);
+    }
+
+    private int toFinalValue(Double value){
+        if (value < 0) {
+            value = 0.0;
+        }
+        if (value > 255) {
+            value = 255.0;
+        }
+        return (int) Math.round(value);
     }
 
     @Override
@@ -296,24 +289,39 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
             BufferedImage image = null;
             File input = new File(ctx.path().getText());
 
-            if(ctx.DIGITS().size() > 0){
-                Rectangle sourceRegion = new Rectangle(
-                        Integer.parseInt(ctx.DIGITS(0).getText()),
-                        Integer.parseInt(ctx.DIGITS(1).getText()),
-                        Integer.parseInt(ctx.DIGITS(2).getText()),
-                        Integer.parseInt(ctx.DIGITS(3).getText())
-                );
+            int numValues = ctx.DIGITS().size();
+            if(numValues > 0){
+                int value1 = Integer.parseInt(ctx.DIGITS(0).getText());
+                int value2 = Integer.parseInt(ctx.DIGITS(1).getText());
+                if(numValues == 2){
+                    BufferedImage toClone = ImageIO.read(input);
+                    image = new BufferedImage(toClone.getWidth()*value1, toClone.getHeight()*value2, toClone.getType());
+                    Graphics g = image.getGraphics();
+                    for(int i = 0; i  < value1;i++){
+                        for(int j = 0; j  < value2;j++){
+                            g.drawImage(toClone, i*toClone.getWidth(), j*toClone.getHeight(), null);
+                        }
+                    }
+                    g.dispose();
+                }else if(numValues == 4){
+                    Rectangle sourceRegion = new Rectangle(
+                            value1,
+                            value2,
+                            Integer.parseInt(ctx.DIGITS(2).getText()),
+                            Integer.parseInt(ctx.DIGITS(3).getText())
+                    );
 
-                ImageInputStream stream = ImageIO.createImageInputStream(input);
-                Iterator<ImageReader> readers = ImageIO.getImageReaders(stream);
-                if (readers.hasNext()) {
-                    ImageReader reader = readers.next();
-                    reader.setInput(stream);
+                    ImageInputStream stream = ImageIO.createImageInputStream(input);
+                    Iterator<ImageReader> readers = ImageIO.getImageReaders(stream);
+                    if (readers.hasNext()) {
+                        ImageReader reader = readers.next();
+                        reader.setInput(stream);
 
-                    ImageReadParam param = reader.getDefaultReadParam();
-                    param.setSourceRegion(sourceRegion);
+                        ImageReadParam param = reader.getDefaultReadParam();
+                        param.setSourceRegion(sourceRegion);
 
-                    image = reader.read(0, param);
+                        image = reader.read(0, param);
+                    }
                 }
             }else{
                 image = ImageIO.read(input);

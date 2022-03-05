@@ -56,6 +56,17 @@ from (. / examples / face . bmp, 10, 50, 120, 120) -- (x,y,width,height) of a re
 
 <hr>
 
+Select and create i * j grid :
+
+```sql
+select r, g, b
+from (./examples/face.bmp, 5, 5)
+```
+
+![](examples/face_2.bmp)
+
+<hr>
+
 Create a colored rectangle :
 
 ```sql
@@ -63,7 +74,7 @@ select r, g, b
 from (100, 100, 255, 0, 0) -- (width,height, r, g, b)
 ```
 
-![](examples/face_2.bmp)
+![](examples/face_3.bmp)
 
 <hr>
 
@@ -74,7 +85,7 @@ select g, b, r
 from./examples/face.bmp -- put green in red, blue in green and red in blue.
 ```
 
-![](examples/face_3.bmp)
+![](examples/face_4.bmp)
 
 <hr>
 
@@ -85,7 +96,7 @@ select (r * y)%255, x,  b
 from./examples/face.bmp
 ```
 
-![](examples/face_4.bmp)
+![](examples/face_5.bmp)
 
 <hr>
 
@@ -96,7 +107,7 @@ select x * 2, y + 10, x - 10
 from./examples/face.bmp -- same size than face.bmp
 ```
 
-![](examples/face_5.bmp)
+![](examples/face_6.bmp)
 
 <hr>
 
@@ -108,7 +119,7 @@ from./examples/face.bmp
 where r > 120
 ```
 
-![](examples/face_6.bmp)
+![](examples/face_7.bmp)
 
 <hr>
 
@@ -120,7 +131,7 @@ from./examples/face.bmp
 where r > 20 and g < 200
 ```
 
-![](examples/face_7.bmp)
+![](examples/face_8.bmp)
 
 <hr>
 
@@ -133,7 +144,7 @@ select (r * sin(x))%255,
 from./examples/face.bmp
 ```
 
-![](examples/face_8.bmp)
+![](examples/face_9.bmp)
 
 <hr>
 
@@ -146,7 +157,7 @@ select lag(r, 10, 10), --lag select a red value at x-10, y-10
 from./examples/face.bmp, 
 ```
 
-![](examples/face_9.bmp)
+![](examples/face_10.bmp)
 
 <hr>
 
@@ -159,7 +170,7 @@ select lag(r, sin(x), (r * g)%10),
 from./examples/face.bmp
 ```
 
-![](examples/face_10.bmp)
+![](examples/face_11.bmp)
 
 <hr>
 
@@ -176,7 +187,7 @@ select lag(r, lag(g, 5, 5)%5, 5),
 from./examples/face.bmp
 ```
 
-![](examples/face_11.bmp)
+![](examples/face_12.bmp)
 
 <hr>
 
@@ -191,7 +202,7 @@ from
     ./examples/face2.bmp f2
 ```
 
-![](examples/face_12.bmp)
+![](examples/face_13.bmp)
 
 <hr>
 
@@ -204,7 +215,7 @@ select (f.r + f2.b)%255,
 from./examples/face.bmp f, ./examples/face2.bmp f2
 ```
 
-![](examples/face_13.bmp)
+![](examples/face_14.bmp)
 
 <hr>
 
@@ -219,4 +230,4 @@ from
     (select b, g, lag(r, 5, 5) from./examples/face2.bmp) sub2
 ```
 
-![](examples/face_14.bmp)
+![](examples/face_15.bmp)

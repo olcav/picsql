@@ -11,6 +11,8 @@ public class QueryBank {
     "select r,g,b from ../../../../examples/face.bmp",
     "select r,g,b from ../examples/face.bmp",
     "select r,g,b from ./examples/test/anotherdir/face.bmp",
+    "select r,g,b from (./examples/face.bmp,10,10,100,100)",
+    "select r,g,b from (./examples/face.bmp,5,5)",
 
     // Where
     "select r,g,b from ./examples/face.bmp where r > 120",
@@ -43,6 +45,9 @@ public class QueryBank {
 
     // Select a small region
     "select r,g,b from (./examples/face.bmp,10,50,120,120)",
+
+    // Select a picture and make a 5 * 5 grid
+    "select r,g,b from (./examples/face.bmp,5,5)",
 
     // Select colors from color rectangle
     "select r,g,b from (100,100,255,0,0)",
