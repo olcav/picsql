@@ -2,20 +2,17 @@ package model;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-
-import static visitor.SqlPicQuerySelectQueryVisitor.NO_ALIAS;
 
 public class PicsManager {
 
     private Map<String, BufferedImage> pics = new HashMap<>();
     private int width, height;
 
-    public PicsManager(){}
+    public PicsManager() {
+    }
 
-    public void putPic(String alias, BufferedImage pic){
+    public void putPic(String alias, BufferedImage pic) {
         if (pic.getWidth() > width) {
             width = pic.getWidth();
         }
@@ -37,7 +34,7 @@ public class PicsManager {
         return pics;
     }
 
-    public BufferedImage getPic(String name){
+    public BufferedImage getPic(String name) {
         return pics.get(name);
     }
 

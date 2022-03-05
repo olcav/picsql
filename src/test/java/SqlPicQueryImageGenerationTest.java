@@ -1,12 +1,19 @@
+import org.assertj.core.api.AssertionInfo;
+import org.assertj.core.internal.ByteArrays;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import javax.imageio.ImageIO;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class SqlPicQueryImageGenerationTest {
 
@@ -18,13 +25,14 @@ public class SqlPicQueryImageGenerationTest {
 
     @ParameterizedTest
     @MethodSource("queriesProvider")
-    public void testSqlExecutionOnPictures(String sql){
+    public void testSqlExecutionOnPictures(String sql) throws IOException {
         SqlPicQueryParser sqlPicQueryParser = new SqlPicQueryParser();
-        sqlPicQueryParser.parseToWriteImage(
-                sql,
-                "./examples/face_" + numTest + ".bmp",
-                "bmp"
-        );
+        String image = "./examples/face_" + numTest + ".bmp";
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(sqlPicQueryParser.parseToImage(sql), "bmp", baos);
+        byte[] resultImage = baos.toByteArray();
+        byte[] actual = Files.readAllBytes(new File(image).toPath());
+        assertThat(resultImage).containsExactly(actual);
         numTest++;
     }
 
