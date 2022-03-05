@@ -1,6 +1,6 @@
 package model;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import java.util.Objects;
 public class SqlFields {
 
     public static final String NO_ALIAS = "<no_alias>";
-    private Map<String, Double> fieldsByName = new HashMap<>();
+    private final Map<String, Double> fieldsByName = new HashMap<>();
     private final PicsManager picsManager;
 
     public SqlFields(int x, int y, int rank, PicsManager picsManager) {

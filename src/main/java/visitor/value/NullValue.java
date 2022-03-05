@@ -1,9 +1,9 @@
 package visitor.value;
 
-public class NullValue extends Value<Void>{
+public class NullValue extends Value<Void> {
 
-    @Override
-    public Void getValue() {
-        return null;
-    }
+  @Override
+  public Void getValue() {
+    return null;
+  }
 }
