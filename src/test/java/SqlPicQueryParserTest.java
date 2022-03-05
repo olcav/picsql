@@ -12,23 +12,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SqlPicQueryParserTest {
 
-    private static Stream<Arguments> queriesProvider() {
-        return Arrays.stream(QueryBank.QUERIES_PARSING_TESTS).map(Arguments::of);
-    }
+  private static Stream<Arguments> queriesProvider() {
+    return Arrays.stream(QueryBank.QUERIES_PARSING_TESTS).map(Arguments::of);
+  }
 
-    @ParameterizedTest
-    @MethodSource("queriesProvider")
-    public void testSqlParsingValidation(String sql) {
-        SqlPicQueryParser sqlPicQueryParser = new SqlPicQueryParser();
-        picsqlParser parser = sqlPicQueryParser.buildParser(sql);
+  @ParameterizedTest
+  @MethodSource("queriesProvider")
+  public void testSqlParsingValidation(String sql) {
+    SqlPicQueryParser sqlPicQueryParser = new SqlPicQueryParser();
+    picsqlParser parser = sqlPicQueryParser.buildParser(sql);
 
-        picsqlParser.QueryContext query = parser.query();
-        int a = query.start.getStartIndex();
-        int b = query.stop.getStopIndex();
-        Interval interval = new Interval(a, b);
-        String viewSql = query.start.getInputStream().getText(interval);
-        assertEquals(sql, viewSql);
-        Assertions.assertFalse(sqlPicQueryParser.haveSyntaxErrors());
-    }
-
+    picsqlParser.QueryContext query = parser.query();
+    int a = query.start.getStartIndex();
+    int b = query.stop.getStopIndex();
+    Interval interval = new Interval(a, b);
+    String viewSql = query.start.getInputStream().getText(interval);
+    assertEquals(sql, viewSql);
+    Assertions.assertFalse(sqlPicQueryParser.haveSyntaxErrors());
+  }
 }
