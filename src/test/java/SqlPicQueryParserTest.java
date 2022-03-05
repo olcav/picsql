@@ -27,7 +27,7 @@ public class SqlPicQueryParserTest {
         int b = query.stop.getStopIndex();
         Interval interval = new Interval(a, b);
         String viewSql = query.start.getInputStream().getText(interval);
-        assertEquals(sql + "dd", viewSql);
+        assertEquals(sql, viewSql);
         Assertions.assertFalse(sqlPicQueryParser.haveSyntaxErrors());
     }
 
