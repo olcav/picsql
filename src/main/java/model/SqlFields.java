@@ -18,7 +18,7 @@ public class SqlFields {
         fieldsByName.put("y", (double) y);
         fieldsByName.put("rank()", (double) rank);
 
-        for (Map.Entry<String, BufferedImage> entry : picsManager.getPics().entrySet()) {
+        for (Map.Entry<String, BufferedImage> entry : picsManager.getPicsByAliases().entrySet()) {
             String alias = entry.getKey();
             if (alias.startsWith(NO_ALIAS)) {
                 alias = "";
@@ -33,7 +33,7 @@ public class SqlFields {
     }
 
     public Double getXYAtPosition(String tableName, String field, int x, int y) {
-        BufferedImage image = picsManager.getPic(Objects.requireNonNullElse(tableName, NO_ALIAS));
+        BufferedImage image = picsManager.getPicFromAlias(Objects.requireNonNullElse(tableName, NO_ALIAS));
         Color color = getColor(image, x, y);
         return switch (field) {
             case "r" -> (double) color.getRed();
