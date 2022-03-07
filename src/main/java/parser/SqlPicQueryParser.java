@@ -1,3 +1,5 @@
+package parser;
+
 import grammar.picsqlLexer;
 import grammar.picsqlParser;
 import org.antlr.v4.runtime.CharStream;
@@ -31,7 +33,7 @@ public class SqlPicQueryParser {
         .getValue();
   }
 
-  picsqlParser buildParser(String sql) {
+  public picsqlParser buildParser(String sql) {
     CharStream input = CharStreams.fromString(sql);
     picsqlLexer picsqlLexer = new picsqlLexer(input);
     CommonTokenStream tokenstream = new CommonTokenStream(picsqlLexer);

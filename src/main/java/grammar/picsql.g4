@@ -29,6 +29,8 @@ MINUS :  '-';
 DIGITS: '0'..'9'+;
 DECIMAL: '0'..'9'+ DOT '0'..'9'+;
 STR: [a-zA-Z0-9]+;
+SPECIAL_CHAR : '_' | '-';
+STR_PATH: [a-zA-Z0-9];
 DOTS: ':';
 LEFT_PARENTHESIS : '(';
 RIGHT_PARENTHESIS : ')';
@@ -82,7 +84,7 @@ begin_path: DOT DOT? PATH_SLASH  | STR DOTS PATH_SLASH;
 
 alias : STR;
 alias_dot : STR DOT;
-path_part: DOT DOT | STR;
+path_part: DOT DOT | (STR | SPECIAL_CHAR)+;
 
 path: begin_path? path_part (PATH_SLASH path_part)* DOT path_part;
 

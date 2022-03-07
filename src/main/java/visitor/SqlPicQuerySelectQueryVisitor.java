@@ -30,6 +30,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
 
     public static final String NO_ALIAS = "<no_alias>";
     private SqlFields sqlFields;
+    private PicsManager picsManager;
 
     public SqlPicQuerySelectQueryVisitor() {
     }
@@ -40,13 +41,14 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
 
     @Override
     public Value visitSelectstmt(picsqlParser.SelectstmtContext ctx) {
-        PicsManager picsManager = new PicsManager();
+        picsManager = new PicsManager();
 
         ctx.from_source_list().forEach(
                 s -> {
                     Value value = visitFrom_source_list(s);
                     if (value instanceof PictureValue image) {
                         picsManager.putPic(
+                                image.getId(),
                                 image.getAlias(),
                                 image.getValue()
                         );
@@ -92,7 +94,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
             }
         }
 
-        return new PictureValue(newImage, null);
+        return new PictureValue(newImage, null, ctx.getText());
     }
 
     private int toFinalValue(Double value){
@@ -257,7 +259,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
     public Value visitSubquery(picsqlParser.SubqueryContext ctx) {
         Value value = visitSelectstmt(ctx.selectstmt());
         if (value instanceof PictureValue selectImage) {
-            return new PictureValue(selectImage.getValue(), ctx.alias() == null ? null : ctx.alias().getText());
+            return new PictureValue(selectImage.getValue(), ctx.alias() == null ? null : ctx.alias().getText(), ctx.getText());
         } else if (value instanceof DoubleValue) {
             // TODO
         } else if (value instanceof BoolValue) {
@@ -280,51 +282,76 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
         if (alias == null) {
             alias = NO_ALIAS;
         }
-        return new PictureValue(image, alias);
+        return new PictureValue(image, alias, null);
     }
 
     @Override
     public Value visitPic_path(picsqlParser.Pic_pathContext ctx) {
         try {
             BufferedImage image = null;
-            File input = new File(ctx.path().getText());
+            String path = ctx.path().getText();
+            File input = new File(path);
+            String picId = "";
 
             int numValues = ctx.DIGITS().size();
             if(numValues > 0){
                 int value1 = Integer.parseInt(ctx.DIGITS(0).getText());
                 int value2 = Integer.parseInt(ctx.DIGITS(1).getText());
                 if(numValues == 2){
-                    BufferedImage toClone = ImageIO.read(input);
-                    image = new BufferedImage(toClone.getWidth()*value1, toClone.getHeight()*value2, toClone.getType());
-                    Graphics g = image.getGraphics();
-                    for(int i = 0; i  < value1;i++){
-                        for(int j = 0; j  < value2;j++){
-                            g.drawImage(toClone, i*toClone.getWidth(), j*toClone.getHeight(), null);
+                    picId = path + "-" + value1 + "-" + value2;
+                    BufferedImage cachedImage = picsManager.getPicFromPath(picId);
+                    if(cachedImage != null){
+                        image =  cachedImage;
+                    }else{
+                        BufferedImage toClone = ImageIO.read(new File(path));
+                        image = new BufferedImage(toClone.getWidth()* value1, toClone.getHeight()* value2, toClone.getType());
+                        Graphics g = image.getGraphics();
+                        for(int i = 0; i  < value1; i++){
+                            for(int j = 0; j  < value2; j++){
+                                g.drawImage(toClone, i*toClone.getWidth(), j*toClone.getHeight(), null);
+                            }
                         }
+                        g.dispose();
+                        picsManager.addPic(picId, image);
                     }
-                    g.dispose();
                 }else if(numValues == 4){
-                    Rectangle sourceRegion = new Rectangle(
-                            value1,
-                            value2,
-                            Integer.parseInt(ctx.DIGITS(2).getText()),
-                            Integer.parseInt(ctx.DIGITS(3).getText())
-                    );
+                    int value3 = Integer.parseInt(ctx.DIGITS(2).getText());
+                    int value4 = Integer.parseInt(ctx.DIGITS(3).getText());
 
-                    ImageInputStream stream = ImageIO.createImageInputStream(input);
-                    Iterator<ImageReader> readers = ImageIO.getImageReaders(stream);
-                    if (readers.hasNext()) {
-                        ImageReader reader = readers.next();
-                        reader.setInput(stream);
+                    picId = path + "-" + value1 + "-" + value2 + "-" + value3 + "-" + value4;
+                    BufferedImage cachedImage = picsManager.getPicFromPath(picId);
+                    if(cachedImage != null){
+                        image = cachedImage;
+                    }else{
+                        Rectangle sourceRegion = new Rectangle(
+                                value1,
+                                value2,
+                                value3,
+                                value4
+                        );
 
-                        ImageReadParam param = reader.getDefaultReadParam();
-                        param.setSourceRegion(sourceRegion);
+                        ImageInputStream stream = ImageIO.createImageInputStream(input);
+                        Iterator<ImageReader> readers = ImageIO.getImageReaders(stream);
+                        if (readers.hasNext()) {
+                            ImageReader reader = readers.next();
+                            reader.setInput(stream);
 
-                        image = reader.read(0, param);
+                            ImageReadParam param = reader.getDefaultReadParam();
+                            param.setSourceRegion(sourceRegion);
+
+                            image = reader.read(0, param);
+                        }
+                        picsManager.addPic(picId, image);
                     }
                 }
             }else{
-                image = ImageIO.read(input);
+                BufferedImage cachedImage = picsManager.getPicFromPath(path);
+                if(cachedImage == null){
+                    image = ImageIO.read(input);
+                } else {
+                    image = cachedImage;
+                    picsManager.addPic(path, image);
+                }
             }
             String alias;
             if (ctx.alias() == null) {
@@ -332,9 +359,9 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
             } else {
                 alias = ctx.alias().getText();
             }
-            return new PictureValue(image, alias);
+            return new PictureValue(image, alias, picId);
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
         return new NullValue();
     }
