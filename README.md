@@ -23,7 +23,7 @@ picsql.jar "select r,g,b from ./test.bmp" "./output.bmp"
 
 Can also be used like a library by including JAR (doc coming soon).
 
-### Current version : 1.0.1
+### Last released version : 1.0.1
 
 - Load a grid of a same picture with syntax :
 ```sql
