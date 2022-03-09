@@ -345,6 +345,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
                     }
                 }
             }else{
+                picId = path;
                 BufferedImage cachedImage = picsManager.getPicFromPath(path);
                 if(cachedImage == null){
                     image = ImageIO.read(input);
