@@ -175,7 +175,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
         int singleField1 = ((DoubleValue) visitSelection(selection1)).getValue().intValue();
         int singleField2 = ((DoubleValue) visitSelection(selection2)).getValue().intValue();
 
-        String tableName  = picsManager.getLastNoAlias();
+        String tableName  = alias_dotContext != null && alias_dotContext.STR().getText() != null ? alias_dotContext.STR().getText() : picsManager.getLastNoAlias();
         return switch (ctx.getChild(0).getText()) {
             case "lag" -> new DoubleValue(sqlFields.getXYAtPosition(tableName, field, x - singleField1, y - singleField2));
             case "lead" -> new DoubleValue(sqlFields.getXYAtPosition(tableName, field, x + singleField1, y + singleField2));
@@ -271,7 +271,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
         graphics.setPaint(color);
         graphics.fillRect(0, 0, width, height);
 
-        return new PictureValue(image, picsManager.generateAlias(ctx.alias().getText()), null);
+        return new PictureValue(image, picsManager.generateAlias(ctx.alias() == null ? null : ctx.alias().getText()), null);
     }
 
     @Override
