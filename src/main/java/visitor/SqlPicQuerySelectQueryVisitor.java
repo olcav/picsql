@@ -30,7 +30,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
 
     public static final String NO_ALIAS = "<no_alias>";
     private SqlFields sqlFields;
-    private PicsManager picsManager;
+    private PicsManager picsManager  = new PicsManager();
 
     public SqlPicQuerySelectQueryVisitor() {
     }
@@ -41,8 +41,6 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
 
     @Override
     public Value visitSelectstmt(picsqlParser.SelectstmtContext ctx) {
-        picsManager = new PicsManager();
-
         ctx.from_source_list().forEach(
                 s -> {
                     Value value = visitFrom_source_list(s);
@@ -167,13 +165,6 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
     @Override
     public Value visitThree_params_function(picsqlParser.Three_params_functionContext ctx) {
         picsqlParser.Alias_dotContext alias_dotContext = ctx.alias_dot();
-        String tableName;
-        if (alias_dotContext == null) {
-            tableName = NO_ALIAS;
-        } else {
-            tableName = alias_dotContext.STR().getText();
-
-        }
         String field = ctx.alias_value().getText();
 
         final int x = sqlFields.getField("x").intValue();
@@ -184,6 +175,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
         int singleField1 = ((DoubleValue) visitSelection(selection1)).getValue().intValue();
         int singleField2 = ((DoubleValue) visitSelection(selection2)).getValue().intValue();
 
+        String tableName  = picsManager.getLastNoAlias();
         return switch (ctx.getChild(0).getText()) {
             case "lag" -> new DoubleValue(sqlFields.getXYAtPosition(tableName, field, x - singleField1, y - singleField2));
             case "lead" -> new DoubleValue(sqlFields.getXYAtPosition(tableName, field, x + singleField1, y + singleField2));
@@ -259,7 +251,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
     public Value visitSubquery(picsqlParser.SubqueryContext ctx) {
         Value value = visitSelectstmt(ctx.selectstmt());
         if (value instanceof PictureValue selectImage) {
-            return new PictureValue(selectImage.getValue(), ctx.alias() == null ? null : ctx.alias().getText(), ctx.getText());
+            return new PictureValue(selectImage.getValue(), picsManager.generateAlias(ctx.alias().getText()), ctx.alias().getText());
         } else if (value instanceof DoubleValue) {
             // TODO
         } else if (value instanceof BoolValue) {
@@ -273,16 +265,13 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
         int width = Integer.parseInt(ctx.DIGITS(0).getText());
         int height = Integer.parseInt(ctx.DIGITS(1).getText());
         Color color = new Color(Integer.parseInt(ctx.DIGITS(2).getText()), Integer.parseInt(ctx.DIGITS(3).getText()), Integer.parseInt(ctx.DIGITS(4).getText()));
-        String alias = ctx.alias() == null ? null : ctx.alias().getText();
 
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics = image.createGraphics();
         graphics.setPaint(color);
         graphics.fillRect(0, 0, width, height);
-        if (alias == null) {
-            alias = NO_ALIAS;
-        }
-        return new PictureValue(image, alias, null);
+
+        return new PictureValue(image, picsManager.generateAlias(ctx.alias().getText()), null);
     }
 
     @Override
@@ -354,13 +343,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
                     picsManager.addPic(path, image);
                 }
             }
-            String alias;
-            if (ctx.alias() == null) {
-                alias = NO_ALIAS;
-            } else {
-                alias = ctx.alias().getText();
-            }
-            return new PictureValue(image, alias, picId);
+            return new PictureValue(image, picsManager.generateAlias(ctx.alias() == null ? null : ctx.alias().getText()), picId);
         } catch (IOException e) {
 
         }

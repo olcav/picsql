@@ -86,6 +86,6 @@ public class QueryBank {
     "select (f.r+f2.b)%255, lead(f.r, f2.b%10, 10), f.g from ./examples/face.bmp f, ./examples/face2.bmp f2",
 
     // Subquery
-    "select sub1.r, sub2.g, (sub2.b+sub1.r)%255 from (select r from ./examples/face.bmp where r > 60) sub1, (select b,g,lag(r, 5,5) from ./examples/face2.bmp) sub2",
+    "select sub1.r, sub2.g, (sub2.b+sub1.r)%255 from (select r from ./examples/face.bmp where r > 60) sub1, (select b,g,lag(r, 5,5) from ./examples/face2.bmp) sub2"
   };
 }
