@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;
+import static visitor.SqlPicQuerySelectQueryVisitor.NO_ALIAS;
 
 public class PicsManager {
 
@@ -60,5 +61,20 @@ public class PicsManager {
     if (image != null) {
       picsByPath.put(id, image);
     }
+  }
+
+  private int countNoAlias = 0;
+
+  public String generateAlias(String text) {
+    String alias = text;
+    if (alias == null) {
+      alias = NO_ALIAS + "_" + countNoAlias;
+      countNoAlias++;
+    }
+    return alias;
+  }
+
+  public String getLastNoAlias() {
+    return NO_ALIAS + "_" + (countNoAlias - 1);
   }
 }
