@@ -22,9 +22,11 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
 
@@ -37,6 +39,33 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
 
     private DoubleValue getField(String field) {
         return new DoubleValue(sqlFields.getField(field));
+    }
+
+    public int getFrameRate(picsqlParser.QueryContext ctx){
+        picsqlParser.SelectstmtContext selectstmt = ctx.selectstmt();
+        AtomicInteger frameRate = new AtomicInteger();
+        selectstmt.from_source_list().forEach(
+                s -> {
+                    picsqlParser.Pic_pathContext pic_pathContext = s.pic_path();
+                    if(pic_pathContext != null){
+                        if(pic_pathContext.DIGITS() != null && pic_pathContext.DIGITS().size() == 1){
+                            frameRate.set(Integer.parseInt(pic_pathContext.DIGITS(0).getText()));
+                        }
+                    }
+                }
+        );
+        return frameRate.get();
+    }
+
+    public List<BufferedImage> visitQueryMultipleTimes(picsqlParser.QueryContext ctx, int frameRate) {
+        List<BufferedImage> images = new ArrayList<>();
+        for (int i = 0; i < frameRate; i++) {
+            picsManager = new PicsManager();
+            setCurrentFrame(i);
+            BufferedImage value = ((PictureValue) visitSelectstmt(ctx.selectstmt())).getValue();
+            images.add(value);
+        }
+        return images;
     }
 
     @Override
@@ -283,8 +312,14 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
             String picId = "";
 
             int numValues = ctx.DIGITS().size();
+            int value1 = 0;
             if(numValues > 0){
-                int value1 = Integer.parseInt(ctx.DIGITS(0).getText());
+                value1 = Integer.parseInt(ctx.DIGITS(0).getText());
+            }
+            if(numValues == 1){
+                picsManager.setFrameRate(value1);
+            }
+            if(numValues > 1){
                 int value2 = Integer.parseInt(ctx.DIGITS(1).getText());
                 if(numValues == 2){
                     picId = path + "-" + value1 + "-" + value2;
@@ -386,5 +421,9 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
             return visitBool_expression(ctx.bool_expression());
         }
         return super.visitWhere_clause(ctx);
+    }
+
+    public void setCurrentFrame(int frameNumber) {
+        this.picsManager.setCurrentFrame(frameNumber);
     }
 }

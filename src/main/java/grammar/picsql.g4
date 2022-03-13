@@ -12,6 +12,7 @@ MIN : 'min';
 MAX: 'max';
 X: 'x';
 Y: 'y';
+T: 't';
 R: 'r';
 G: 'g';
 B: 'b';
@@ -58,7 +59,7 @@ selection :
     selection ( STAR | DIVIDE | MODULO) selection |
     selection ( PLUS | MINUS) selection;
 
-col_value : alias_dot? alias_value |  X | Y;
+col_value : alias_dot? alias_value |  X | Y | T;
 
 single_field :
      DIGITS |
@@ -89,7 +90,9 @@ path_part: DOT DOT | STR | SPECIAL_CHAR;
 path: begin_path? path_part (PATH_SLASH path_part)* DOT path_part;
 
 pic_path:
-    ( LEFT_PARENTHESIS path COMMA DIGITS COMMA DIGITS RIGHT_PARENTHESIS |
+    (
+    LEFT_PARENTHESIS path COMMA DIGITS RIGHT_PARENTHESIS |
+    LEFT_PARENTHESIS path COMMA DIGITS COMMA DIGITS RIGHT_PARENTHESIS |
       LEFT_PARENTHESIS path COMMA DIGITS COMMA DIGITS COMMA DIGITS COMMA DIGITS RIGHT_PARENTHESIS
     | path) alias?;
 
