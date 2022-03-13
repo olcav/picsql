@@ -54,8 +54,10 @@ public class MainFrame {
   private void loadPicture(SqlPicQueryParser sqlPicQueryParser, TextArea area, JPanel imagePanel) {
     try {
       if (!Objects.equals(text, area.getText())) {
-        BufferedImage bufferedImage = sqlPicQueryParser.parseToImage(area.getText());
-        imagePanel.getGraphics().drawImage(bufferedImage, 0, 0, null);
+          new Thread(() -> {
+              BufferedImage bufferedImage = sqlPicQueryParser.parseToImage(area.getText());
+              imagePanel.getGraphics().drawImage(bufferedImage, 0, 0, null);
+          }).start();
       }
       text = area.getText();
     } catch (Exception ignored) {
