@@ -17,6 +17,7 @@ public class SqlFields {
         fieldsByName.put("x", (double) x);
         fieldsByName.put("y", (double) y);
         fieldsByName.put("rank()", (double) rank);
+        fieldsByName.put("t", (double)picsManager.getCurrentFrame());
 
         for (Map.Entry<String, BufferedImage> entry : picsManager.getPicsByAliases().entrySet()) {
             String alias = entry.getKey();

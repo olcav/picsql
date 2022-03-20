@@ -3,6 +3,7 @@ package model;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toMap;
 import static visitor.SqlPicQuerySelectQueryVisitor.NO_ALIAS;
@@ -12,6 +13,8 @@ public class PicsManager {
   private Map<String, BufferedImage> picsByPath = new HashMap<>();
   private Map<String, String> aliasByPath = new HashMap<>();
   private int width, height;
+  private int frameRate = 0;
+  private int currentFrame = 0;
 
   public PicsManager() {}
 
@@ -44,13 +47,16 @@ public class PicsManager {
   }
 
   public BufferedImage getPicFromAlias(String alias) {
-    String pathFromAlias =
-        aliasByPath.entrySet().stream()
-            .filter(entry -> entry.getValue().equals(alias))
-            .findFirst()
-            .get()
-            .getKey();
-    return getPicFromPath(pathFromAlias);
+    Optional<Map.Entry<String, String>> findedEntry =
+        aliasByPath.entrySet().stream().filter(entry -> entry.getValue().equals(alias)).findFirst();
+    if (findedEntry.isPresent()) {
+      String pathFromAlias = findedEntry.get().getKey();
+      return getPicFromPath(pathFromAlias);
+    } else {
+      System.out.println("Image not found !" + alias);
+      System.out.println("Current aliases : " + aliasByPath);
+      return null;
+    }
   }
 
   public BufferedImage getPicFromPath(String id) {
@@ -76,5 +82,21 @@ public class PicsManager {
 
   public String getLastNoAlias() {
     return NO_ALIAS + "_" + (countNoAlias - 1);
+  }
+
+  public void setFrameRate(int frameRate) {
+    this.frameRate = frameRate;
+  }
+
+  public int getFrameRate() {
+    return frameRate;
+  }
+
+  public void setCurrentFrame(int currentFrame) {
+    this.currentFrame = currentFrame;
+  }
+
+  public int getCurrentFrame() {
+    return currentFrame;
   }
 }
