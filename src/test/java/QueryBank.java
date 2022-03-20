@@ -4,7 +4,7 @@ public class QueryBank {
     // Basic selections
     "select r,g,b from ./examples/face.bmp",
     "select g,b,r from ./examples/face.bmp",
-    "select t.r,t2.r,t.g from ./examples/face.bmp t, ./examples/face.bmp t2",
+    "select alias1.r, alias2.r, alias1.g from ./examples/face.bmp alias1, ./examples/face.bmp alias2",
 
     // Path tests
     "select r,g,b from C:/examples/face.bmp",
@@ -36,7 +36,10 @@ public class QueryBank {
     // Lead / Lag
     "select lead(r,5,5),lag(g,10,10) from ./examples/face.bmp",
     "select r,(lead(r,5,5)*lag(g,5,5))%255,lag(r,10,10) from ./examples/face.bmp",
-    "select lag(r, x%10, y%10), lead(g, x%10, y%10), lag(b, x%10, y%10) from ./examples/face.bmp"
+    "select lag(r, x%10, y%10), lead(g, x%10, y%10), lag(b, x%10, y%10) from ./examples/face.bmp",
+
+    // Gif generation
+    "select r,g,t from (./examples/face.bmp, 50)"
   };
 
   public static final String[] QUERIES_GENERATION_TESTS = {
