@@ -28,6 +28,7 @@ public class QueryBank {
     "select t1.r, t2.b, t2.b from (select r, g from test.bmp) t1, (select b from test2.bmp where r > 50) t2",
 
     // Math functions
+    "select (b/r)*r, r+(g*g)-b, b*r*(r/b)+r from ./examples/face.bmp",
     "select sin(1), tan(5.2),cos(r*g) from ./examples/face.bmp",
     "select pi() from ./examples/face.bmp",
     "select sin(1), tan(5.2), cos(r) from ./examples/face.bmp",

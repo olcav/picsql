@@ -6,8 +6,8 @@ WHERE : 'where';
 COMMA: ',';
 OPERATOR_LOGIC : 'and' | 'or';
 STAR : '*';
-PATH_SLASH: ('/' | '\\');
 DIVIDE : '/';
+PATH_SLASH:  '\\';
 MIN : 'min';
 MAX: 'max';
 X: 'x';
@@ -81,13 +81,13 @@ multiple_params_function: (MIN | MAX) LEFT_PARENTHESIS selection (COMMA selectio
 bool_expression:
     selection OPERATOR_CONDITION selection;
 
-begin_path: DOT DOT? PATH_SLASH  | STR DOTS PATH_SLASH;
+begin_path: DOT DOT? (PATH_SLASH | DIVIDE)  | STR DOTS (PATH_SLASH | DIVIDE);
 
 alias : STR;
 alias_dot : STR DOT;
 path_part: DOT DOT | STR | SPECIAL_CHAR;
 
-path: begin_path? path_part (PATH_SLASH path_part)* DOT path_part;
+path: begin_path? path_part ((PATH_SLASH | DIVIDE) path_part)* DOT path_part;
 
 pic_path:
     (
