@@ -31,6 +31,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
 
     public static final String NO_ALIAS = "<no_alias>";
+    public static final String AND = "and";
+    public static final String OR = "or";
+    public static final String EQUALS = "=";
+    public static final String NOT_EQUALS = "!=";
+    public static final String LESSER_THAN = "<";
+    public static final String GREATER_THAN = ">";
+    public static final String LESSER_THAN_EQUALS = "<=";
+    public static final String GREATER_THAN_EQUALS = ">=";
+    public static final String MIN = "min";
+    public static final String MAX = "max";
+    public static final String LEAD = "lead";
+    public static final String LAG = "lag";
+    public static final String SIN = "sin";
+    public static final String COS = "cos";
+    public static final String TAN = "tan";
+    public static final String STAR = "*";
+    public static final String PI = "pi()";
+    public static final String RAND = "rand()";
+
     private SqlFields sqlFields;
     private PicsManager picsManager  = new PicsManager();
 
@@ -41,7 +60,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
         return new DoubleValue(sqlFields.getField(field));
     }
 
-    public int getFrameRate(picsqlParser.QueryContext ctx){
+    public int getNumberOfFames(picsqlParser.QueryContext ctx){
         picsqlParser.SelectstmtContext selectstmt = ctx.selectstmt();
         AtomicInteger frameRate = new AtomicInteger();
         selectstmt.from_source_list().forEach(
@@ -160,13 +179,13 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
         String text = ctx.getText();
         double result;
         switch (text) {
-            case "rand()":
+            case RAND:
                 result = Math.random();
                 break;
-            case "pi()":
+            case PI:
                 result = Math.PI;
                 break;
-            case "*":
+            case STAR:
                 result = -1d;
                 break;
             default:
@@ -184,9 +203,9 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
         DoubleValue singleField = (DoubleValue) visitSelection(ctx.selection());
 
         return switch (ctx.getChild(0).getText()) {
-            case "sin" -> new DoubleValue(Math.sin(singleField.getValue()));
-            case "cos" -> new DoubleValue(Math.cos(singleField.getValue()));
-            case "tan" -> new DoubleValue(Math.tan(singleField.getValue()));
+            case SIN -> new DoubleValue(Math.sin(singleField.getValue()));
+            case COS -> new DoubleValue(Math.cos(singleField.getValue()));
+            case TAN -> new DoubleValue(Math.tan(singleField.getValue()));
             default -> null;
         };
     }
@@ -196,8 +215,8 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
         picsqlParser.Alias_dotContext alias_dotContext = ctx.alias_dot();
         String field = ctx.alias_value().getText();
 
-        final int x = sqlFields.getField("x").intValue();
-        final int y = sqlFields.getField("y").intValue();
+        final int x = sqlFields.getField(SqlFields.X).intValue();
+        final int y = sqlFields.getField(SqlFields.Y).intValue();
 
         picsqlParser.SelectionContext selection1 = ctx.selection(0);
         picsqlParser.SelectionContext selection2 = ctx.selection(1);
@@ -206,8 +225,8 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
 
         String tableName  = alias_dotContext != null && alias_dotContext.STR().getText() != null ? alias_dotContext.STR().getText() : picsManager.getLastNoAlias();
         return switch (ctx.getChild(0).getText()) {
-            case "lag" -> new DoubleValue(sqlFields.getXYAtPosition(tableName, field, x - singleField1, y - singleField2));
-            case "lead" -> new DoubleValue(sqlFields.getXYAtPosition(tableName, field, x + singleField1, y + singleField2));
+            case LAG -> new DoubleValue(sqlFields.getXYAtPosition(tableName, field, x - singleField1, y - singleField2));
+            case LEAD -> new DoubleValue(sqlFields.getXYAtPosition(tableName, field, x + singleField1, y + singleField2));
             default -> null;
         };
     }
@@ -223,8 +242,8 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
                 result = val.getValue();
             } else {
                 switch (functionName) {
-                    case "min" -> result = Math.min(val.getValue(), result);
-                    case "max" -> result = Math.max(val.getValue(), result);
+                    case MIN -> result = Math.min(val.getValue(), result);
+                    case MAX -> result = Math.max(val.getValue(), result);
                 }
             }
         }
@@ -316,9 +335,6 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
             if(numValues > 0){
                 value1 = Integer.parseInt(ctx.DIGITS(0).getText());
             }
-            if(numValues == 1){
-                picsManager.setFrameRate(value1);
-            }
             if(numValues > 1){
                 int value2 = Integer.parseInt(ctx.DIGITS(1).getText());
                 if(numValues == 2){
@@ -326,16 +342,8 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
                     BufferedImage cachedImage = picsManager.getPicFromPath(picId);
                     if(cachedImage != null){
                         image =  cachedImage;
-                    }else{
-                        BufferedImage toClone = ImageIO.read(new File(path));
-                        image = new BufferedImage(toClone.getWidth()* value1, toClone.getHeight()* value2, toClone.getType());
-                        Graphics g = image.getGraphics();
-                        for(int i = 0; i  < value1; i++){
-                            for(int j = 0; j  < value2; j++){
-                                g.drawImage(toClone, i*toClone.getWidth(), j*toClone.getHeight(), null);
-                            }
-                        }
-                        g.dispose();
+                    } else {
+                        image = getBufferedImage(path, value1, value2);
                         picsManager.addPic(picId, image);
                     }
                 }else if(numValues == 4){
@@ -346,7 +354,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
                     BufferedImage cachedImage = picsManager.getPicFromPath(picId);
                     if(cachedImage != null){
                         image = cachedImage;
-                    }else{
+                    } else {
                         Rectangle sourceRegion = new Rectangle(
                                 value1,
                                 value2,
@@ -380,28 +388,46 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
             }
             return new PictureValue(image, picsManager.generateAlias(ctx.alias() == null ? null : ctx.alias().getText()), picId);
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
         return new NullValue();
+    }
+
+    private BufferedImage getBufferedImage(String path, int width, int height) throws IOException {
+        BufferedImage image;
+        BufferedImage toClone = ImageIO.read(new File(path));
+        image = new BufferedImage(toClone.getWidth()* width, toClone.getHeight()* height, toClone.getType());
+        Graphics g = image.getGraphics();
+        for(int i = 0; i  < width; i++){
+            for(int j = 0; j  < height; j++){
+                g.drawImage(toClone, i*toClone.getWidth(), j*toClone.getHeight(), null);
+            }
+        }
+        g.dispose();
+        return image;
     }
 
     @Override
     public Value visitBool_expression(picsqlParser.Bool_expressionContext ctx) {
         if (ctx.selection().size() == 2) {
-            Double field1 = ((DoubleValue) visitSelection(ctx.selection(0))).getValue();
-            Double field2 = ((DoubleValue) visitSelection(ctx.selection(1))).getValue();
+            Double field1 = getDoubleValueFromBoolExpr(ctx, 0);
+            Double field2 = getDoubleValueFromBoolExpr(ctx, 1);
 
             return new BoolValue(switch (ctx.OPERATOR_CONDITION().getText()) {
-                case "=" -> Objects.equals(field1, field2);
-                case "!=" -> !Objects.equals(field1, field2);
-                case "<" -> field1 < field2;
-                case ">" -> field1 > field2;
-                case "<=" -> field1 <= field2;
-                case ">=" -> field1 >= field2;
+                case EQUALS -> Objects.equals(field1, field2);
+                case NOT_EQUALS -> !Objects.equals(field1, field2);
+                case LESSER_THAN -> field1 < field2;
+                case GREATER_THAN -> field1 > field2;
+                case LESSER_THAN_EQUALS -> field1 <= field2;
+                case GREATER_THAN_EQUALS -> field1 >= field2;
                 default -> false;
             });
         }
         return super.visitBool_expression(ctx);
+    }
+
+    private Double getDoubleValueFromBoolExpr(picsqlParser.Bool_expressionContext ctx, int selection) {
+        return ((DoubleValue) visitSelection(ctx.selection(selection))).getValue();
     }
 
     @Override
@@ -410,9 +436,9 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
             Boolean whereCondition = ((BoolValue) this.visitWhere_clause(ctx.where_clause(0))).getValue();
             Boolean value = ((BoolValue) this.visitWhere_clause(ctx.where_clause(1))).getValue();
             switch (ctx.OPERATOR_LOGIC().getText()) {
-                case "and":
+                case AND:
                     return new BoolValue(whereCondition && value);
-                case "or":
+                case OR:
                     return new BoolValue(whereCondition || value);
             }
         } else if (ctx.where_clause().size() == 1) {
@@ -427,3 +453,4 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
         this.picsManager.setCurrentFrame(frameNumber);
     }
 }
+

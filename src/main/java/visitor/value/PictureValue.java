@@ -5,9 +5,9 @@ import java.awt.image.BufferedImage;
 import static model.SqlFields.NO_ALIAS;
 
 public class PictureValue extends Value<BufferedImage> {
-  private BufferedImage image;
-  private String alias;
-  private String id;
+  private final BufferedImage image;
+  private final String alias;
+  private final String id;
 
   public PictureValue(BufferedImage image, String alias, String id) {
     this.image = image;

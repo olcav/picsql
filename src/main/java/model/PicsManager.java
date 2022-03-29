@@ -8,12 +8,14 @@ import java.util.Optional;
 import static java.util.stream.Collectors.toMap;
 import static visitor.SqlPicQuerySelectQueryVisitor.NO_ALIAS;
 
+/**
+ * Contains and manage pictures loaded and transformed by the visitor.
+ */
 public class PicsManager {
 
-  private Map<String, BufferedImage> picsByPath = new HashMap<>();
-  private Map<String, String> aliasByPath = new HashMap<>();
+  private final Map<String, BufferedImage> picsByPath = new HashMap<>();
+  private final Map<String, String> aliasByPath = new HashMap<>();
   private int width, height;
-  private int frameRate = 0;
   private int currentFrame = 0;
 
   public PicsManager() {}
@@ -82,14 +84,6 @@ public class PicsManager {
 
   public String getLastNoAlias() {
     return NO_ALIAS + "_" + (countNoAlias - 1);
-  }
-
-  public void setFrameRate(int frameRate) {
-    this.frameRate = frameRate;
-  }
-
-  public int getFrameRate() {
-    return frameRate;
   }
 
   public void setCurrentFrame(int currentFrame) {

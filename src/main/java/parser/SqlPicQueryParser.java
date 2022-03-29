@@ -61,10 +61,10 @@ public class SqlPicQueryParser {
   public void parseToWriteImage(String sql, String newFile, String newFileFormat) {
     buildParser(sql);
     SqlPicQuerySelectQueryVisitor sqlPicQuerySelectQueryVisitor = new SqlPicQuerySelectQueryVisitor();
-    int frameRate = sqlPicQuerySelectQueryVisitor.getFrameRate(picsqlParser.query());
+    int numberOfFrames = sqlPicQuerySelectQueryVisitor.getNumberOfFames(picsqlParser.query());
 
-    if (frameRate > 0) {
-      parseToWriteGif(sql, newFile, frameRate);
+    if (numberOfFrames > 0) {
+      parseToWriteGif(sql, newFile, numberOfFrames);
     } else {
       BufferedImage bufferedImage = parseToImage(sqlPicQuerySelectQueryVisitor);
       try {
