@@ -1,9 +1,11 @@
-### (NEXT) Version 1.0.3
+### (NEXT) Version 1.0.4
+
+### Version 1.0.3
 
 - Create GIF animation with syntax :
 
 ```sql
-select r, g, (t * 10) % 255
+select lag(r, 5, t%20), (g*t)%255, (t * 10) % 255 
 from (./examples/face.bmp, 50)
 ```
 
@@ -12,8 +14,13 @@ Create a GIF by applying 50 times the query on the same picture, with increments
 Run query like that :
 
 ```bash
-picsql.jar "select r, g, (t * 10) % 255from (./examples/face.bmp, 50)" "test.gif"
+picsql.jar "select lag(r, 5, t%20), (g*t)%255, (t * 10) % 255 from (./examples/face.bmp, 50)" "test.gif"
 ```
+
+Result:
+
+![](example.gif)
+
 
 ### Version 1.0.2
 

@@ -242,3 +242,24 @@ from
 ```
 
 ![](examples/face_15.bmp)
+
+<hr>
+
+GIF animation :
+
+```sql
+select lag(r, 5, t%20), (g*t)%255, (t * 10) % 255 
+from (./examples/face.bmp, 50)
+```
+
+Create a GIF by applying 50 times the query on the same picture, with increments "t" from 0 to 50.
+
+Run query like that :
+
+```bash
+picsql.jar "select lag(r, 5, t%20), (g*t)%255, (t * 10) % 255 from (./examples/face.bmp, 50)" "test.gif"
+```
+
+Result:
+
+![](example.gif)
