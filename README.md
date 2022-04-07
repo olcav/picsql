@@ -25,7 +25,7 @@ Can also be used like a library by including JAR (doc coming soon).
 
 ---
 
-### Last released version : 1.0.2
+### Last released version : 1.0.3
 
 ### [Changelogs](CHANGELOG.md)
 
