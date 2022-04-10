@@ -66,7 +66,9 @@ public class SqlPicQueryParser {
     if (numberOfFrames > 0) {
       parseToWriteGif(sql, newFile, numberOfFrames);
     } else {
-      BufferedImage bufferedImage = parseToImage(sqlPicQuerySelectQueryVisitor);
+      buildParser(sql);
+      SqlPicQuerySelectQueryVisitor sqlPicQuerySelectQueryVisitor2 = new SqlPicQuerySelectQueryVisitor();
+      BufferedImage bufferedImage = parseToImage(sqlPicQuerySelectQueryVisitor2);
       try {
         ImageIO.write(bufferedImage, newFileFormat, new File(newFile));
       } catch (IOException e) {
