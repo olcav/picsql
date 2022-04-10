@@ -78,6 +78,26 @@ public interface picsqlListener extends ParseTreeListener {
 	 */
 	void exitCol_value(picsqlParser.Col_valueContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link picsqlParser#mask_conv_vals}.
+	 * @param ctx the parse tree
+	 */
+	void enterMask_conv_vals(picsqlParser.Mask_conv_valsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link picsqlParser#mask_conv_vals}.
+	 * @param ctx the parse tree
+	 */
+	void exitMask_conv_vals(picsqlParser.Mask_conv_valsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link picsqlParser#mask_conv}.
+	 * @param ctx the parse tree
+	 */
+	void enterMask_conv(picsqlParser.Mask_convContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link picsqlParser#mask_conv}.
+	 * @param ctx the parse tree
+	 */
+	void exitMask_conv(picsqlParser.Mask_convContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link picsqlParser#single_field}.
 	 * @param ctx the parse tree
 	 */

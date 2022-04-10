@@ -35,6 +35,8 @@ STR_PATH: [a-zA-Z0-9];
 DOTS: ':';
 LEFT_PARENTHESIS : '(';
 RIGHT_PARENTHESIS : ')';
+LEFT_BRACKET: '[';
+RIGHT_BRACKET : ']';
 OPERATOR_CONDITION : '=' | '!=' | '<' | '>' | '<=' | '>=';
 DOT : '.';
 IN : 'in';
@@ -61,11 +63,23 @@ selection :
 
 col_value : alias_dot? alias_value |  X | Y | T;
 
+mask_conv_vals :
+    selection COMMA selection COMMA
+    selection COMMA selection COMMA
+    selection COMMA selection COMMA
+    selection COMMA selection COMMA
+    selection;
+
+mask_conv:
+ LEFT_BRACKET mask_conv_vals RIGHT_BRACKET
+;
+
 single_field :
      DIGITS |
      DECIMAL |
      STAR |
      col_value |
+     mask_conv |
      zero_param_function |
      one_params_function |
      three_params_function |
