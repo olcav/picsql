@@ -1,4 +1,6 @@
-### (NEXT) Version 1.0.4
+### (NEXT) Version 1.0.5
+
+### Version 1.0.4 : hotfix
 
 ### Version 1.0.3
 
