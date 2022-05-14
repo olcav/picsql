@@ -74,7 +74,10 @@ mask_conv:
  LEFT_BRACKET mask_conv_vals RIGHT_BRACKET
 ;
 
+negate_single_field: MINUS single_field;
+
 single_field :
+     negate_single_field |
      DIGITS |
      DECIMAL |
      STAR |

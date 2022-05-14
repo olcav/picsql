@@ -124,6 +124,18 @@ public class picsqlBaseListener implements picsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterNegate_single_field(picsqlParser.Negate_single_fieldContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNegate_single_field(picsqlParser.Negate_single_fieldContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSingle_field(picsqlParser.Single_fieldContext ctx) { }
 	/**
 	 * {@inheritDoc}

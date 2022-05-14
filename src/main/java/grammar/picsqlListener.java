@@ -98,6 +98,16 @@ public interface picsqlListener extends ParseTreeListener {
 	 */
 	void exitMask_conv(picsqlParser.Mask_convContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link picsqlParser#negate_single_field}.
+	 * @param ctx the parse tree
+	 */
+	void enterNegate_single_field(picsqlParser.Negate_single_fieldContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link picsqlParser#negate_single_field}.
+	 * @param ctx the parse tree
+	 */
+	void exitNegate_single_field(picsqlParser.Negate_single_fieldContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link picsqlParser#single_field}.
 	 * @param ctx the parse tree
 	 */

@@ -176,6 +176,15 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
     }
 
     @Override
+    public Value visitNegate_single_field(picsqlParser.Negate_single_fieldContext ctx) {
+        Value value = this.visitSingle_field(ctx.single_field());
+        if (value instanceof DoubleValue) {
+            return new DoubleValue(((DoubleValue) value).getValue() * -1);
+        }
+        return new NullValue();
+    }
+
+    @Override
     public Value visitMask_conv(picsqlParser.Mask_convContext ctx) {
 
         List<picsqlParser.SelectionContext> selections = ctx.mask_conv_vals().selection();
