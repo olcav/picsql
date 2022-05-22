@@ -63,4 +63,17 @@ public class SqlFields {
     public Double getField(String name) {
         return fieldsByName.get(name);
     }
+
+    public int getX(){
+        return getField(SqlFields.X).intValue();
+    }
+
+    public int getY(){
+        return getField(SqlFields.Y).intValue();
+    }
+
+    public int getRank(){
+        return getField(SqlFields.RANK).intValue();
+    }
+
 }

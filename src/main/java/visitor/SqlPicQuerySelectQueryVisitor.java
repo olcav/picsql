@@ -157,6 +157,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
     public Value visitSingle_field(picsqlParser.Single_fieldContext ctx) {
         DoubleValue childValue = null;
         ParseTree child = ctx.getChild(0);
+        // If it's not a column ref...
         if (ctx.col_value() == null) {
             childValue = (DoubleValue) child.accept(this);
         }
@@ -167,11 +168,39 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
             } catch (Exception ignored) {
             }
         }
-        // Always null, we have raw non decimal text here.
+        // Always null, we have raw no decimal text here.
         if (childValue == null) {
             childValue = getField(ctx.getText());
         }
         return childValue;
+    }
+
+    @Override
+    public Value visitNegate_single_field(picsqlParser.Negate_single_fieldContext ctx) {
+        Value value = this.visitSingle_field(ctx.single_field());
+        if (value instanceof DoubleValue) {
+            return new DoubleValue(((DoubleValue) value).getValue() * -1);
+        }
+        return new NullValue();
+    }
+
+    @Override
+    public Value visitMask_conv(picsqlParser.Mask_convContext ctx) {
+
+        List<picsqlParser.SelectionContext> selections = ctx.mask_conv_vals().selection();
+
+        SqlFields oldSqlFields = this.sqlFields;
+
+        int x = sqlFields.getX();
+        int y = sqlFields.getY();
+        double value = 0.0;
+        for (int i = 0;i < selections.size(); i++) {
+            picsqlParser.SelectionContext selectionContext = selections.get(i);
+            this.sqlFields = new SqlFields(x + (i % 3) - 1, y + (i % 3) - 1, this.sqlFields.getRank(), picsManager);
+            value += ((DoubleValue) selectionContext.accept(this)).getValue();
+        }
+        this.sqlFields = oldSqlFields;
+        return new DoubleValue(value / 9);
     }
 
     @Override
@@ -215,14 +244,13 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
         picsqlParser.Alias_dotContext alias_dotContext = ctx.alias_dot();
         String field = ctx.alias_value().getText();
 
-        final int x = sqlFields.getField(SqlFields.X).intValue();
-        final int y = sqlFields.getField(SqlFields.Y).intValue();
-
         picsqlParser.SelectionContext selection1 = ctx.selection(0);
         picsqlParser.SelectionContext selection2 = ctx.selection(1);
         int singleField1 = ((DoubleValue) visitSelection(selection1)).getValue().intValue();
         int singleField2 = ((DoubleValue) visitSelection(selection2)).getValue().intValue();
 
+        final int x = sqlFields.getX();
+        final int y = sqlFields.getY();
         String tableName  = alias_dotContext != null && alias_dotContext.STR().getText() != null ? alias_dotContext.STR().getText() : picsManager.getLastNoAlias();
         return switch (ctx.getChild(0).getText()) {
             case LAG -> new DoubleValue(sqlFields.getXYAtPosition(tableName, field, x - singleField1, y - singleField2));

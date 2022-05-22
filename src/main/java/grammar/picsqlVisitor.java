@@ -53,6 +53,24 @@ public interface picsqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCol_value(picsqlParser.Col_valueContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link picsqlParser#mask_conv_vals}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMask_conv_vals(picsqlParser.Mask_conv_valsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link picsqlParser#mask_conv}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMask_conv(picsqlParser.Mask_convContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link picsqlParser#negate_single_field}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNegate_single_field(picsqlParser.Negate_single_fieldContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link picsqlParser#single_field}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
