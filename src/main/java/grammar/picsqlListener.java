@@ -1,4 +1,4 @@
-// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
+// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.10.1
 package grammar;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -167,6 +167,16 @@ public interface picsqlListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMultiple_params_function(picsqlParser.Multiple_params_functionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link picsqlParser#flip_function}.
+	 * @param ctx the parse tree
+	 */
+	void enterFlip_function(picsqlParser.Flip_functionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link picsqlParser#flip_function}.
+	 * @param ctx the parse tree
+	 */
+	void exitFlip_function(picsqlParser.Flip_functionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link picsqlParser#bool_expression}.
 	 * @param ctx the parse tree

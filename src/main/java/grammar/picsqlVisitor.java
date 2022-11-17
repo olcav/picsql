@@ -1,4 +1,4 @@
-// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
+// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.10.1
 package grammar;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -106,6 +106,12 @@ public interface picsqlVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMultiple_params_function(picsqlParser.Multiple_params_functionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link picsqlParser#flip_function}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFlip_function(picsqlParser.Flip_functionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link picsqlParser#bool_expression}.
 	 * @param ctx the parse tree

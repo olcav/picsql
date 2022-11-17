@@ -1,4 +1,4 @@
-// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.9.2
+// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.10.1
 package grammar;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -203,6 +203,18 @@ public class picsqlBaseListener implements picsqlListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMultiple_params_function(picsqlParser.Multiple_params_functionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFlip_function(picsqlParser.Flip_functionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFlip_function(picsqlParser.Flip_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
