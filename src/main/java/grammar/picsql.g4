@@ -12,6 +12,7 @@ MIN : 'min';
 MAX: 'max';
 X: 'x';
 Y: 'y';
+XY: 'xy';
 T: 't';
 R: 'r';
 G: 'g';
@@ -24,6 +25,7 @@ COS: 'cos';
 TAN: 'tan';
 LAG: 'lag';
 LEAD: 'lead';
+FLIP: 'flip';
 MODULO : '%';
 PLUS : '+';
 MINUS :  '-';
@@ -86,7 +88,8 @@ single_field :
      zero_param_function |
      one_params_function |
      three_params_function |
-     multiple_params_function;
+     multiple_params_function |
+     flip_function;
 
 alias_value: R | G | B;
 
@@ -94,6 +97,7 @@ zero_param_function : RAND | RANK | PI;
 one_params_function: (SIN | COS | TAN) LEFT_PARENTHESIS selection RIGHT_PARENTHESIS;
 three_params_function: (LAG | LEAD) LEFT_PARENTHESIS alias_dot? alias_value COMMA selection COMMA selection RIGHT_PARENTHESIS;
 multiple_params_function: (MIN | MAX) LEFT_PARENTHESIS selection (COMMA selection)* RIGHT_PARENTHESIS;
+flip_function: FLIP LEFT_PARENTHESIS selection COMMA (X|Y|XY) RIGHT_PARENTHESIS;
 
 bool_expression:
     selection OPERATOR_CONDITION selection;

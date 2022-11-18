@@ -76,4 +76,11 @@ public class SqlFields {
         return getField(SqlFields.RANK).intValue();
     }
 
+    public int getWidth(){
+        return picsManager.getWidth();
+    }
+
+    public int getHeight(){
+        return picsManager.getHeight();
+    }
 }

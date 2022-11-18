@@ -204,6 +204,33 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
     }
 
     @Override
+    public Value visitFlip_function(picsqlParser.Flip_functionContext ctx) {
+        SqlFields oldSqlFields = this.sqlFields;
+
+        int x = sqlFields.getX();
+        int y = sqlFields.getY();
+        int width = sqlFields.getWidth();
+        int height = sqlFields.getHeight();
+
+        int newX = x;
+        int newY = y;
+
+        if((ctx.X() != null || ctx.XY() != null) && x > (width) / 2){
+            newX = width - x;
+        }
+        if((ctx.Y() != null || ctx.XY() != null) && y > (height) / 2){
+            newY = height - y;
+        }
+
+        this.sqlFields = new SqlFields(newX, newY, this.sqlFields.getRank(), picsManager);
+
+        Double value = ((DoubleValue) ctx.selection().accept(this)).getValue();
+
+        this.sqlFields = oldSqlFields;
+        return new DoubleValue(value);
+    }
+
+    @Override
     public Value visitZero_param_function(picsqlParser.Zero_param_functionContext ctx) {
         String text = ctx.getText();
         double result;
