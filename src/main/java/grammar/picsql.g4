@@ -26,6 +26,7 @@ TAN: 'tan';
 LAG: 'lag';
 LEAD: 'lead';
 FLIP: 'flip';
+DISCR: 'discr';
 MODULO : '%';
 PLUS : '+';
 MINUS :  '-';
@@ -89,7 +90,8 @@ single_field :
      one_params_function |
      three_params_function |
      multiple_params_function |
-     flip_function;
+     flip_function |
+     discr_function;
 
 alias_value: R | G | B;
 
@@ -98,6 +100,7 @@ one_params_function: (SIN | COS | TAN) LEFT_PARENTHESIS selection RIGHT_PARENTHE
 three_params_function: (LAG | LEAD) LEFT_PARENTHESIS alias_dot? alias_value COMMA selection COMMA selection RIGHT_PARENTHESIS;
 multiple_params_function: (MIN | MAX) LEFT_PARENTHESIS selection (COMMA selection)* RIGHT_PARENTHESIS;
 flip_function: FLIP LEFT_PARENTHESIS selection COMMA (X|Y|XY) RIGHT_PARENTHESIS;
+discr_function: DISCR LEFT_PARENTHESIS selection COMMA selection RIGHT_PARENTHESIS;
 
 bool_expression:
     selection OPERATOR_CONDITION selection;

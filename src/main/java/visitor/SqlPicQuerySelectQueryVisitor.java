@@ -231,6 +231,13 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
     }
 
     @Override
+    public Value visitDiscr_function(picsqlParser.Discr_functionContext ctx) {
+        Double value = ((DoubleValue) ctx.selection(0).accept(this)).getValue();
+        Double buckets = ((DoubleValue) ctx.selection(1).accept(this)).getValue();
+        return new DoubleValue(Math.ceil((value*buckets)/255)* (255/buckets));
+    }
+
+    @Override
     public Value visitZero_param_function(picsqlParser.Zero_param_functionContext ctx) {
         String text = ctx.getText();
         double result;

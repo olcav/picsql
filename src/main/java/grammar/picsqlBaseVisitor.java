@@ -136,6 +136,13 @@ public class picsqlBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitDiscr_function(picsqlParser.Discr_functionContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitBool_expression(picsqlParser.Bool_expressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

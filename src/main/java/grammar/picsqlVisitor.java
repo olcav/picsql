@@ -113,6 +113,12 @@ public interface picsqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFlip_function(picsqlParser.Flip_functionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link picsqlParser#discr_function}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDiscr_function(picsqlParser.Discr_functionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link picsqlParser#bool_expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

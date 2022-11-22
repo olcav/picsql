@@ -220,6 +220,18 @@ public class picsqlBaseListener implements picsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDiscr_function(picsqlParser.Discr_functionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDiscr_function(picsqlParser.Discr_functionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBool_expression(picsqlParser.Bool_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}

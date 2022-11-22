@@ -178,6 +178,16 @@ public interface picsqlListener extends ParseTreeListener {
 	 */
 	void exitFlip_function(picsqlParser.Flip_functionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link picsqlParser#discr_function}.
+	 * @param ctx the parse tree
+	 */
+	void enterDiscr_function(picsqlParser.Discr_functionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link picsqlParser#discr_function}.
+	 * @param ctx the parse tree
+	 */
+	void exitDiscr_function(picsqlParser.Discr_functionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link picsqlParser#bool_expression}.
 	 * @param ctx the parse tree
 	 */
