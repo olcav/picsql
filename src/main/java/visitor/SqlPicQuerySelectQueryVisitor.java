@@ -46,6 +46,7 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
     public static final String SIN = "sin";
     public static final String COS = "cos";
     public static final String TAN = "tan";
+    public static final String BUTTER = "butter";
     public static final String STAR = "*";
     public static final String PI = "pi()";
     public static final String RAND = "rand()";
@@ -269,6 +270,17 @@ public class SqlPicQuerySelectQueryVisitor extends picsqlBaseVisitor<Value> {
             case SIN -> new DoubleValue(Math.sin(singleField.getValue()));
             case COS -> new DoubleValue(Math.cos(singleField.getValue()));
             case TAN -> new DoubleValue(Math.tan(singleField.getValue()));
+            default -> null;
+        };
+    }
+
+    @Override
+    public Value visitButter_function(picsqlParser.Butter_functionContext ctx) {
+        String channel = ctx.alias_value().getText();
+        return switch (channel) {
+            case "r" -> new DoubleValue(240.0);
+            case "g" -> new DoubleValue(227.0);
+            case "b" -> new DoubleValue(107.0);
             default -> null;
         };
     }

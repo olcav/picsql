@@ -1,4 +1,4 @@
-// Generated from C:/Users/olivi/IdeaProjects/picsql/src/main/java/grammar\picsql.g4 by ANTLR 4.10.1
+// Generated from java-escape by ANTLR 4.11.1
 package grammar;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -118,6 +118,12 @@ public interface picsqlVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDiscr_function(picsqlParser.Discr_functionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link picsqlParser#butter_function}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitButter_function(picsqlParser.Butter_functionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link picsqlParser#bool_expression}.
 	 * @param ctx the parse tree

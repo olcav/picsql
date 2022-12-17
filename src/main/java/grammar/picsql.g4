@@ -27,6 +27,7 @@ LAG: 'lag';
 LEAD: 'lead';
 FLIP: 'flip';
 DISCR: 'discr';
+BUTTER: 'butter';
 MODULO : '%';
 PLUS : '+';
 MINUS :  '-';
@@ -91,16 +92,18 @@ single_field :
      three_params_function |
      multiple_params_function |
      flip_function |
-     discr_function;
+     discr_function |
+     butter_function;
 
 alias_value: R | G | B;
 
 zero_param_function : RAND | RANK | PI;
-one_params_function: (SIN | COS | TAN) LEFT_PARENTHESIS selection RIGHT_PARENTHESIS;
+one_params_function: (SIN | COS | TAN ) LEFT_PARENTHESIS selection RIGHT_PARENTHESIS;
 three_params_function: (LAG | LEAD) LEFT_PARENTHESIS alias_dot? alias_value COMMA selection COMMA selection RIGHT_PARENTHESIS;
 multiple_params_function: (MIN | MAX) LEFT_PARENTHESIS selection (COMMA selection)* RIGHT_PARENTHESIS;
 flip_function: FLIP LEFT_PARENTHESIS selection COMMA (X|Y|XY) RIGHT_PARENTHESIS;
 discr_function: DISCR LEFT_PARENTHESIS selection COMMA selection RIGHT_PARENTHESIS;
+butter_function: BUTTER LEFT_PARENTHESIS alias_value RIGHT_PARENTHESIS;
 
 bool_expression:
     selection OPERATOR_CONDITION selection;
