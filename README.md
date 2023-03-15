@@ -384,7 +384,7 @@ Create a GIF by applying 50 times the query on the same picture, with increments
 Run query like that :
 
 ```bash
-picsql.jar "select lag(r, 5, t%20), (g*t)%255, (t * 10) % 255 from (./examples/face.bmp, 50)" "test.gif"
+java -jar picsql.jar "select lag(r, 5, t%20), (g*t)%255, (t * 10) % 255 from (./examples/face.bmp, 50)" "test.gif"
 ```
 
 Result:

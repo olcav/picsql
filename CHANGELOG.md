@@ -3,9 +3,20 @@
 ### Version 1.0.5
 
 - Convolution Mask function
+
+![](examples/face_16.bmp)
+
 - Discr Function
+
+![](examples/face_17.bmp)
+
 - Flip function
+
+![](examples/face_19.bmp)
+
 - Butter function
+
+![](examples/face_20.bmp)
 
 ### Version 1.0.4 : hotfix
 
