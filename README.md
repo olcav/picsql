@@ -18,20 +18,68 @@ Features :
 ### Launch with command line
 
 ```bash
-picsql.jar "select r,g,b from ./test.bmp" "./output.bmp"
+java -jar picsql.jar "select r,g,b from ./test.bmp" "./output.bmp"
 ```
-
-Can also be used like a library by including JAR (doc coming soon).
 
 ---
 
-### Last released version : 1.0.4
+### Launch a GUI
+
+```bash
+java -jar picsql.jar --gui
+```
+
+---
+
+### Last released version : 1.0.5
 
 ### [Changelogs](CHANGELOG.md)
 
 ---
 
 ### Examples
+
+[Select RGB Channels](#select-rgb-channels)
+
+[Select only region](#select-only-region)
+
+[Select and create i * j grid](#select-and-create-i--j-grid)
+
+[Create a colored rectangle](#create-a-colored-rectangle)
+
+[Blend colors](#blend-colors)
+
+[Play with x and y](#play-with-x-and-y)
+
+[Only x and y](#only-x-and-y)
+
+[Where condition](#where-condition)
+
+[Where condition on two values](#where-condition-on-two-values)
+
+[Maths functions](#maths-functions)
+
+[Lag and Lead](#lag-and-lead)
+
+[Complex lag and lead](#complex-lag-and-lead)
+
+[Nested lag and lead](#nested-lag-and-lead)
+
+[Picture blending](#picture-blending)
+
+[Picture blending madness](#picture-blending-madness)
+
+[Subqueries](#subqueries)
+
+[Convolution Mask](#convolution-mask)
+
+[Discretization function](#discretization-function)
+
+[Flip a channel on x, y or xy axis](#flip-a-channel-on-x-y-or-xy-axis)
+
+[Butter function](#butter-function)
+
+[GIF animation](#gif-animation)
 
 **Test pictures :**
 
@@ -45,7 +93,7 @@ face2.bmp
 
 <hr>
 
-Select r,g,b channels:
+### Select r,g,b channels
 
 ```sql
 select r, g, b
@@ -56,7 +104,7 @@ from./examples/face.bmp -- same image that original, we rebuild it.
 
 <hr>
 
-Select only region :
+### Select only region
 
 ```sql
 select r, g, b
@@ -67,7 +115,7 @@ from (. / examples / face . bmp, 10, 50, 120, 120) -- (x,y,width,height) of a re
 
 <hr>
 
-Select and create i * j grid :
+### Select and create i * j grid
 
 ```sql
 select r, g, b
@@ -78,7 +126,7 @@ from (./examples/face.bmp, 5, 5)
 
 <hr>
 
-Create a colored rectangle :
+### Create a colored rectangle
 
 ```sql
 select r, g, b
@@ -89,7 +137,7 @@ from (100, 100, 255, 0, 0) -- (width,height, r, g, b)
 
 <hr>
 
-Blend colors :
+### Blend colors
 
 ```sql
 select g, b, r
@@ -100,7 +148,7 @@ from./examples/face.bmp -- put green in red, blue in green and red in blue.
 
 <hr>
 
-Play with x and y :
+### Play with x and y
 
 ```sql
 select (r * y)%255, x,  b
@@ -111,7 +159,7 @@ from./examples/face.bmp
 
 <hr>
 
-Only x and y :
+### Only x and y
 
 ```sql
 select x * 2, y + 10, x - 10
@@ -122,7 +170,7 @@ from./examples/face.bmp -- same size than face.bmp
 
 <hr>
 
-Where condition :
+### Where condition
 
 ```sql
 select r, g, b
@@ -134,7 +182,7 @@ where r > 120
 
 <hr>
 
-Where condition on two values :
+### Where condition on two values
 
 ```sql
 select r, g, b
@@ -146,7 +194,7 @@ where r > 20 and g < 200
 
 <hr>
 
-Some maths :
+### Maths functions
 
 ```sql
 select (r * sin(x))%255, 
@@ -159,7 +207,7 @@ from./examples/face.bmp
 
 <hr>
 
-Lag and lead :
+### Lag and lead
 
 ```sql
 select lag(r, 10, 10), --lag select a red value at x-10, y-10
@@ -172,7 +220,7 @@ from./examples/face.bmp,
 
 <hr>
 
-Complex Lag and lead :
+### Complex Lag and lead
 
 ```sql
 select lag(r, sin(x), (r * g)%10),
@@ -185,7 +233,7 @@ from./examples/face.bmp
 
 <hr>
 
-Nested Lag and lead :
+### Nested Lag and lead
 
 ```sql
 -- Lag, lead or other functions can be nested
@@ -202,7 +250,7 @@ from./examples/face.bmp
 
 <hr>
 
-Picture blending :
+### Picture blending
 
 ```sql
 select f.r, -- reference the red of the first picture
@@ -217,7 +265,7 @@ from
 
 <hr>
 
-Picture blending madness:
+### Picture blending madness
 
 ```sql
 select (f.r + f2.b)%255, 
@@ -230,7 +278,7 @@ from./examples/face.bmp f, ./examples/face2.bmp f2
 
 <hr>
 
-Subqueries:
+### Subqueries
 
 ```sql
 select sub1.r,
@@ -245,7 +293,88 @@ from
 
 <hr>
 
-GIF animation :
+### Convolution Mask
+
+A convolution mask is a 9 values array, that will be applied on each pixel of the picture. Each value in the array take
+a different value of a channel relative to the pixel. The result is the sum of the values divided by nine.
+
+So if x is the pixel, and x1, x2, x3, x4, x5, x6, x7, x8 are the pixels around x, the convolution mask is :
+
+```text
+x1 | x2 | x3
+x4 | x  | x5
+x6 | x7 | x8
+```
+
+So value of red channel x.r is : (x1.r + x2.r + x3.r + x4.r + x.r + x5.r + x6.r + x7.r + x8.r) / 9
+
+```sql
+select r,
+[-r,-b,-g,b*2,r,r,r,g*2,b],
+[b,-b,b*2,r*r,b,g,b,-g,g]
+from ./examples/face.bmp
+```
+
+![](examples/face_16.bmp)
+<hr>
+
+### Discretization function
+
+Take a value of a channel and return a value between 0 and 255, with a step of 255 / step.
+
+```sql
+select
+    discr(r, 10),
+    discr(r, 5),
+    discr(g, 3)
+from ./examples/face.bmp
+```
+
+![](examples/face_17.png)
+
+<hr>
+
+### Flip a channel on x, y or xy axis
+
+ ```sql
+select
+flip(r, x),
+flip(g, x),
+flip(b, x)
+from ./examples/face.bmp
+```
+
+![](examples/face_18.png)
+
+Ugly example:
+
+```sql
+select
+    flip(r, x),
+    flip(g, xy),
+    flip(b, xy)
+from ./examples/face.bmp
+```
+
+![](examples/face_19.png)
+
+### Butter function
+
+Select r, g or b color channel of the real butter color !
+
+```sql
+select
+    butter(r),
+    g,
+    butter(b)
+from ./examples/face.bmp
+```
+
+![](examples/face_20.png)
+
+Kalon vat !
+
+### GIF animation
 
 ```sql
 select lag(r, 5, t%20), (g*t)%255, (t * 10) % 255 

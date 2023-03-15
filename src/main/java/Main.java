@@ -26,6 +26,7 @@ public class Main {
       }
     } else {
       System.out.println("Use like this : picsql.jar \"sql_query\" \"output_file_path\"");
+      System.out.println("Or : picsql.jar --gui");
     }
   }
 }
