@@ -13,8 +13,6 @@ Features :
 - Lag and lead to get relative pixels from a position.
 - Simple editor with execution of query in real time.
 
-[See Examples for syntax](https://github.com/OlivierCavadenti/picsql#examples)
-
 ### Launch with command line
 
 ```bash
@@ -330,7 +328,7 @@ select
 from ./examples/face.bmp
 ```
 
-![](examples/face_17.png)
+![](examples/face_17.bmp)
 
 <hr>
 
@@ -344,7 +342,7 @@ flip(b, x)
 from ./examples/face.bmp
 ```
 
-![](examples/face_18.png)
+![](examples/face_18.bmp)
 
 Ugly example:
 
@@ -356,7 +354,7 @@ select
 from ./examples/face.bmp
 ```
 
-![](examples/face_19.png)
+![](examples/face_19.bmp)
 
 ### Butter function
 
@@ -370,7 +368,7 @@ select
 from ./examples/face.bmp
 ```
 
-![](examples/face_20.png)
+![](examples/face_20.bmp)
 
 Kalon vat !
 
