@@ -20,6 +20,7 @@ B: 'b';
 RAND: 'rand()';
 RANK: 'rank()';
 PI: 'pi()';
+ABS: 'abs';
 SIN: 'sin';
 COS: 'cos';
 TAN: 'tan';
