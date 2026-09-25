@@ -1,0 +1,632 @@
+<title>PicSQL Arcade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --ground: #120f24;
+    --panel: #1d1838;
+    --edge: #3a3170;
+    --ink: #f4ecff;
+    --muted: #9d93c7;
+    --red: #ff4d6d;
+    --green: #3ddc97;
+    --blue: #4cc9f0;
+    --butter: #f0e36b;
+    --display: "Silkscreen", "Courier New", monospace;
+    --text: "VT323", "Courier New", monospace;
+  }
+  html { background: var(--ground); }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--text);
+    font-size: 21px;
+    line-height: 1.25;
+    padding-inline: 16px;
+    padding-block: 28px 48px;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; display: grid; gap: 22px; }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; }
+  h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(34px, 7vw, 60px);
+    line-height: 1;
+    margin: 0;
+    letter-spacing: 0.02em;
+    text-wrap: balance;
+  }
+  h1 .r { color: var(--red); } h1 .g { color: var(--green); } h1 .b { color: var(--blue); }
+  .tag { margin: 0; color: var(--muted); max-width: 34ch; }
+  .stage {
+    position: relative;
+    border: 4px solid var(--edge);
+    background: #07060f;
+    box-shadow: 0 0 0 4px #07060f, 0 18px 60px -20px rgba(76, 201, 240, 0.35);
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 320 / 190;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+  .stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(to bottom, rgba(0,0,0,0.22) 0 1px, transparent 1px 3px),
+      radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.45) 100%);
+  }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  button {
+    font-family: var(--display);
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--panel);
+    border: 2px solid var(--edge);
+    padding: 8px 14px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 #07060f;
+  }
+  button:hover { border-color: var(--blue); }
+  button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #07060f; }
+  button:focus-visible { outline: 3px solid var(--butter); outline-offset: 2px; }
+  .hint { color: var(--muted); font-size: 18px; }
+  .scenes { display: flex; flex-wrap: wrap; gap: 8px; }
+  .scenes button { font-family: var(--text); font-size: 19px; padding: 4px 10px; box-shadow: none; }
+  .scenes button[aria-current="true"] { background: var(--butter); color: #1d1838; border-color: var(--butter); }
+  .query {
+    background: var(--panel);
+    border-left: 6px solid var(--blue);
+    padding: 12px 16px;
+    margin: 0;
+    font-family: var(--text);
+    font-size: 22px;
+    white-space: pre;
+    overflow-x: auto;
+    min-height: 3.6em;
+  }
+  .kw { color: #ff77a8; } .fn { color: var(--butter); } .cr { color: var(--red); } .cg { color: var(--green); }
+  .cb { color: var(--blue); } .num { color: #ffa94d; } .pos { color: #c3a6ff; }
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .fact { border-top: 3px solid var(--edge); padding-top: 10px; }
+  .fact h2 { font-family: var(--display); font-size: 15px; letter-spacing: 0.06em; margin: 0 0 6px; color: var(--butter); }
+  .fact p { margin: 0; color: var(--muted); }
+  code { font-family: var(--text); color: var(--ink); background: #07060f; padding: 0 4px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Pic<span class="r">S</span><span class="g">Q</span><span class="b">L</span></h1>
+    <p class="tag">A Java library that queries pictures with SQL. Every pixel is a row, every channel a column.</p>
+  </header>
+
+  <div class="stage"><canvas id="screen" width="320" height="190" aria-label="Pixel art animation of PicSQL queries transforming a picture"></canvas></div>
+
+  <div class="controls">
+    <button id="prev" type="button">&lt; Prev</button>
+    <button id="play" type="button">Pause</button>
+    <button id="next" type="button">Next &gt;</button>
+    <span class="hint">Space pauses, arrow keys change scene.</span>
+  </div>
+
+  <nav class="scenes" id="scenes" aria-label="Scenes"></nav>
+
+  <pre class="query" id="query" aria-live="polite"></pre>
+
+  <section class="facts">
+    <div class="fact"><h2>Rows are pixels</h2><p><code>r</code>, <code>g</code>, <code>b</code>, <code>x</code>, <code>y</code> and <code>rank()</code> are columns. <code>WHERE</code> keeps or drops pixels.</p></div>
+    <div class="fact"><h2>Functions</h2><p><code>lag</code>, <code>lead</code>, <code>sin</code>, <code>cos</code>, <code>tan</code>, <code>discr</code>, <code>flip</code>, convolution masks, and <code>butter</code> (240, 227, 107).</p></div>
+    <div class="fact"><h2>Run it</h2><p><code>java -jar picsql.jar "select g, b, r from ./face.bmp" out.bmp</code> or <code>--gui</code> for the live editor.</p></div>
+  </section>
+</div>
+
+<script>
+(() => {
+  const W = 320, H = 190, N = 64;
+  const cv = document.getElementById('screen');
+  const ctx = cv.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- 3x5 bitmap font ----------
+  const G = {
+    A:'010101111101101',B:'110101110101110',C:'011100100100011',D:'110101101101110',E:'111100110100111',
+    F:'111100110100100',G:'011100101101011',H:'101101111101101',I:'111010010010111',J:'001001001101010',
+    K:'101101110101101',L:'100100100100111',M:'101111111101101',N:'110101101101101',O:'010101101101010',
+    P:'110101110100100',Q:'010101101110011',R:'110101110101101',S:'011100010001110',T:'111010010010010',
+    U:'101101101101111',V:'101101101101010',W:'101101111111101',X:'101101010101101',Y:'101101010010010',
+    Z:'111001010100111','0':'111101101101111','1':'010110010010111','2':'110001010100111','3':'110001010001110',
+    '4':'101101111001001','5':'111100110001110','6':'011100111101111','7':'111001010010010','8':'111101111101111',
+    '9':'111101111001110',' ':'000000000000000','(':'001010010010001',')':'100010010010100',',':'000000000010100',
+    '.':'000000000000010','*':'000101010101000','%':'101001010100101','>':'100010001010100','<':'001010100010001',
+    '=':'000111000111000','+':'000010111010000','-':'000000111000000','/':'001001010100100','[':'011010010010011',
+    ']':'110010010010110','_':'000000000000111','!':'010010010000010','?':'110001010000010',':':'000010000010000',
+    ';':'000010000010100',"'":'010010000000000','"':'101101000000000','#':'101111101111101','@':'101111111010000'
+  };
+  function rect(x, y, w, h, c) { ctx.fillStyle = c; ctx.fillRect(x | 0, y | 0, w, h); }
+  function glyph(ch, x, y, c, s = 1) {
+    const g = G[ch] || G['?'];
+    ctx.fillStyle = c;
+    for (let i = 0; i < 15; i++) if (g[i] === '1') ctx.fillRect((x + (i % 3) * s) | 0, (y + ((i / 3) | 0) * s) | 0, s, s);
+  }
+  function text(str, x, y, c, s = 1) { for (let i = 0; i < str.length; i++) glyph(str[i], x + i * 4 * s, y, c, s); }
+  const tw = (str, s = 1) => str.length * 4 * s - s;
+
+  // syntax colours
+  const C = {
+    kw:'#ff77a8', fn:'#f0e36b', r:'#ff4d6d', g:'#3ddc97', b:'#4cc9f0', num:'#ffa94d', pos:'#c3a6ff',
+    ink:'#f4ecff', muted:'#6f6699', path:'#8be9fd', ground:'#120f24', panel:'#1d1838', edge:'#3a3170',
+    dark:'#07060f', butter:'#f0e36b'
+  };
+  const KW = new Set(['SELECT','FROM','WHERE','AND','OR']);
+  const FN = new Set(['LAG','LEAD','SIN','COS','TAN','ABS','DISCR','FLIP','BUTTER','RANK','RAND','PI']);
+  const POS = new Set(['X','Y','XY','T']);
+  function tokClass(tok) {
+    if (KW.has(tok)) return 'kw';
+    if (FN.has(tok)) return 'fn';
+    if (tok === 'R') return 'r'; if (tok === 'G') return 'g'; if (tok === 'B') return 'b';
+    if (POS.has(tok)) return 'pos';
+    if (/^\d+$/.test(tok)) return 'num';
+    if (/^[A-Z_]+\.[A-Z]+$/.test(tok)) return 'path';
+    return 'ink';
+  }
+  function tokens(line) { return line.match(/[A-Z_]+\.[A-Z]+|[A-Z_]+|\d+|./g) || []; }
+  function codeLine(line, x, y, visible) {
+    let n = 0;
+    for (const tok of tokens(line)) {
+      const col = C[tokClass(tok)];
+      for (const ch of tok) { if (n >= visible) return; glyph(ch, x + n * 4, y, col); n++; }
+    }
+  }
+
+  // ---------- the picture: a procedural 64x64 pixel portrait ----------
+  const SR = new Float32Array(N * N), SG = new Float32Array(N * N), SB = new Float32Array(N * N);
+  const bayer = [[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+  const dith = (x, y, f) => f * 16 > bayer[y & 3][x & 3] + 0.5;
+  (function paint() {
+    const sky = [[24,20,72],[70,40,140],[150,60,160],[250,120,150]];
+    const skin = [240,190,150], shade = [214,152,118], hair = [74,42,30], beard = [112,70,40], beard2 = [142,96,56];
+    const frame = [22,22,34], lens = [196,226,255], pupil = [28,28,64], shirt = [0,135,81], shirt2 = [0,168,110];
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+      const pos = (y / (N - 1)) * 3, i = Math.min(2, pos | 0);
+      let c = dith(x, y, pos - i) ? sky[i + 1] : sky[i];
+      if (Math.hypot(x - 52, y - 11) < 6.5) c = [255, 206, 70];
+      if ((x * 7 + y * 13) % 97 === 0 && y < 30) c = [255, 255, 255];
+      const dx = (x - 32) / 16, dy = (y - 33) / 19, e = dx * dx + dy * dy;
+      // shirt + neck
+      if (y >= 52 && Math.abs(x - 32) < 11 + (y - 52) * 1.6) c = (y % 4 === 0) ? shirt2 : shirt;
+      if (y >= 47 && y < 55 && Math.abs(x - 32) < 6) c = shade;
+      if (y >= 54 && Math.abs(x - 32) < 5 - (y - 54) * 0.8) c = skin;
+      // hair behind
+      if (Math.hypot((x - 32) / 19, (y - 25) / 16) < 1 && y < 34) c = hair;
+      // ears
+      if (Math.hypot(x - 15.5, y - 34) < 3 || Math.hypot(x - 48.5, y - 34) < 3) c = shade;
+      // face
+      if (e < 1) {
+        c = (dx > 0.42 && dith(x, y, Math.min(1, (dx - 0.42) * 2.2))) ? shade : skin;
+        if (y < 21 + Math.round(Math.sin(x * 0.9) * 1.5)) c = hair;
+        if ((y > 40 && e > 0.02) || (y > 31 && Math.abs(dx) > 0.82)) c = dith(x, y, 0.3) ? beard2 : beard;
+      }
+      // eyebrows
+      if (y === 26 && ((x >= 20 && x <= 28) || (x >= 36 && x <= 44))) c = hair;
+      // glasses
+      const inL = x >= 19 && x <= 29 && y >= 28 && y <= 34, inR = x >= 35 && x <= 45 && y >= 28 && y <= 34;
+      if (inL || inR) {
+        const border = x === 19 || x === 29 || x === 35 || x === 45 || y === 28 || y === 34;
+        c = border ? frame : [(skin[0] + lens[0]) >> 1, (skin[1] + lens[1]) >> 1, (skin[2] + lens[2]) >> 1];
+      }
+      if (y === 30 && ((x > 29 && x < 35) || (x >= 15 && x < 19) || (x > 45 && x <= 49))) c = frame;
+      if ((x === 23 || x === 24 || x === 40 || x === 41) && (y === 31 || y === 32)) c = pupil;
+      if ((x === 23 || x === 40) && y === 31) c = [255, 255, 255];
+      // nose, blush
+      if (x === 33 && y >= 35 && y <= 38) c = shade;
+      if (y === 39 && x >= 30 && x <= 33) c = shade;
+      if (Math.hypot(x - 21, y - 38) < 1.8 || Math.hypot(x - 43, y - 38) < 1.8) c = [246, 142, 142];
+      // mouth
+      if (y === 45 && Math.abs(x - 32) <= 4) c = [60, 18, 30];
+      if (y === 44 && (x === 27 || x === 37)) c = [60, 18, 30];
+      if (y === 46 && Math.abs(x - 32) <= 2) c = [232, 92, 112];
+      const k = y * N + x; SR[k] = c[0]; SG[k] = c[1]; SB[k] = c[2];
+    }
+  })();
+
+  const clamp = v => (v < 0 || v !== v) ? 0 : v > 255 ? 255 : v;
+  const at = (ch, x, y) => { x = Math.floor(x); y = Math.floor(y); return (x < 0 || y < 0 || x >= N || y >= N) ? 0 : ch[y * N + x]; };
+  const discr = (v, b) => Math.ceil((v * b) / 255) * (255 / b);
+  const flip = (ch, x, y, mx, my) => at(ch, mx && x > N / 2 ? N - x : x, my && y > N / 2 ? N - y : y);
+
+  // ---------- scenes ----------
+  const scenes = [
+    { type: 'intro', label: 'Insert coin', dur: 5.6 },
+    { label: 'Select r, g, b', cap: 'ONE ROW PER PIXEL', q: ['SELECT R, G, B', 'FROM FACE.BMP;'],
+      fn: p => [p.r, p.g, p.b] },
+    { label: 'Channel swap', cap: 'CHANNEL SWAP!', q: ['SELECT G, B, R', 'FROM FACE.BMP;'],
+      fn: p => [p.g, p.b, p.r] },
+    { label: 'Where', cap: 'WHERE DROPS PIXELS', drop: true, q: ['SELECT R, G, B', 'FROM FACE.BMP', 'WHERE R > 120;'],
+      fn: p => p.r > 120 ? [p.r, p.g, p.b] : null },
+    { label: 'Lag + lead', cap: 'LAG + LEAD = GLITCH', q: ['SELECT LAG(R, 4, 4),', '       LEAD(G, 3, 3),', '       B', 'FROM FACE.BMP;'],
+      fn: p => [at(SR, p.x - 4, p.y - 4), at(SG, p.x + 3, p.y + 3), p.b] },
+    { label: 'Trigonometry', cap: 'TRIGO PARTY', q: ['SELECT (R*SIN(X))%255,', '       (G*TAN(Y))%255,', '       ABS(COS(R))*255', 'FROM FACE.BMP;'],
+      fn: p => [(p.r * Math.sin(p.x)) % 255, (p.g * Math.tan(p.y)) % 255, Math.abs(Math.cos(p.r)) * 255] },
+    { label: 'Discr', cap: 'POSTERIZE IT', q: ['SELECT DISCR(R, 4),', '       DISCR(G, 3),', '       DISCR(B, 2)', 'FROM FACE.BMP;'],
+      fn: p => [discr(p.r, 4), discr(p.g, 3), discr(p.b, 2)] },
+    { label: 'Flip', cap: 'MIRROR MIRROR', q: ['SELECT FLIP(R, X),', '       FLIP(G, XY),', '       FLIP(B, X)', 'FROM FACE.BMP;'],
+      fn: p => [flip(SR, p.x, p.y, 1, 0), flip(SG, p.x, p.y, 1, 1), flip(SB, p.x, p.y, 1, 0)] },
+    { label: 'Butter', cap: 'KALON VAT!', head: 'butter', q: ['SELECT BUTTER(R),', '       G,', '       BUTTER(B)', 'FROM FACE.BMP;'],
+      fn: p => [240, p.g, 107] },
+    { label: 'Grid', cap: '4 X 4 GRID', q: ['SELECT R, G, B', 'FROM (FACE.BMP, 4, 4);'],
+      fn: p => { const k = ((p.y % 16) * 4) * N + (p.x % 16) * 4; return [SR[k], SG[k], SB[k]]; } },
+    { label: 'GIF', cap: '50 FRAMES = GIF', anim: true, hold: 5.5, q: ['SELECT LAG(R, 5, T%20),', '       (G*T)%255,', '       (T*10)%255', 'FROM (FACE.BMP, 50);'],
+      fn: p => [at(SR, p.x - 5, p.y - (p.t % 20)), (p.g * p.t) % 255, (p.t * 10) % 255] },
+    { type: 'outro', label: 'Game over', dur: 7 }
+  ];
+  const TYPE_CPS = 26, PAUSE = 0.45, SCAN = 1.35, HOLD = 2.8;
+  for (const s of scenes) {
+    if (s.type) continue;
+    s.chars = s.q.reduce((a, l) => a + l.length, 0);
+    s.tType = s.chars / TYPE_CPS;
+    s.tRun = s.tType + PAUSE;
+    s.tDone = s.tRun + SCAN;
+    s.dur = s.tDone + (s.hold || HOLD);
+  }
+
+  // image buffers (RGB bytes, alpha separate for dropped pixels)
+  const blank = () => new Uint8ClampedArray(N * N * 4);
+  let prevBuf = blank(), nextBuf = blank(), showBuf = blank(), keptRows = 0;
+  const tile = document.createElement('canvas'); tile.width = N; tile.height = N;
+  const tctx = tile.getContext('2d');
+  const tileImg = tctx.createImageData(N, N);
+
+  function evalQuery(s, t) {
+    let kept = 0;
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+      const k = y * N + x;
+      const out = s.fn({ r: SR[k], g: SG[k], b: SB[k], x, y, t });
+      const o = k * 4;
+      if (out) { nextBuf[o] = clamp(out[0]); nextBuf[o + 1] = clamp(out[1]); nextBuf[o + 2] = clamp(out[2]); nextBuf[o + 3] = 255; kept++; }
+      else { nextBuf[o] = nextBuf[o + 1] = nextBuf[o + 2] = 0; nextBuf[o + 3] = 0; }
+    }
+    return kept;
+  }
+
+  // ---------- particles ----------
+  let parts = [];
+  const MAXP = reduced ? 0 : 1600;
+  function spawn(p) { if (parts.length < MAXP) parts.push(p); }
+  function stepParts(dt) {
+    for (const p of parts) {
+      p.life -= dt;
+      if (p.home) {
+        p.x += (p.tx - p.x) * Math.min(1, dt * 7); p.y += (p.ty - p.y) * Math.min(1, dt * 7);
+        if (Math.abs(p.tx - p.x) + Math.abs(p.ty - p.y) < 2) p.life = 0;
+      } else {
+        p.vy += (p.g ?? 120) * dt; p.x += p.vx * dt; p.y += p.vy * dt;
+      }
+    }
+    parts = parts.filter(p => p.life > 0 && p.y < H + 4 && p.x > -4 && p.x < W + 4);
+  }
+  function drawParts() { for (const p of parts) rect(p.x, p.y, p.s || 1, p.s || 1, p.c); }
+
+  const stars = Array.from({ length: 70 }, (_, i) => ({ x: (i * 97) % W, y: (i * 53) % H, p: i * 0.37 }));
+  function drawStars(t) {
+    for (const s of stars) {
+      const tw = Math.sin(t * 3 + s.p);
+      if (tw > -0.3) rect(s.x, (s.y + t * 6 * (1 + (s.p % 1))) % H, 1, 1, tw > 0.7 ? '#ffffff' : '#5a4f9a');
+    }
+  }
+
+  function hsv(h, s, v) {
+    const f = n => { const k = (n + h * 6) % 6; return v - v * s * Math.max(0, Math.min(k, 4 - k, 1)); };
+    return `rgb(${(f(5) * 255) | 0},${(f(3) * 255) | 0},${(f(1) * 255) | 0})`;
+  }
+
+  // ---------- mascot: a tiny SQL bot ----------
+  const BOT = [
+    ['..####..', '.#o##o#.', '.######.', '..#--#..', '.######.', '#.####.#', '..#..#..', '..#..#..'],
+    ['..####..', '.#o##o#.', '.######.', '..#--#..', '.######.', '#.####.#', '.#....#.', '.#....#.']
+  ];
+  function drawBot(x, y, frame, dir) {
+    const m = BOT[frame];
+    for (let j = 0; j < 8; j++) for (let i = 0; i < 8; i++) {
+      const ch = m[j][dir > 0 ? i : 7 - i];
+      if (ch === '.') continue;
+      rect(x + i, y + j, 1, 1, ch === 'o' ? '#ffffff' : ch === '-' ? '#07060f' : '#4cc9f0');
+    }
+  }
+  function drawButter(x, y) {
+    rect(x, y, 14, 7, '#f0e36b'); rect(x, y, 14, 1, '#fff7b0'); rect(x, y + 6, 14, 1, '#c9b94a');
+    rect(x + 8, y - 1, 7, 9, '#f4ecff'); rect(x + 9, y + 2, 5, 3, '#3a6fd8');
+  }
+
+  // ---------- state ----------
+  let si = 0, st = 0, playing = !reduced, shake = 0, lastT = 0, gifT = 0;
+  let explodeDone = false, wasRun = false, lastRank = 0;
+  const IMGX = 184, IMGY = 24, SCALE = 2;
+
+  function enter(i) {
+    si = (i + scenes.length) % scenes.length; st = 0; wasRun = false; lastRank = 0; explodeDone = false;
+    const s = scenes[si];
+    prevBuf = showBuf.slice();
+    if (s.type === 'intro') { prevBuf = blank(); showBuf = blank(); parts = []; }
+    if (!s.type) keptRows = evalQuery(s, 0);
+    if (reduced && !s.type) st = s.tDone + 0.01;
+    syncUI();
+  }
+
+  // ---------- drawing ----------
+  function frameUI(t) {
+    rect(0, 0, W, 12, C.dark);
+    const logo = 'PICSQL';
+    for (let i = 0; i < logo.length; i++) glyph(logo[i], 6 + i * 4, 4, hsv((i / 6 + t * 0.2) % 1, 0.7, 1));
+    text('1.0.6', 34, 4, C.muted);
+    const sc = 'SCENE ' + si + '/' + (scenes.length - 1);
+    text(sc, W - 6 - tw(sc), 4, C.muted);
+    const rx = W - 6 - tw(sc) - 26;
+    if (Math.sin(t * 5) > 0) rect(rx, 4, 5, 5, '#ff4d6d');
+    text('REC', rx + 7, 4, '#ff4d6d');
+  }
+
+  function drawTerminal(s, t) {
+    rect(6, 16, 168, 140, C.panel);
+    rect(6, 16, 168, 8, C.edge);
+    text('QUERY.SQL', 10, 18, C.ink);
+    rect(158, 18, 3, 3, '#ff4d6d'); rect(163, 18, 3, 3, '#f0e36b'); rect(168, 18, 3, 3, '#3ddc97');
+    let y = 30;
+    text('PICSQL> READY.', 10, y, C.muted); y += 10;
+    let left = Math.floor(Math.min(t, s.tType) * TYPE_CPS);
+    let cx = 10, cy = y;
+    s.q.forEach((line, li) => {
+      const prefix = li === 0 ? '> ' : '  ';
+      text(prefix, 10, y, C.muted);
+      const vis = Math.max(0, Math.min(line.length, left));
+      codeLine(line, 18, y, vis);
+      if (left > 0) { cx = 18 + vis * 4; cy = y; }
+      left -= line.length;
+      y += 8;
+    });
+    if (t < s.tRun && Math.sin(t * 12) > 0) rect(cx, cy, 3, 5, C.butter);
+    y += 6;
+    if (t >= s.tType && t < s.tRun) text('[ENTER]', 10, y, Math.sin(t * 30) > 0 ? C.butter : C.ink);
+    if (t >= s.tRun) {
+      const pr = Math.min(1, (t - s.tRun) / SCAN);
+      text('EXEC', 10, y, C.ink);
+      rect(30, y, 100, 5, C.dark);
+      rect(30, y, Math.round(100 * pr), 5, hsv((t * 0.8) % 1, 0.6, 1));
+      text(((pr * 100) | 0) + '%', 134, y, C.ink);
+      y += 10;
+      if (pr >= 1) {
+        const rows = s.drop ? keptRows : N * N;
+        text('OK. ' + rows + ' ROWS', 10, y, C.green);
+        text('0.0' + ((si * 7) % 9 + 1) + 'S', 10 + tw('OK. ' + rows + ' ROWS ') + 4, y, C.muted);
+        // caption, letters bouncing
+        const ct = t - s.tDone;
+        const cap = s.cap, sc = 2, w = tw(cap, sc);
+        const x0 = 6 + ((168 - w) >> 1);
+        for (let i = 0; i < cap.length; i++) {
+          const appear = ct - i * 0.035;
+          if (appear < 0) break;
+          const bounce = Math.abs(Math.sin(appear * 4 + i * 0.5)) * 3 * Math.max(0, 1 - appear * 0.3);
+          const col = s.head === 'butter' ? (i % 2 ? '#f0e36b' : '#fff7b0') : hsv((i / cap.length + t * 0.3) % 1, 0.65, 1);
+          glyph(cap[i], x0 + i * 4 * sc + 1, 136 - bounce + 1, C.dark, sc);
+          glyph(cap[i], x0 + i * 4 * sc, 136 - bounce, col, sc);
+        }
+      }
+    }
+  }
+
+  function drawPicture(s, t) {
+    rect(180, 16, 136, 140, C.edge);
+    text('FACE.BMP', 184, 18, C.ink);
+    text('64X64', 316 - 4 - tw('64X64'), 18, C.muted);
+    rect(IMGX, IMGY, 128, 128, C.dark);
+    let count = 0;
+    if (s.type) count = 0;
+    else if (t >= s.tDone) count = N * N;
+    else if (t >= s.tRun) count = Math.floor(((t - s.tRun) / SCAN) * N * N);
+    if (s.anim && t >= s.tDone) { gifT = Math.floor((t - s.tDone) * 12) % 50; evalQuery(s, gifT); }
+    for (let k = 0; k < N * N; k++) {
+      const src = k < count ? nextBuf : prevBuf, o = k * 4;
+      tileImg.data[o] = src[o]; tileImg.data[o + 1] = src[o + 1]; tileImg.data[o + 2] = src[o + 2]; tileImg.data[o + 3] = src[o + 3];
+    }
+    showBuf = tileImg.data.slice();
+    tctx.putImageData(tileImg, 0, 0);
+    ctx.drawImage(tile, IMGX, IMGY, 128, 128);
+
+    // side effects of the scan: particles + dropped pixels
+    if (!s.type && t >= s.tRun && lastRank < count) {
+      if (s.drop) for (let k = lastRank; k < count; k++) {
+        if (nextBuf[k * 4 + 3] === 0 && Math.random() < 0.45) {
+          const o = k * 4, x = k % N, y = (k / N) | 0;
+          spawn({ x: IMGX + x * 2, y: IMGY + y * 2, vx: (Math.random() - 0.5) * 50, vy: -Math.random() * 40, s: 2, life: 2.4,
+                  c: `rgb(${prevBuf[o] || SR[k]},${prevBuf[o + 1] || SG[k]},${prevBuf[o + 2] || SB[k]})` });
+        }
+      }
+      lastRank = count;
+    }
+    if (!s.type && t >= s.tRun && t < s.tDone) {
+      const k = Math.min(N * N - 1, count), hx = IMGX + (k % N) * 2, hy = IMGY + ((k / N) | 0) * 2;
+      rect(IMGX, hy, 128, 2, 'rgba(255,255,255,0.35)');
+      rect(hx - 1, hy - 1, 4, 4, '#ffffff');
+      if (s.head === 'butter') drawButter(hx - 4, hy - 4);
+      for (let i = 0; i < 3; i++) {
+        const cols = ['#ff4d6d', '#3ddc97', '#4cc9f0'];
+        spawn({ home: true, x: 150 + Math.random() * 20, y: 40 + Math.random() * 40, tx: hx, ty: hy, c: cols[i], life: 1 });
+      }
+      text('X=' + (k % N), 184, 160, C.ink); text('Y=' + ((k / N) | 0), 206, 160, C.ink);
+      text('RANK()=' + k, 228, 160, C.butter);
+    } else if (!s.type) {
+      if (s.anim && t >= s.tDone) {
+        text('T=' + gifT + '/50', 184, 160, C.butter);
+        rect(230, 161, 80, 3, C.dark); rect(230, 161, Math.round(80 * gifT / 49), 3, '#ff77a8');
+      } else text(s.drop && t >= s.tDone ? keptRows + ' OF 4096 KEPT' : '4096 ROWS', 184, 160, C.muted);
+    }
+  }
+
+  function drawGround(t, s) {
+    rect(0, 168, W, 22, C.dark);
+    for (let x = 0; x < W; x += 8) rect(x + ((t * 20) % 8), 180, 4, 1, C.edge);
+    const span = 150, px = 10 + ((Math.sin(t * 0.5) + 1) / 2) * span;
+    const dir = Math.cos(t * 0.5) >= 0 ? 1 : -1;
+    let jump = 0;
+    if (s && !s.type && t >= s.tRun && t < s.tRun + 0.5) jump = Math.sin(((t - s.tRun) / 0.5) * Math.PI) * 8;
+    if (s && !s.type && t >= s.tDone) jump = Math.abs(Math.sin((t - s.tDone) * 8)) * 3;
+    drawBot(px, 172 - jump, Math.floor(t * 6) % 2, dir);
+    rect(px + (dir > 0 ? 8 : -12), 170 - jump, 12, 7, '#f4ecff');
+    text('SQL', px + (dir > 0 ? 9 : -11), 171 - jump, '#1d1838');
+  }
+
+  function drawIntro(t) {
+    drawStars(t);
+    const word = 'PICSQL', sc = 6, adv = 4 * sc, x0 = ((W - (word.length * adv - sc)) >> 1), ty = 44;
+    if (t < 4.4) {
+      for (let i = 0; i < word.length; i++) {
+        const lt = t - 0.2 - i * 0.18;
+        if (lt < 0) continue;
+        let d = Math.min(1, lt / 0.7);
+        const eb = d < 1 / 2.75 ? 7.5625 * d * d : d < 2 / 2.75 ? 7.5625 * (d -= 1.5 / 2.75) * d + 0.75 : d < 2.5 / 2.75 ? 7.5625 * (d -= 2.25 / 2.75) * d + 0.9375 : 7.5625 * (d -= 2.625 / 2.75) * d + 0.984375;
+        const y = -40 + (ty + 40) * eb;
+        const g = G[word[i]];
+        for (let k = 0; k < 15; k++) if (g[k] === '1') {
+          const bx = x0 + i * adv + (k % 3) * sc, by = y + ((k / 3) | 0) * sc;
+          rect(bx + 1, by + 1, sc - 1, sc - 1, C.dark);
+          rect(bx, by, sc - 1, sc - 1, hsv(((bx + by) / 200 + t * 0.25) % 1, 0.65, 1));
+          rect(bx, by, sc - 1, 1, 'rgba(255,255,255,0.55)');
+        }
+      }
+    } else if (!explodeDone) {
+      explodeDone = true;
+      for (let i = 0; i < word.length; i++) {
+        const g = G[word[i]];
+        for (let k = 0; k < 15; k++) if (g[k] === '1') for (let a = 0; a < 5; a++) {
+          const bx = x0 + i * adv + (k % 3) * sc + Math.random() * 5, by = ty + ((k / 3) | 0) * sc + Math.random() * 5;
+          spawn({ x: bx, y: by, vx: (bx - W / 2) * 2 + (Math.random() - 0.5) * 60, vy: -60 - Math.random() * 80, s: 2, life: 2,
+                  c: hsv(Math.random(), 0.7, 1) });
+        }
+      }
+      shake = 0.3;
+    }
+    const l1 = 'SELECT PIXELS FROM PICTURES';
+    const l2 = 'A JAVA LIBRARY TO QUERY IMAGES WITH SQL';
+    const n1 = Math.max(0, Math.floor((t - 1.6) * 24));
+    if (t < 4.4) {
+      codeLine(l1, (W - tw(l1)) >> 1, 96, n1);
+      if (t > 2.9) text(l2, (W - tw(l2)) >> 1, 110, C.muted);
+      if (t > 3.3 && Math.sin(t * 8) > 0) text('PRESS START', (W - tw('PRESS START')) >> 1, 136, C.butter);
+    }
+    for (let i = 0; i < 3; i++) {
+      const cols = ['#ff4d6d', '#3ddc97', '#4cc9f0'];
+      rect(((t * 90 + i * 107) % (W + 40)) - 20, 150 + i * 4, 18, 2, cols[i]);
+    }
+  }
+
+  function drawOutro(t) {
+    drawStars(t);
+    if (!explodeDone) {
+      explodeDone = true;
+      for (let k = 0; k < N * N; k += 3) {
+        const o = k * 4; if (!prevBuf[o + 3]) continue;
+        const x = IMGX + (k % N) * 2, y = IMGY + ((k / N) | 0) * 2;
+        spawn({ x, y, vx: (x - 248) * 3 + (Math.random() - 0.5) * 60, vy: (y - 88) * 3 - 40 - Math.random() * 60, s: 2, life: 3,
+                c: `rgb(${prevBuf[o]},${prevBuf[o + 1]},${prevBuf[o + 2]})` });
+      }
+      shake = 0.4;
+    }
+    if (t < 0.5) { ctx.globalAlpha = 1 - t * 2; tctx.putImageData(tileImg, 0, 0); ctx.drawImage(tile, IMGX, IMGY, 128, 128); ctx.globalAlpha = 1; }
+    const big = 'SELECT * FROM FUN;', sc = 3, x0 = (W - tw(big, sc)) >> 1;
+    for (let i = 0; i < big.length; i++) {
+      const at = t - 0.9 - i * 0.07; if (at < 0) break;
+      const wave = Math.sin(t * 5 + i * 0.6) * 3;
+      glyph(big[i], x0 + i * 12 + 2, 58 + wave + 2, C.dark, sc);
+      glyph(big[i], x0 + i * 12, 58 + wave, hsv((i / big.length + t * 0.3) % 1, 0.7, 1), sc);
+    }
+    if (t > 2.6) {
+      const a = 'EVERY PIXEL IS A ROW', b = 'EVERY CHANNEL IS A COLUMN';
+      codeLine(a, (W - tw(a)) >> 1, 90, Math.floor((t - 2.6) * 30));
+      if (t > 3.4) codeLine(b, (W - tw(b)) >> 1, 100, Math.floor((t - 3.4) * 30));
+    }
+    if (t > 4.4) {
+      const c1 = 'JAVA -JAR PICSQL.JAR --GUI';
+      rect(((W - tw(c1)) >> 1) - 6, 118, tw(c1) + 12, 13, C.panel);
+      text(c1, (W - tw(c1)) >> 1, 122, C.ink);
+      const c2 = 'GITHUB.COM/OLCAV/PICSQL';
+      text(c2, (W - tw(c2)) >> 1, 140, C.muted);
+    }
+    if (t > 5.4 && Math.sin(t * 8) > 0) text('INSERT COIN', (W - tw('INSERT COIN')) >> 1, 154, C.butter);
+  }
+
+  function render(dt) {
+    const s = scenes[si];
+    rect(0, 0, W, H, C.ground);
+    ctx.save();
+    if (shake > 0 && !reduced) { ctx.translate(Math.round((Math.random() - 0.5) * 4), Math.round((Math.random() - 0.5) * 4)); shake -= dt; }
+    if (s.type === 'intro') { drawIntro(st); drawGround(st + si, null); }
+    else if (s.type === 'outro') { drawOutro(st); drawGround(st + si, null); }
+    else {
+      if (st >= s.tRun && !wasRun) { wasRun = true; shake = 0.18; }
+      drawTerminal(s, st); drawPicture(s, st); drawGround(st + si, s);
+    }
+    stepParts(dt); drawParts();
+    ctx.restore();
+    frameUI(st + si);
+  }
+
+  function step(dt) {
+    st += dt;
+    if (st >= scenes[si].dur) enter(si + 1);
+    render(dt);
+  }
+
+  // ---------- page UI ----------
+  const nav = document.getElementById('scenes'), qEl = document.getElementById('query'), playBtn = document.getElementById('play');
+  scenes.forEach((s, i) => {
+    const b = document.createElement('button'); b.type = 'button'; b.id = 'scene-' + i; b.textContent = s.label;
+    b.addEventListener('click', () => { enter(i); render(0); });
+    nav.appendChild(b);
+  });
+  const esc = v => v.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  function highlight(line) {
+    return tokens(line).map(tok => {
+      const c = tokClass(tok), cls = { kw: 'kw', fn: 'fn', r: 'cr', g: 'cg', b: 'cb', num: 'num', pos: 'pos' }[c];
+      const low = esc(c === 'kw' ? tok.toLowerCase() : tok.toLowerCase());
+      return cls ? `<span class="${cls}">${low}</span>` : low;
+    }).join('');
+  }
+  function syncUI() {
+    [...nav.children].forEach((b, i) => b.setAttribute('aria-current', i === si ? 'true' : 'false'));
+    const s = scenes[si];
+    qEl.innerHTML = s.q ? s.q.map(highlight).join('\n') : (s.type === 'intro'
+      ? '<span class="kw">select</span> pixels <span class="kw">from</span> pictures;'
+      : '<span class="kw">select</span> * <span class="kw">from</span> fun;');
+  }
+  function setPlaying(p) { playing = p; playBtn.textContent = p ? 'Pause' : 'Play'; }
+  playBtn.addEventListener('click', () => setPlaying(!playing));
+  document.getElementById('prev').addEventListener('click', () => { enter(si - 1); render(0); });
+  document.getElementById('next').addEventListener('click', () => { enter(si + 1); render(0); });
+  window.addEventListener('keydown', e => {
+    if (e.target.closest && e.target.closest('button') && e.key === ' ') return;
+    if (e.key === ' ') { e.preventDefault(); setPlaying(!playing); }
+    if (e.key === 'ArrowRight') { enter(si + 1); render(0); }
+    if (e.key === 'ArrowLeft') { enter(si - 1); render(0); }
+  });
+
+  // deterministic stepping hook, used to record the README GIF
+  window.PICSQL_ANIM = { step, enter, scenes, get total() { return scenes.reduce((a, s) => a + s.dur, 0); } };
+
+  enter(reduced ? 1 : 0);
+  setPlaying(!reduced);
+  render(0);
+  function loop(now) {
+    const dt = Math.min(0.05, (now - (lastT || now)) / 1000); lastT = now;
+    if (playing && location.hash !== '#capture') step(dt);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>

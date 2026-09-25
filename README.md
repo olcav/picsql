@@ -2,6 +2,10 @@
 
 A Java library to query pictures with SQL-like language.
 
+![PicSQL arcade: SQL queries rewriting a pixel art portrait](docs/animation/picsql-arcade.gif)
+
+_Interactive version: [docs/animation/picsql-pixel.html](docs/animation/picsql-pixel.html) (open it in a browser)._
+
 Features :
 
 - Select and manipulate pixels of pictures in your disk with SQL-like dialect (only BMP at this time).
